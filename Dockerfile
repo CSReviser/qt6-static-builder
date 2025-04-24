@@ -35,14 +35,14 @@ RUN apt-get update && apt-get install -y \
     libxcb-randr0-dev \
     libxcb-render-util0-dev \
     libxcb-util-dev \
-	  libxcb-cursor-dev \
-	  libxcb-xkb-dev \
-	  libxkbcommon-x11-dev \
-	  libxcb-util-dev \
-	  libxcb-icccm4-dev \
-	  libxcb-image0-dev \
-	  libxcb-keysyms1-dev \
-	  libxcb-render-util0-dev \
+    libxcb-cursor-dev \
+    libxcb-xkb-dev \
+    libxkbcommon-x11-dev \
+    libxcb-util-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-render-util0-dev \
     libxkbcommon-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
@@ -68,7 +68,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_BUILD_TESTS=OFF \
       -DFEATURE_dbus=ON \
       -DFEATURE_icu=OFF \
-			-DQT_FEATURE_opengl_desktop=ON \
+      -DQT_FEATURE_opengl_desktop=ON \
       -DFEATURE_png=ON \
       -DFEATURE_jpeg=ON \
       -DFEATURE_freetype=ON \
@@ -88,9 +88,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_jpeg=OFF \
       -DFEATURE_system_freetype=OFF \
       -DFEATURE_system_harfbuzz=OFF && \
-    echo "=== CMake configure succeeded ===" && \
     cmake --build . --parallel && \
-    echo "=== Build succeeded ===" && \
     cmake --install . && \
     echo "=== Install succeeded ==="
 
