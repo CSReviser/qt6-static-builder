@@ -1,6 +1,6 @@
-# Dockerfile
 FROM ubuntu:22.04
 
+# 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
 ARG QT_VERSION=6.9.0
 ARG QT_VERSION1=6.9
@@ -9,6 +9,7 @@ ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
 ENV INSTALL_PREFIX=/opt/qt6-static
 
+# 依存インストール
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -53,6 +54,7 @@ RUN apt-get update && apt-get install -y \
     libglu1-mesa-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Qt取得 & ビルド
 # Download and extract Qt module source
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
@@ -91,22 +93,5 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --build . --parallel && \
     cmake --install . 
 
-# Set final image with only installed Qt (optional for size)
-# 2) Runtime イメージ：アプリのビルドにも使う
-FROM ubuntu:22.04
-
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
-    ninja-build \
-    ca-certificates \
-    curl \
-    git \
-  && rm -rf /var/lib/apt/lists/*
-
-# builder ステージでビルド済みの Qt をコピー
-COPY --from=builder /opt/qt6-static /opt/qt6-static
-
+# PATH登録
 ENV PATH="/opt/qt6-static/bin:$PATH"
