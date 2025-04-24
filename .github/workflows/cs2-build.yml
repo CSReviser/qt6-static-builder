@@ -21,9 +21,6 @@ jobs:
           cd CaptureStream2
           git submodule update --init --recursive
 
-      - name: Log in to GHCR
-        run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
       - name: Build using Docker container with Qt static
         run: |
           docker run --rm \
