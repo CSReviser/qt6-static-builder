@@ -13,6 +13,7 @@ ENV INSTALL_PREFIX=/opt/qt6-static
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
+    qt6-base-dev \
     cmake \
     ninja-build \
     git \
@@ -40,18 +41,26 @@ RUN apt-get update && apt-get install -y \
     libxcb-xkb-dev \
     libxkbcommon-x11-dev \
     libxcb-util-dev \
-    libxcb-icccm4-dev \
-    libxcb-image0-dev \
-    libxcb-keysyms1-dev \
-    libxcb-render-util0-dev \
+    libxcb-xinerama0-dev \
     libxkbcommon-dev \
     libfontconfig1-dev \
+    libfreetype-dev \
     libfreetype6-dev \
     libjpeg-dev \
     libpng-dev \
     zlib1g-dev \
+    libdbus-1-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
+    libglib2.0-dev \
+    libgtk-3-dev \
+    libssl-dev \
+    libwayland-dev \
+    libwayland-egl-backend-dev \
+    meson \
+    python3-pip \
+    pkg-config \
+    libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Qt取得 & ビルド
