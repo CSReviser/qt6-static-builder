@@ -94,6 +94,9 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --install . && \
     echo "=== Install succeeded ==="
 
+
+RUN which cmake && cmake --version
+
 # Set final image with only installed Qt (optional for size)
 FROM ubuntu:22.04
 COPY --from=0 /opt/qt6-static /opt/qt6-static
