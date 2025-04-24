@@ -77,6 +77,11 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_jpeg=OFF \
       -DFEATURE_system_freetype=OFF \
       -DFEATURE_system_harfbuzz=OFF && \
+    echo "=== CMake configure succeeded ===" && \
+    cmake --build . --parallel && \
+    echo "=== Build succeeded ===" && \
+    cmake --install . && \
+    echo "=== Install succeeded ==="
     cmake --build . --parallel && \
     cmake --install .
 
