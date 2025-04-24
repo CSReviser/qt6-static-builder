@@ -98,12 +98,12 @@ FROM ubuntu:22.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
-    build-essential \        # コンパイラ + make
-    cmake \                  # qt-cmake が使う
-    ninja-build \            # cmake の -GNinja
+    build-essential \
+    cmake \
+    ninja-build \
     ca-certificates \
     curl \
-    git \                    # ソース取得のため
+    git \
   && rm -rf /var/lib/apt/lists/*
 
 # builder ステージでビルド済みの Qt をコピー
