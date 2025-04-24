@@ -70,7 +70,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_BUILD_TESTS=OFF \
       -DFEATURE_dbus=ON \
       -DFEATURE_icu=OFF \
-      -DQT_FEATURE_opengl_desktop=ON \
+      -DQT_FEATURE_opengl_desktop=OFF \
       -DFEATURE_png=ON \
       -DFEATURE_jpeg=ON \
       -DFEATURE_freetype=ON \
