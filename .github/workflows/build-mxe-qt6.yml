@@ -1,0 +1,26 @@
+name: Build MXE Qt6 Static Environment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-mxe-qt6:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build MXE Qt6 Docker image
+        run: |
+          docker build -f Dockerfile.mxe.qt6 -t mxe-qt6-static .
+
+      - name: Save Docker image to file
+        run: |
+          docker save mxe-qt6-static | gzip > mxe-qt6-static.tar.gz
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mxe-qt6-static
+          path: mxe-qt6-static.tar.gz
