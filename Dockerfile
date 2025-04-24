@@ -89,11 +89,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_freetype=OFF \
       -DFEATURE_system_harfbuzz=OFF && \
     cmake --build . --parallel && \
-    cmake --install . && \
-    echo "=== Install succeeded ==="
-
-
-RUN which cmake && cmake --version
+    cmake --install . 
 
 # Set final image with only installed Qt (optional for size)
 FROM ubuntu:22.04
