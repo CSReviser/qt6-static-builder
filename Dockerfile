@@ -35,6 +35,14 @@ RUN apt-get update && apt-get install -y \
     libxcb-randr0-dev \
     libxcb-render-util0-dev \
     libxcb-util-dev \
+	  libxcb-cursor-dev \
+	  libxcb-xkb-dev \
+	  libxkbcommon-x11-dev \
+	  libxcb-util-dev \
+	  libxcb-icccm4-dev \
+	  libxcb-image0-dev \
+	  libxcb-keysyms1-dev \
+	  libxcb-render-util0-dev \
     libxkbcommon-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
