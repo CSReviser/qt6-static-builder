@@ -1,26 +1,40 @@
-name: Build MXE Qt6 Static Environment
+FROM ubuntu:22.04
 
-on:
-  workflow_dispatch:
+ARG DEBIAN_FRONTEND=noninteractive
 
-jobs:
-  build-mxe-qt6:
-    runs-on: ubuntu-22.04
+# 必要パッケージのインストール（MXE依存も含む）
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    curl \
+    git \
+    automake \
+    autoconf \
+    libtool \
+    libtool-bin \
+    gettext \
+    gperf \
+    bison \
+    flex \
+    python3 \
+    python3-pip \
+    ruby \
+    unzip \
+    lzip \
+    p7zip-full \
+    pkg-config \
+    wget \
+    xz-utils \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+# Python モジュール mako のインストール
+RUN pip3 install mako
 
-      - name: Build MXE Qt6 Docker image
-        run: |
-          docker build -f Dockerfile.mxe.qt6 -t mxe-qt6-static .
+# MXE クローンと必要モジュールのビルド
+WORKDIR /opt
+RUN git clone https://github.com/mxe/mxe.git && \
+    cd mxe && \
+    make MXE_TARGETS='x86_64-w64-mingw32.static' qt6-qtbase gcc cmake -j$(nproc)
 
-      - name: Save Docker image to file
-        run: |
-          docker save mxe-qt6-static | gzip > mxe-qt6-static.tar.gz
-
-      - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: mxe-qt6-static
-          path: mxe-qt6-static.tar.gz
+ENV PATH="/opt/mxe/usr/bin:$PATH"
