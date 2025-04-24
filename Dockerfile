@@ -82,8 +82,8 @@ RUN mkdir qt-build && cd qt-build && \
     echo "=== Build succeeded ===" && \
     cmake --install . && \
     echo "=== Install succeeded ==="
-    cmake --build . --parallel && \
-    cmake --install .
+#    cmake --build . --parallel && \
+#    cmake --install .
 
 # Set final image with only installed Qt (optional for size)
 FROM ubuntu:22.04
