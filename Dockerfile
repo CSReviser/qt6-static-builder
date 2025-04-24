@@ -1,54 +1,94 @@
-FROM ubuntu:22.04
+name: Build Qt 6.9.0 Static on Ubuntu
 
-# 環境変数
-ENV DEBIAN_FRONTEND=noninteractive
-ENV MAKEFLAGS=-j$(nproc)
-ENV QT_VERSION=6.9.0
-ENV QT_DIR=/opt/qt6-static
+on:
+  workflow_dispatch:
 
-# 依存インストール
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    ninja-build \
-    perl \
-    python3 \
-    git \
-    curl \
-    ca-certificates \
-    libgl1-mesa-dev \
-    libxcb1-dev libx11-dev libxext-dev libxfixes-dev libxi-dev libxrender-dev \
-    libxcb-glx0-dev libxcb-shm0-dev libxcb-xfixes0-dev libxcb-shape0-dev libxcb-randr0-dev \
-    libxcb-image0-dev libxcb-keysyms1-dev libxcb-icccm4-dev libxcb-sync-dev libxcb-xinerama0-dev \
-    libxcb-util-dev libxkbcommon-dev libxkbcommon-x11-dev \
-    && rm -rf /var/lib/apt/lists/*
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            ninja-build \
+            python3 \
+            perl \
+            git \
+            cmake \
+            libgl1-mesa-dev \
+            libxcb1-dev \
+            libx11-dev \
+            libx11-xcb-dev \
+            libxext-dev \
+            libxfixes-dev \
+            libxi-dev \
+            libxrender-dev \
+            libxrandr-dev \
+            libxkbcommon-dev \
+            libxcb-glx0-dev \
+            libxcb-keysyms1-dev \
+            libxcb-image0-dev \
+            libxcb-shm0-dev \
+            libxcb-icccm4-dev \
+            libxcb-sync-dev \
+            libxcb-xfixes0-dev \
+            libxcb-shape0-dev \
+            libxcb-randr0-dev \
+            libxcb-render-util0-dev \
+            libxcb-xinerama0-dev \
+            libxcb-util-dev \
+            zlib1g-dev
 
-# Qt取得 & ビルド
-WORKDIR /tmp
-RUN curl -LO https://download.qt.io/official_releases/qt/6.9/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz \
-    && tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz \
-    && cd qt-everywhere-src-${QT_VERSION} \
-    && ./configure -prefix ${QT_DIR} \
-                  -static \
-                  -release \
-                  -opensource -confirm-license \
-                  -nomake tests -nomake examples \
-                  -skip qtwebengine \
-                  -skip qt3d \
-                  -skip qtlocation \
-                  -skip qtserialport \
-                  -skip qttools \
-                  -skip qttranslations \
-                  -skip qtquick3d \
-                  -skip qtconnectivity \
-                  -skip qtdoc \
-                  -skip qtremoteobjects \
-                  -skip qtwebchannel \
-                  -skip qtwebsockets \
-                  -skip qtsensors \
-                  -skip qtpositioning \
-    && cmake --build . --parallel \
-    && cmake --install . \
-    && cd / && rm -rf /tmp/*
+      - name: Download qtbase source only
+        run: |
+          curl -LO https://download.qt.io/official_releases/qt/6.9/6.9.0/submodules/qtbase-everywhere-src-6.9.0.tar.xz
+          tar xf qtbase-everywhere-src-6.9.0.tar.xz
 
-# PATH登録
-ENV PATH="${QT_DIR}/bin:$PATH"
+      - name: Configure and build qtbase statically
+        run: |
+          mkdir qt-build
+          cd qt-build
+          cmake -GNinja ../qtbase-everywhere-src-6.9.0 \
+            -DCMAKE_INSTALL_PREFIX=../qt6-static-install \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DQT_BUILD_EXAMPLES=OFF \
+            -DQT_BUILD_TESTS=OFF \
+            -DFEATURE_dbus=ON \
+            -DFEATURE_icu=OFF \
+            -DFEATURE_opengl=ON \
+            -DFEATURE_png=ON \
+            -DFEATURE_jpeg=ON \
+            -DFEATURE_freetype=ON \
+            -DFEATURE_harfbuzz=ON \
+            -DQT_FEATURE_gui=ON \
+            -DQT_FEATURE_widgets=ON \
+            -DINPUT_xcb=ON \
+            -DQT_FEATURE_xlib=ON \
+            -DQT_FEATURE_xcb=ON \
+            -DQT_FEATURE_xcb_xlib=ON \
+            -DQT_FEATURE_xkbcommon=ON \
+            -DQT_FEATURE_fontconfig=ON \
+            -DQT_FEATURE_sessionmanager=ON \
+            -DQT_FEATURE_glib=OFF \
+            -DQT_FEATURE_xrender=ON \
+            -DFEATURE_system_zlib=OFF \
+            -DFEATURE_system_png=OFF \
+            -DFEATURE_system_jpeg=OFF \
+            -DFEATURE_system_freetype=OFF \
+            -DFEATURE_system_harfbuzz=OFF
+
+          cmake --build . --parallel
+          cmake --install .
+
+      - name: Archive static Qt installation
+        run: |
+          tar -czf qt6.9.0-static-ubuntu22.04.tar.gz -C qt6-static-install .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qt6.9.0-static-ubuntu22.04
+          path: qt6.9.0-static-ubuntu22.04.tar.gz
