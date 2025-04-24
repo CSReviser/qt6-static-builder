@@ -41,6 +41,8 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libpng-dev \
     zlib1g-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Download and extract Qt module source
@@ -58,7 +60,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_BUILD_TESTS=OFF \
       -DFEATURE_dbus=ON \
       -DFEATURE_icu=OFF \
-      -DFEATURE_opengl=ON \
+			-DQT_FEATURE_opengl_desktop=ON \
       -DFEATURE_png=ON \
       -DFEATURE_jpeg=ON \
       -DFEATURE_freetype=ON \
