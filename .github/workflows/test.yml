@@ -1,0 +1,31 @@
+name: Debug qt6-static container
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: ghcr.io/csreviser/qt6-static:6.9.0-ubuntu22.04
+
+jobs:
+  debug:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Debug cmake and qt-cmake in container
+        run: |
+          docker run --rm $IMAGE_NAME sh -c '
+            echo "---- which cmake ----"
+            which cmake || echo "cmake not found"
+
+            echo "---- cmake --version ----"
+            cmake --version || echo "cmake command failed"
+
+            echo "---- echo \$PATH ----"
+            echo $PATH
+
+            echo "---- ls /opt/qt6-static/bin ----"
+            ls -l /opt/qt6-static/bin
+
+            echo "---- cat /opt/qt6-static/bin/qt-cmake ----"
+            cat /opt/qt6-static/bin/qt-cmake || echo "qt-cmake not found"
+          '
