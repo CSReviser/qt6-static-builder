@@ -92,6 +92,21 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --install . 
 
 # Set final image with only installed Qt (optional for size)
+# 2) Runtime イメージ：アプリのビルドにも使う
 FROM ubuntu:22.04
-COPY --from=0 /opt/qt6-static /opt/qt6-static
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    build-essential \        # コンパイラ + make
+    cmake \                  # qt-cmake が使う
+    ninja-build \            # cmake の -GNinja
+    ca-certificates \
+    curl \
+    git \                    # ソース取得のため
+  && rm -rf /var/lib/apt/lists/*
+
+# builder ステージでビルド済みの Qt をコピー
+COPY --from=builder /opt/qt6-static /opt/qt6-static
+
 ENV PATH="/opt/qt6-static/bin:$PATH"
