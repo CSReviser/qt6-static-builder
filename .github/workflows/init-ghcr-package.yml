@@ -13,15 +13,12 @@ jobs:
 
       - name: Build and push dummy Docker image
         run: |
-          # ユーザー名を小文字に変換
           USER=$(echo "$GITHUB_ACTOR" | tr '[:upper:]' '[:lower:]')
-          IMAGE="ghcr.io/${USER}/qt6-mxe-static:init"
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d '/' -f 2)
+          IMAGE="ghcr.io/${USER}/${REPO_NAME}:init"
 
-          # ダミーDockerイメージのビルド
           docker build -f Dockerfile.ghcr-init -t "$IMAGE" .
 
-          # GHCRへログイン
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
-          # GHCR に push（初回パッケージ作成目的）
           docker push "$IMAGE"
