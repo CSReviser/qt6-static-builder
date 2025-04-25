@@ -1,0 +1,27 @@
+name: Init GHCR Package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  init:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build and push dummy Docker image
+        run: |
+          # ユーザー名を小文字に変換
+          USER=$(echo "$GITHUB_ACTOR" | tr '[:upper:]' '[:lower:]')
+          IMAGE="ghcr.io/${USER}/qt6-mxe-static:init"
+
+          # ダミーDockerイメージのビルド
+          docker build -f Dockerfile.ghcr-init -t "$IMAGE" .
+
+          # GHCRへログイン
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+
+          # GHCR に push（初回パッケージ作成目的）
+          docker push "$IMAGE"
