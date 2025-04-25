@@ -9,6 +9,7 @@ jobs:
 
     env:
       IMAGE_NAME: ghcr.io/csreviser/qt6-mxe-static:init
+      IMAGE: ghcr.io/csreviser/qt6-mxe-static:init
 
     steps:
       - name: Checkout repository
@@ -16,11 +17,6 @@ jobs:
 
       - name: Build and push dummy Docker image
         run: |
-          # ユーザー名を小文字に変換
-          USER=$(echo "$GITHUB_ACTOR" | tr '[:upper:]' '[:lower:]')
-          IMAGE="ghcr.io/csreviser/qt6-mxe-static:init"
-
-          # ダミーDockerイメージのビルド
           docker build -f Dockerfile.ghcr-init -t "$IMAGE" .
 
       - name: Log in to GitHub Container Registry
@@ -29,6 +25,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
-
-          # GHCR に push（初回パッケージ作成目的）
-          docker push "$IMAGE"      
+          
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.IMAGE_NAME }}
