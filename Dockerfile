@@ -80,9 +80,9 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_dbus=ON \
       -DFEATURE_icu=OFF \
       -DQT_FEATURE_opengl_desktop=OFF \
-			-DQT_FEATURE_static=ON \
-		  -DQT_FEATURE_openssl=ON \
-		  -DQT_FEATURE_openssl_linked=ON \
+      -DQT_FEATURE_static=ON \
+      -DQT_FEATURE_openssl=ON \
+      -DQT_FEATURE_openssl_linked=ON \
       -DFEATURE_png=ON \
       -DFEATURE_jpeg=ON \
       -DFEATURE_freetype=ON \
