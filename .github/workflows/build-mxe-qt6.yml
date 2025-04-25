@@ -24,7 +24,7 @@ jobs:
           docker build -f Dockerfile.mxe.qt6 -t "$IMAGE" .
 
           # GHCRへログイン（GITHUB_TOKENでOK）
-          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
           # イメージをプッシュ
           docker push "$IMAGE"
