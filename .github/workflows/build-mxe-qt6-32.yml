@@ -1,4 +1,4 @@
-name: Build MXE Qt6 Static Docker Image
+name: Build MXE x68 Qt6 Static Docker Image
 
 on:
   workflow_dispatch:
