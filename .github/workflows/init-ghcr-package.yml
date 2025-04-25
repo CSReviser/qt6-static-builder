@@ -9,7 +9,7 @@ jobs:
 
     env:
       USER_NAME: csreviser
-      IMAGE: qt6-mxe-x68-static
+      IMAGE: qt5-mxe-x68-static
 
     steps:
       - name: Checkout repository
