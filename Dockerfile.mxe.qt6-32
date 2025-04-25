@@ -61,4 +61,5 @@ RUN pip3 install mako
 WORKDIR /opt
 RUN git clone https://github.com/mxe/mxe.git && \
     cd mxe && \
+		git checkout 01243f96 && \
     make MXE_TARGETS='i686-w64-mingw32.static' qt6-qtbase gcc cmake -j$(nproc)
