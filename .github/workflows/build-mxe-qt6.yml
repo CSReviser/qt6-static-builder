@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ghcr.io/csreviser/qt6-mxe-static
   QT_VERSION: 6.9.0
 
 jobs:
@@ -15,17 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build Docker image
+      - name: Build & Push MXE Qt6 Docker image
         run: |
-          docker build -f Dockerfile.mxe.qt6 -t ${{ env.IMAGE_NAME }}:${{ env.QT_VERSION }} .
+          # lowercase GitHubユーザー名を取得
+          USER=$(echo "$GITHUB_ACTOR" | tr '[:upper:]' '[:lower:]')
+          IMAGE="ghcr.io/${USER}/qt6-mxe-static:${QT_VERSION}"
 
-      - name: Push Docker image to GHCR
-        run: |
-          docker push ${{ env.IMAGE_NAME }}:${{ env.QT_VERSION }}
+          # Dockerイメージをビルド
+          docker build -f Dockerfile.mxe.qt6 -t "$IMAGE" .
+
+          # GHCRへログイン（GITHUB_TOKENでOK）
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+
+          # イメージをプッシュ
+          docker push "$IMAGE"
