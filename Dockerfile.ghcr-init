@@ -1,0 +1,3 @@
+# Dockerfile.ghcr-init
+FROM alpine:3.18
+CMD ["echo", "GHCR package initialized."]
