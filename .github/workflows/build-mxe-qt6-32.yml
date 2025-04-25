@@ -1,10 +1,10 @@
-name: Build MXE x68 Qt6 Static Docker Image
+name: Build MXE 32bit Qt6 Static Docker Image
 
 on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: ghcr.io/csreviser/qt6-mxe-x68-static
+  IMAGE_NAME: ghcr.io/csreviser/qt6-mxe-x86-static
   QT_VERSION: 6.9.0
 
 jobs:
