@@ -106,3 +106,60 @@ RUN wget https://xkbcommon.org/download/libxkbcommon-${LIBXKBCOMMON_VERSION}.tar
     cmake --build build -j$(nproc) && cmake --install build
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
+# Qt6
+ARG QT_VERSION=6.9.0
+ARG MAKEFLAGS=-j$(nproc)
+
+# ダウンロードして展開
+RUN wget https://download.qt.io/official_releases/qt/6.9/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz && \
+    tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz
+
+WORKDIR /work/qt-everywhere-src-${QT_VERSION}
+
+# configure
+RUN ./configure \
+    -prefix /usr/local/qt6-static \
+    -static \
+    -release \
+    -opensource \
+    -confirm-license \
+    -nomake examples \
+    -nomake tests \
+    -skip qt3d \
+    -skip qtactiveqt \
+    -skip qtcharts \
+    -skip qtcoap \
+    -skip qtdoc \
+    -skip qthttpserver \
+    -skip qtlocation \
+    -skip qtlottie \
+    -skip qtmqtt \
+    -skip qtnetworkauth \
+    -skip qtopcua \
+    -skip qtquick3d \
+    -skip qtquicktimeline \
+    -skip qtremoteobjects \
+    -skip qtscxml \
+    -skip qtsensors \
+    -skip qtserialbus \
+    -skip qtserialport \
+    -skip qtvirtualkeyboard \
+    -skip qtwayland \
+    -skip qtwebchannel \
+    -skip qtwebengine \
+    -skip qtwebsockets \
+    -skip qtwebview \
+    -no-warnings-are-errors \
+    -xcb \
+    -qt-xcb \
+    -qt-libjpeg \
+    -qt-libpng \
+    -qt-zlib \
+    -qt-freetype \
+    -no-feature-vulkan
+
+# ビルド＆インストール
+RUN make ${MAKEFLAGS} && make install
+
+# PATH通す（後続ステージ用）
+ENV PATH="/usr/local/qt6-static/bin:$PATH"
