@@ -90,7 +90,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
 
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.6.0
-RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.xz && \
+RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-1.6.0.tar.gz && \
     tar -xf libxkbcommon-${LIBXKBCOMMON_VERSION}.tar.xz && \
     cd libxkbcommon-${LIBXKBCOMMON_VERSION} && \
     cmake -B build -G Ninja \
