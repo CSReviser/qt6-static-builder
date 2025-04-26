@@ -1,143 +1,108 @@
-# ========== ビルドステージ ==========
 FROM ubuntu:22.04 AS builder
 
-ARG QT_VERSION=6.9.0
-ARG INSTALL_PREFIX=/opt/qt6-static
-
 ENV DEBIAN_FRONTEND=noninteractive
-ENV QT_VERSION=${QT_VERSION}
-ENV INSTALL_PREFIX=${INSTALL_PREFIX}
+ENV TZ=Asia/Tokyo
 
-# 必要ツールインストール
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y \
     build-essential \
-    cmake \
-    ninja-build \
-    git \
+    pkg-config \
+    wget \
     curl \
     ca-certificates \
+    cmake \
+    ninja-build \
     python3 \
-    autoconf \
+    python3-pip \
+    git \
     automake \
+    autoconf \
     libtool \
-    pkg-config \
     bison \
     flex \
-    meson \
-    xutils-dev \
+    libx11-dev \
     libxext-dev \
     libxrender-dev \
-    libxi-dev \
+    libxcb1-dev \
+    libxcb-render0-dev \
+    libxcb-shape0-dev \
+    libxcb-xfixes0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-image0-dev \
+    libxcb-icccm4-dev \
+    libxcb-sync-dev \
+    libxcb-xinerama0-dev \
+    libxcb-randr0-dev \
+    libxcb-util-dev \
+    xutils-dev \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /build
+WORKDIR /work
 
-# xorgproto
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/proto/xorgproto.git && \
-    cd xorgproto && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
+# xcb-util family
+ARG XCB_UTIL_VERSION=0.4.0
+ARG XCB_UTIL_IMAGE_VERSION=0.4.0
+ARG XCB_UTIL_KEYSYMS_VERSION=0.4.0
+ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.9
+ARG XCB_UTIL_WM_VERSION=0.4.1
+ARG XCB_UTIL_CURSOR_VERSION=0.1.3
 
-# libX11
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/libX11.git && \
-    cd libX11 && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# libXext
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/libXext.git && \
-    cd libXext && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-proto
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/proto/xcbproto.git && \
-    cd xcbproto && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# libxcb
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/libxcb.git && \
-    cd libxcb && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/xcb-util.git && \
-    cd xcb-util && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
+# Download and build xcb-util
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    cd xcb-util-${XCB_UTIL_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # xcb-util-image
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/xcb-util-image.git && \
-    cd xcb-util-image && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # xcb-util-keysyms
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/xcb-util-keysyms.git && \
-    cd xcb-util-keysyms && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
+    tar -xzf xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
+    cd xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # xcb-util-renderutil
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/xcb-util-renderutil.git && \
-    cd xcb-util-renderutil && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    cd xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # xcb-util-wm
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/xcb-util-wm.git && \
-    cd xcb-util-wm && \
-    ./autogen.sh --prefix=/usr --disable-shared --enable-static && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    tar -xzf xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    cd xcb-util-wm-${XCB_UTIL_WM_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-# xkbcommon
-RUN git clone --depth 1 https://github.com/xkbcommon/libxkbcommon.git && \
-    cd libxkbcommon && \
-    meson setup build --prefix=/usr --default-library=static -Denable-wayland=false -Denable-x11=true && \
-    meson compile -C build && \
-    meson install -C build
+# xcb-util-cursor
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
-# Qt6 ソースダウンロードとビルド
-RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qtbase-everywhere-src-${QT_VERSION}.tar.xz && \
-    tar -xf qtbase-everywhere-src-${QT_VERSION}.tar.xz
+# Build libxkbcommon
+ARG LIBXKBCOMMON_VERSION=1.6.0
+RUN wget https://xkbcommon.org/download/libxkbcommon-${LIBXKBCOMMON_VERSION}.tar.xz && \
+    tar -xf libxkbcommon-${LIBXKBCOMMON_VERSION}.tar.xz && \
+    cd libxkbcommon-${LIBXKBCOMMON_VERSION} && \
+    cmake -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_SHARED_LIBS=OFF \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+    -DENABLE_X11=ON \
+    -DENABLE_WAYLAND=OFF \
+    -DENABLE_DOCS=OFF \
+    -DENABLE_TESTS=OFF \
+    -DENABLE_DEPRECATED=OFF && \
+    cmake --build build -j$(nproc) && cmake --install build
 
-RUN mkdir qt-build && cd qt-build && \
-    cmake -GNinja ../qtbase-everywhere-src-${QT_VERSION} \
-      -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=OFF \
-      -DQT_BUILD_EXAMPLES=OFF \
-      -DQT_BUILD_TESTS=OFF \
-      -DQT_FEATURE_static=ON \
-      -DQT_FEATURE_opengl=ON \
-      -DQT_FEATURE_opengl_desktop=ON \
-      -DQT_FEATURE_gui=ON \
-      -DQT_FEATURE_widgets=ON \
-      -DQT_FEATURE_fontconfig=ON \
-      -DQT_FEATURE_freetype=ON \
-      -DQT_FEATURE_png=ON \
-      -DQT_FEATURE_jpeg=ON \
-      -DQT_FEATURE_zlib=ON \
-      -DQT_FEATURE_xlib=ON \
-      -DQT_FEATURE_xcb=ON \
-      -DQT_FEATURE_xcb_xlib=ON \
-      -DQT_FEATURE_xkbcommon=ON \
-      -DFEATURE_system_zlib=OFF \
-      -DFEATURE_system_png=OFF \
-      -DFEATURE_system_jpeg=OFF \
-      -DFEATURE_system_freetype=OFF \
-      -DFEATURE_system_fontconfig=OFF \
-      -DQT_FEATURE_dbus=OFF \
-      && \
-    cmake --build . --parallel && \
-    cmake --install .
-
-# ========== 最小実行ステージ ==========
-FROM ubuntu:22.04
-
-ARG INSTALL_PREFIX=/opt/qt6-static
-COPY --from=builder ${INSTALL_PREFIX} ${INSTALL_PREFIX}
-
-ENV PATH="${INSTALL_PREFIX}/bin:${PATH}"
+# Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
