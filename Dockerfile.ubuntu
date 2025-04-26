@@ -89,7 +89,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     make -j$(nproc) && make install
 
 # Build libxkbcommon
-ARG LIBXKBCOMMON_VERSION=1.9.0
+ARG LIBXKBCOMMON_VERSION=1.6.0
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.xz && \
     tar -xf libxkbcommon-${LIBXKBCOMMON_VERSION}.tar.xz && \
     cd libxkbcommon-${LIBXKBCOMMON_VERSION} && \
