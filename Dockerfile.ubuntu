@@ -40,7 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcb-cursor-dev \
     libxcb-xkb-dev \
     libxkbcommon-x11-dev \
-libxkbcommon-x11-0 \
+    libxkbcommon-x11-0 \
     libfontconfig1-dev \
     libfreetype6-dev \
     libjpeg-dev \
@@ -49,7 +49,7 @@ libxkbcommon-x11-0 \
     libdbus-1-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
-		libssl-dev \
+    libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Qt ソース取得とビルド
