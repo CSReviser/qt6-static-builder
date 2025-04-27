@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     cmake \
     ninja-build \
+		meson \
     python3 \
     python3-pip \
     git \
@@ -87,10 +88,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
-
-
-# Install meson
-RUN apt-get update && apt-get install -y meson ninja-build
 
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
