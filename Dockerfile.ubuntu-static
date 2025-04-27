@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     curl \
     wget \
+    meson \
     ca-certificates \
     libx11-dev \
     libxext-dev \
