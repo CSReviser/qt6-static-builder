@@ -102,6 +102,35 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-1.1.3.ta
     cd libxkbfile-1.1.3 && \
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
+# libXfixes
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar.gz && \
+    tar -xzf libXfixes-6.0.1.tar.gz && \
+    cd libXfixes-6.0.1 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXfixes
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar.gz && \
+    tar -xzf libXfixes-6.0.1.tar.gz && \
+    cd libXfixes-6.0.1 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXrandr
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar.gz && \
+    tar -xzf libXrandr-1.5.4.tar.gz && \
+    cd libXrandr-1.5.4 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXi
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXi-1.8.1.tar.gz && \
+    tar -xzf libXi-1.8.1.tar.gz && \
+    cd libXi-1.8.1 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXinerama
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXinerama-1.1.5.tar.gz && \
+    tar -xzf libXinerama-1.1.5.tar.gz && \
+    cd libXinerama-1.1.5 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # xcb-util family
 ARG XCB_UTIL_VERSION=0.4.1
