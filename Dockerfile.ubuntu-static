@@ -30,16 +30,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxi-dev \
     libxcb-image0-dev \
     libxrender-dev \
-    libxcb1-dev \
-    libx11-xcb-dev \
-    libxcb-glx0-dev \
-    libxcb-shm0-dev \
-    libxcb-icccm4-dev \
-    libxcb-sync-dev \
-    libxcb-xfixes0-dev \
-    libxcb-shape0-dev \
-    libxcb-randr0-dev \
-    libxcb-xkb-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
     libjpeg-dev \
@@ -249,14 +239,6 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
     ninja -C builddir && \
     ninja -C builddir install
-
-# OpenSSL
-RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
-    tar -xf openssl-3.3.0.tar.gz && \
-    cd openssl-3.3.0 && \
-    ./Configure no-shared linux-x86_64 --prefix=/usr && \
-    make -j$(nproc) && \
-    make install_sw
 
 # Qt ソース取得とビルド
 WORKDIR /build
