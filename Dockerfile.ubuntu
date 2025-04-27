@@ -191,13 +191,6 @@ RUN git clone --depth 1 --branch 0.4.2 https://gitlab.freedesktop.org/mirrors/xc
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-# xcb-util-xkb
-RUN git clone --depth 1 --branch 0.4.1 https://gitlab.freedesktop.org/xorg/lib/xcb-util-xkb.git && \
-    cd xcb-util-xkb && \
-    ./autogen.sh && \
-    ./configure --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
 # libXrender
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.xz && \
     tar -xf libXrender-0.9.12.tar.xz && \
