@@ -88,23 +88,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+
+# Install meson
+RUN apt-get update && apt-get install -y meson ninja-build
+
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-		tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-		ls -la && \
+    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
-    cmake -B build -GNinja \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_SHARED_LIBS=OFF \
-    -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-    -DENABLE_X11=ON \
-    -DENABLE_WAYLAND=OFF \
-    -DENABLE_DOCS=OFF \
-    -DENABLE_TESTS=OFF \
-    -DENABLE_DEPRECATED=OFF && \
-    cmake --build build -j$(nproc) && cmake --install build
+    meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
+    ninja -C builddir && \
+    ninja -C builddir install
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
