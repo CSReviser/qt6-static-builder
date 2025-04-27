@@ -1,4 +1,4 @@
-name: Build & Push Qt6 Static Docker Image (Ubuntu)
+name: test Build & Push Qt6 Static Docker Image (Ubuntu)
 
 on:
   workflow_dispatch:
