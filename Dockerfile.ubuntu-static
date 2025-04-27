@@ -31,16 +31,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcb1-dev \
     libx11-xcb-dev \
     libxcb-glx0-dev \
-    libxcb-keysyms1-dev \
-    libxcb-image0-dev \
     libxcb-shm0-dev \
     libxcb-icccm4-dev \
     libxcb-sync-dev \
     libxcb-xfixes0-dev \
     libxcb-shape0-dev \
     libxcb-randr0-dev \
-    libxcb-render-util0-dev \
-    libxcb-util-dev \
     libxcb-xkb-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
@@ -60,6 +56,41 @@ ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
 ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
 ARG XCB_UTIL_WM_VERSION=0.4.2
 ARG XCB_UTIL_CURSOR_VERSION=0.1.5
+
+# Download and build xcb-util
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    cd xcb-util-${XCB_UTIL_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-image
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-keysyms
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
+    tar -xzf xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
+    cd xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-renderutil
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    cd xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-wm
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    tar -xzf xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    cd xcb-util-wm-${XCB_UTIL_WM_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # xcb-util-cursor
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
