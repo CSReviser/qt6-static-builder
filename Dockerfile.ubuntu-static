@@ -216,6 +216,46 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     -D LIBXML2_WITH_ZLIB=ON && \
     cmake --build build -j$(nproc) && cmake --install build
 
+# xcb-util-icccm
+RUN git clone --depth 1 --branch 0.4.2 https://gitlab.freedesktop.org/mirrors/xcb/util-icccm.git && \
+    cd util-icccm && \
+    ./autogen.sh && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# libXext
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.6.tar.gz && \
+    tar -xzf libXext-1.3.6.tar.gz && \
+    cd libXext-1.3.6 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXrender
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.xz && \
+    tar -xf libXrender-0.9.12.tar.xz && \
+    cd libXrender-0.9.12 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# libXau
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
+    tar -xf libXau-1.0.12.tar.gz && \
+    cd libXau-1.0.12 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXdmcp
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
+    tar -xf libXdmcp-1.1.5.tar.gz && \
+    cd libXdmcp-1.1.5 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# glib
+RUN wget https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz && \
+    tar -xf glib-2.78.3.tar.xz && \
+    cd glib-2.78.3 && \
+    meson setup build --prefix=/usr --default-library=static -Dglib_debug=disabled -Ddefault_library=static && \
+    ninja -C build && \
+    ninja -C build install
+
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
