@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     cmake \
     ninja-build \
-		meson \
+    meson \
     python3 \
     python3-pip \
     git \
@@ -136,12 +136,12 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.g
 RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     tar -xf v2.14.2.tar.gz && \
     cd libxml2-2.14.2 && \
-		cmake -B build -GNinja \
-		-D BUILD_SHARED_LIBS=OFF \
-		-D CMAKE_INSTALL_PREFIX=/usr/local \
-		-D LIBXML2_WITH_ICONV=OFF \
-		-D LIBXML2_WITH_PYTHON=OFF \
-		-D LIBXML2_WITH_ZLIB=ON && \
+    cmake -B build -GNinja \
+    -D BUILD_SHARED_LIBS=OFF \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D LIBXML2_WITH_ICONV=OFF \
+    -D LIBXML2_WITH_PYTHON=OFF \
+    -D LIBXML2_WITH_ZLIB=ON && \
     cmake --build build -j$(nproc) && cmake --install build
 
 # Build libxkbcommon
