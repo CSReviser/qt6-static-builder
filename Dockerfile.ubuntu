@@ -130,13 +130,14 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     tar -xf v2.14.2.tar.gz && \
     cd libxml2-2.14.2 && \
 		cmake -B build -GNinja \
--D LIBXML2_WITH_ICONV=OFF \
--D LIBXML2_WITH_PYTHON=OFF \
--D LIBXML2_WITH_ZLIB=ON
--DCMAKE_BUILD_TYPE=Release \
+		-D BUILD_SHARED_LIBS=OFF \
+		-D CMAKE_INSTALL_PREFIX=/usr/local \
+		-D LIBXML2_WITH_ICONV=OFF \
+		-D LIBXML2_WITH_PYTHON=OFF \
+		-D LIBXML2_WITH_ZLIB=ON   
+		-DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_SHARED_LIBS=OFF \
-     && \
+    -DBUILD_SHARED_LIBS=OFF && \
     cmake --build build -j$(nproc) && cmake --install build
 
 # Build libxkbcommon
