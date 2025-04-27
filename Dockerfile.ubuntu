@@ -26,6 +26,7 @@ RUN apt-get update && apt-get install -y \
     libffi-dev \
     libssl-dev \
     x11proto-core-dev \
+    x11proto-kb-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
