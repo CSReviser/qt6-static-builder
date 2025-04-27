@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     wget \
     meson \
+    bison \
+    byacc \
     ca-certificates \
     libx11-dev \
     libxext-dev \
