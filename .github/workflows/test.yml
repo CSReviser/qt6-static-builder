@@ -1,31 +1,36 @@
-name: Debug qt6-static container
+name: Build & Push Qt6 Static Docker Image (Ubuntu)
 
 on:
   workflow_dispatch:
 
-env:
-  IMAGE_NAME: ghcr.io/csreviser/qt6-static:6.9.0-ubuntu22.04
-
 jobs:
-  debug:
-    runs-on: ubuntu-22.04
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/test:6.9.0-ubuntu22.04
+      IMAGE_NAME_LATEST: ghcr.io/csreviser/test:latest
+      QT_VERSION: 6.9.0
 
     steps:
-      - name: Debug cmake and qt-cmake in container
-        run: |
-          docker run --rm $IMAGE_NAME sh -c '
-            echo "---- which cmake ----"
-            which cmake || echo "cmake not found"
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-            echo "---- cmake --version ----"
-            cmake --version || echo "cmake command failed"
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
 
-            echo "---- echo \$PATH ----"
-            echo $PATH
-
-            echo "---- ls /opt/qt6-static/bin ----"
-            ls -l /opt/qt6-static/bin
-
-            echo "---- cat /opt/qt6-static/bin/qt-cmake ----"
-            cat /opt/qt6-static/bin/qt-cmake || echo "qt-cmake not found"
-          '
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.test
+          build-args: |
+            QT_VERSION=${{ env.QT_VERSION }}
+          push: true
+          tags: |
+            ${{ env.IMAGE_NAME_VERSIONED }}
+            ${{ env.IMAGE_NAME_LATEST }
