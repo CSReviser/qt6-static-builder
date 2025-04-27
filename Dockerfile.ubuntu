@@ -96,7 +96,7 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
 		ls && \
 		ls -la && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
-    cmake -B build -G Ninja \
+    cmake -B build -GNinja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DBUILD_SHARED_LIBS=OFF \
