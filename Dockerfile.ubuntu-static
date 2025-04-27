@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ninja-build \
     git \
     curl \
+    wget \
     ca-certificates \
     libx11-dev \
     libxext-dev \
