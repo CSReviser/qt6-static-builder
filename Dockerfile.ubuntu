@@ -129,8 +129,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.g
 RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     tar -xf v2.14.2.tar.gz && \
     tar -tf v2.14.2.tar.gz && \
-		ls -la \
-    cd v2.14.2 && \
+    cd libxml2-2.14.2 && \
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # Build libxkbcommon
