@@ -134,10 +134,7 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
 		-D CMAKE_INSTALL_PREFIX=/usr/local \
 		-D LIBXML2_WITH_ICONV=OFF \
 		-D LIBXML2_WITH_PYTHON=OFF \
-		-D LIBXML2_WITH_ZLIB=ON   
-		-DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBUILD_SHARED_LIBS=OFF && \
+		-D LIBXML2_WITH_ZLIB=ON && \
     cmake --build build -j$(nproc) && cmake --install build
 
 # Build libxkbcommon
