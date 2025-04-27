@@ -33,4 +33,4 @@ jobs:
           push: true
           tags: |
             ${{ env.IMAGE_NAME_VERSIONED }}
-            ${{ env.IMAGE_NAME_LATEST }
+            ${{ env.IMAGE_NAME_LATEST }}
