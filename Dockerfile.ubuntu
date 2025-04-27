@@ -185,17 +185,16 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     make -j$(nproc) && make install
 
 # xcb-util-icccm
-RUN wget https://gitlab.freedesktop.org/xorg/lib/xcb-util-icccm/-/archive/0.4.2/xcb-util-icccm-0.4.2.tar.gz && \
-    tar -xf xcb-util-icccm-0.4.2.tar.gz && \
-    cd xcb-util-icccm-0.4.2 && \
+RUN git clone --depth 1 --branch 0.4.2 https://gitlab.freedesktop.org/xorg/lib/xcb-util-icccm.git && \
+    cd xcb-util-icccm && \
     ./autogen.sh && \
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # xcb-util-xkb
-RUN wget https://xcb.freedesktop.org/dist/xcb-util-xkb-0.4.0.tar.gz && \
-    tar -xf xcb-util-xkb-0.4.0.tar.gz && \
-    cd xcb-util-xkb-0.4.0 && \
+RUN git clone --depth 1 --branch 0.4.1 https://gitlab.freedesktop.org/xorg/lib/xcb-util-xkb.git && \
+    cd xcb-util-xkb && \
+    ./autogen.sh && \
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
