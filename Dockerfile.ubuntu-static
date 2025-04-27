@@ -41,7 +41,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcb-randr0-dev \
     libxcb-render-util0-dev \
     libxcb-util-dev \
-    libxcb-cursor-dev \
     libxcb-xkb-dev \
     libfontconfig1-dev \
     libfreetype6-dev \
@@ -53,6 +52,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglu1-mesa-dev \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# xcb-util-cursor
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # libxml-2.0
 RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
