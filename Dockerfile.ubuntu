@@ -27,6 +27,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     x11proto-core-dev \
     x11proto-kb-dev \
+    libxkbfile-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
