@@ -95,10 +95,10 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.
     cd xorgproto-2024.1 && \
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
-# xorgproto (プロトコル定義)
+# xcb-proto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.tar.xz && \
-    tar -xf xorgproto-2024.1.tar.gz && \
-    cd xorgproto-2024.1 && \
+    tar -xf xcb-proto-1.17.0.tar.gz && \
+    cd xcb-proto-1.17.0 && \
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # libXau
