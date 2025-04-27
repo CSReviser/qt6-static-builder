@@ -51,6 +51,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# libxml-2.0
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
+    tar -xf v2.14.2.tar.gz && \
+    cd libxml2-2.14.2 && \
+    cmake -B build -GNinja \
+    -D BUILD_SHARED_LIBS=OFF \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D LIBXML2_WITH_ICONV=OFF \
+    -D LIBXML2_WITH_PYTHON=OFF \
+    -D LIBXML2_WITH_ZLIB=ON && \
+    cmake --build build -j$(nproc) && cmake --install build
+
+# Build libxkbcommon
+ARG LIBXKBCOMMON_VERSION=1.9.0
+RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
+    meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
+    ninja -C builddir && \
+    ninja -C builddir install
+
 # Qt ソース取得とビルド
 WORKDIR /build
 
