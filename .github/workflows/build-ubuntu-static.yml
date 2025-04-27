@@ -1,4 +1,4 @@
-name: Build & Push Qt6 Static Docker Image (Ubuntu)
+name: Ubuntu Qt6 Static Docker Image (docker)
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile.ubuntu
+          file: Dockerfile.ubuntu-static
           build-args: |
             QT_VERSION=${{ env.QT_VERSION }}
           push: true
