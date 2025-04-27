@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
     libpcre2-dev \
     libffi-dev \
     libssl-dev \
+    x11proto-core-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
