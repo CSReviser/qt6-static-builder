@@ -185,16 +185,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     make -j$(nproc) && make install
 
 # xcb-util-icccm
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-icccm-0.4.1.tar.gz && \
+RUN wget https://xcb.freedesktop.org/dist/xcb-util-icccm-0.4.1.tar.gz && \
     tar -xf xcb-util-icccm-0.4.1.tar.gz && \
     cd xcb-util-icccm-0.4.1 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # xcb-util-xkb
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-xkb-0.4.0.tar.gz && \
+RUN wget https://xcb.freedesktop.org/dist/xcb-util-xkb-0.4.0.tar.gz && \
     tar -xf xcb-util-xkb-0.4.0.tar.gz && \
     cd xcb-util-xkb-0.4.0 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # libXrender
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.xz && \
