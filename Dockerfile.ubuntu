@@ -97,7 +97,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.
 
 # xcb-proto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.tar.xz && \
-    tar -xf xcb-proto-1.17.0.tar.gz && \
+    tar -xf xcb-proto-1.17.0.tar.xz && \
     cd xcb-proto-1.17.0 && \
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
