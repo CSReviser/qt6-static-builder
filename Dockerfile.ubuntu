@@ -91,9 +91,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-    tar -tf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
 		tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-		ls && \
 		ls -la && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
     cmake -B build -GNinja \
