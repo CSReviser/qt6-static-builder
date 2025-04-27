@@ -21,20 +21,6 @@ RUN apt-get update && apt-get install -y \
     libtool \
     bison \
     flex \
-    libx11-dev \
-    libxext-dev \
-    libxrender-dev \
-    libxcb1-dev \
-    libxcb-render0-dev \
-    libxcb-shape0-dev \
-    libxcb-xfixes0-dev \
-    libxcb-keysyms1-dev \
-    libxcb-image0-dev \
-    libxcb-icccm4-dev \
-    libxcb-sync-dev \
-    libxcb-xinerama0-dev \
-    libxcb-randr0-dev \
-    libxcb-util-dev \
     xutils-dev \
     libpcre2-dev \
     libffi-dev \
