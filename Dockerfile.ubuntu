@@ -96,9 +96,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # libXau
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.11.tar.gz && \
-    tar -xf libXau-1.0.11.tar.gz && \
-    cd libXau-1.0.11 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
+    tar -xf libXau-1.0.12.tar.gz && \
+    cd libXau-1.0.12 && \
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libXdmcp
