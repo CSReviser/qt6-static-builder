@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxext-dev \
     libxfixes-dev \
     libxi-dev \
+    libxcb-image0-dev \
     libxrender-dev \
     libxcb1-dev \
     libx11-xcb-dev \
