@@ -53,6 +53,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# xcb-util family
+ARG XCB_UTIL_VERSION=0.4.1
+ARG XCB_UTIL_IMAGE_VERSION=0.4.1
+ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
+ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
+ARG XCB_UTIL_WM_VERSION=0.4.2
+ARG XCB_UTIL_CURSOR_VERSION=0.1.5
+
 # xcb-util-cursor
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
     tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
