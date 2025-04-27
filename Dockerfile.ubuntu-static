@@ -77,7 +77,7 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xzf fontconfig-2.15.0.tar.gz && \
     cd fontconfig-2.15.0 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+    ./configure --prefix=/usr --disable-shared --enable-libxml2 --enable-static && make -j$(nproc) && make install
 
 # xorgproto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
