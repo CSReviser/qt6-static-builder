@@ -89,6 +89,13 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# libXrender
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.xz && \
+    tar -xzf libXrender-0.9.12.tar.xz && \
+    cd libXrender-0.9.12 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
 # xorgproto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
     tar -xf xorgproto-2024.1.tar.gz && \
