@@ -36,6 +36,8 @@ RUN apt-get update && apt-get install -y \
     libxcb-randr0-dev \
     libxcb-util-dev \
     xutils-dev \
+		pcre2-dev \
+		libffi-dev \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -182,6 +184,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# xcb-util-icccm
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-icccm-0.4.1.tar.gz && \
+    tar -xf xcb-util-icccm-0.4.1.tar.gz && \
+    cd xcb-util-icccm-0.4.1 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# xcb-util-xkb
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-xkb-0.4.0.tar.gz && \
+    tar -xf xcb-util-xkb-0.4.0.tar.gz && \
+    cd xcb-util-xkb-0.4.0 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
 # libXrender
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.xz && \
     tar -xf libXrender-0.9.12.tar.xz && \
@@ -245,6 +259,14 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
     ninja -C builddir && \
     ninja -C builddir install
+
+# glib
+RUN wget https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz && \
+    tar -xf glib-2.78.3.tar.xz && \
+    cd glib-2.78.3 && \
+    meson setup build --prefix=/usr --default-library=static -Dglib_debug=disabled -Ddefault_library=static && \
+    ninja -C build && \
+    ninja -C build install
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
