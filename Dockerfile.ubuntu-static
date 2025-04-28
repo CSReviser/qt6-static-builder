@@ -229,6 +229,15 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir && \
     ninja -C builddir install
 
+# glib
+RUN wget https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz && \
+    tar -xf glib-2.78.3.tar.xz && \
+    cd glib-2.78.3 && \
+    meson setup build --prefix=/usr --default-library=static -Dglib_debug=disabled -Ddefault_library=static && \
+    ninja -C build && \
+    ninja -C build install
+
+
 # Qt ソース取得とビルド
 WORKDIR /build
 
