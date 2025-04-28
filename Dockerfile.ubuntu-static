@@ -238,6 +238,12 @@ RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     make -j$(nproc) && \
     make install_sw
 
+# OpenSSLのCMake用パッケージファイルを自作する
+RUN mkdir -p /usr/lib/cmake/OpenSSL && \
+    echo "add_library(WrapOpenSSL::WrapOpenSSL INTERFACE IMPORTED)" > /usr/lib/cmake/OpenSSL/OpenSSLConfig.cmake && \
+    echo "target_include_directories(WrapOpenSSL::WrapOpenSSL INTERFACE /usr/include)" >> /usr/lib/cmake/OpenSSL/OpenSSLConfig.cmake && \
+    echo "target_link_libraries(WrapOpenSSL::WrapOpenSSL INTERFACE /usr/lib/libssl.a /usr/lib/libcrypto.a)" >> /usr/lib/cmake/OpenSSL/OpenSSLConfig.cmake
+
 # Qt ソース取得とビルド
 WORKDIR /build
 
@@ -249,8 +255,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
       -DOPENSSL_ROOT_DIR=/usr \
-      -DOPENSSL_INCLUDE_DIR=/usr/include \
-      -DOPENSSL_LIBRARIES="/usr/lib/libssl.a;/usr/lib/libcrypto.a" \
+      -DOpenSSL_DIR=/usr/lib/cmake/OpenSSL \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
