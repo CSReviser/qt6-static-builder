@@ -257,6 +257,10 @@ RUN mkdir qt-build && cd qt-build && \
       -DCMAKE_BUILD_TYPE=Release \
       -DOPENSSL_ROOT_DIR=/usr \
       -DOpenSSL_DIR=/usr/lib/cmake/OpenSSL \
+      -DX11_X11_LIB=/usr/lib/libX11.a \
+      -DX11_XCB_LIB=/usr/lib/libX11-xcb.a \
+      -DXCB_XCB_LIB=/usr/lib/libxcb.a \
+      -DXCB_LIBRARIES="/usr/lib/libxcb.a;/usr/lib/libXau.a;/usr/lib/libXdmcp.a" \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
