@@ -121,8 +121,8 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xzf fontconfig-2.15.0.tar.gz && \
     cd fontconfig-2.15.0 && \
-    export CFLAGS="-fPIC" CXXFLAGS="-fPIC" && \
-    ./configure --prefix=/usr --disable-shared --enable-libxml2 --enable-static --with-freetype-config=/usr/bin/freetype-config && \
+    CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" CFLAGS="-fPIC" ./configure \
+      --prefix=/usr --disable-shared --enable-libxml2 --enable-static --with-freetype-config=/usr/bin/freetype-config && \
     make -j$(nproc) && \
     make install
 
