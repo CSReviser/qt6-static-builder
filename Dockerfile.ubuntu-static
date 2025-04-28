@@ -247,8 +247,6 @@ RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../qtbase-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
-			-DCMAKE_FIND_LIBRARY_SUFFIXES=".a" \
-      -DCMAKE_EXE_LINKER_FLAGS="-static" \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
