@@ -104,6 +104,18 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     -D LIBXML2_WITH_ZLIB=ON && \
     cmake --build build -j$(nproc) && cmake --install build
 
+# libXau
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
+    tar -xf libXau-1.0.12.tar.gz && \
+    cd libXau-1.0.12 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXdmcp
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
+    tar -xf libXdmcp-1.1.5.tar.gz && \
+    cd libXdmcp-1.1.5 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
 # fontconfig
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xzf fontconfig-2.15.0.tar.gz && \
@@ -207,18 +219,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar.gz && \
     tar -xzf libXrandr-1.5.4.tar.gz && \
     cd libXrandr-1.5.4 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
-
-# libXau
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
-    tar -xf libXau-1.0.12.tar.gz && \
-    cd libXau-1.0.12 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
-
-# libXdmcp
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
-    tar -xf libXdmcp-1.1.5.tar.gz && \
-    cd libXdmcp-1.1.5 && \
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # Build libxkbcommon
