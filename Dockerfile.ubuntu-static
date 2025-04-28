@@ -70,8 +70,8 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.3.tar.gz 
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # zlib (静的ビルド強制)
-RUN wget https://zlib.net/zlib-1.2.11.tar.gz && \
-    tar -xzf zlib-1.2.11.tar.gz && \
+RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+    tar -xzf zlib-1.3.1.tar.gz && \
     cd zlib-1.3.1 && \
     ./configure --static --prefix=/usr && make -j$(nproc) && make install
 
