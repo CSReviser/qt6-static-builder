@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     bison \
     byacc \
     gperf \
+    python3 \
     ca-certificates \
     libdbus-1-dev \
     libgl1-mesa-dev \
