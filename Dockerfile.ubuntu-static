@@ -118,9 +118,9 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     cmake --build build -j$(nproc) && cmake --install build
 
 # fontconfig
-RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.13.1.tar.gz && \
-    tar -xzf fontconfig-2.13.1.tar.gz && \
-    cd fontconfig-2.13.1 && \
+RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.16.0.tar.gz && \
+    tar -xzf fontconfig-2.16.0.tar.gz && \
+    cd fontconfig-2.16.0 && \
     ./configure --prefix=/usr --disable-shared --enable-libxml2 --enable-static --with-freetype-config=/usr/bin/freetype-config && make -j$(nproc) && make install
 
 # libxkbfile (optional)
