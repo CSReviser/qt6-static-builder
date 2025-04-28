@@ -11,8 +11,6 @@ ENV QT_VERSION=${QT_VERSION}
 ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig"
-ENV CFLAGS="-I/usr/include"
-ENV LDFLAGS="-L/usr/lib"
 
 # 必要なパッケージインストール
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -240,6 +238,13 @@ RUN wget https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz && \
     ninja -C build && \
     ninja -C build install
 
+# OpenSSL
+RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
+    tar -xf openssl-3.3.0.tar.gz && \
+    cd openssl-3.3.0 && \
+    ./Configure no-shared linux-x86_64 --prefix=/usr && \
+    make -j$(nproc) && \
+    make install_sw
 
 # Qt ソース取得とビルド
 WORKDIR /build
