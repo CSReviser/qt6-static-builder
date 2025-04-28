@@ -231,19 +231,24 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir && \
     ninja -C builddir install
 
-# OpenSSL
+# OpenSSLのソースコードをダウンロード
 RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     tar -xf openssl-3.3.0.tar.gz && \
     cd openssl-3.3.0 && \
-    ./Configure no-shared linux-x86_64 --prefix=/usr && \
-    make -j$(nproc) && \
-    make install_sw
-
-# OpenSSLのCMake用パッケージファイルを自作する
-RUN mkdir -p /usr/lib/cmake/OpenSSL && \
-    echo "add_library(WrapOpenSSL::WrapOpenSSL INTERFACE IMPORTED)" > /usr/lib/cmake/OpenSSL/OpenSSLConfig.cmake && \
-    echo "target_include_directories(WrapOpenSSL::WrapOpenSSL INTERFACE /usr/include)" >> /usr/lib/cmake/OpenSSL/OpenSSLConfig.cmake && \
-    echo "target_link_libraries(WrapOpenSSL::WrapOpenSSL INTERFACE /usr/lib/libssl.a /usr/lib/libcrypto.a)" >> /usr/lib/cmake/OpenSSL/OpenSSLConfig.cmake
+    # `openssl-cmake`リポジトリをクローン
+    git clone https://github.com/jimmy-park/openssl-cmake.git && \
+    # OpenSSLのビルド
+    mkdir build && \
+    cd build && \
+    cmake -DCMAKE_INSTALL_PREFIX=/usr \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DOPENSSL_USE_STATIC_LIBS=ON \
+          -DOPENSSL_BUILD_STATIC=ON \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_PREFIX_PATH=../openssl-cmake \
+          .. && \
+    cmake --build . --parallel && \
+    cmake --install .
 
 # Qt ソース取得とビルド
 WORKDIR /build
