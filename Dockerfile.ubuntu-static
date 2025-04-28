@@ -230,6 +230,14 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir && \
     ninja -C builddir install
 
+# CMake 最新版をインストール
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2-linux-x86_64.sh && \
+    mkdir /opt/cmake && \
+    sh cmake-3.29.2-linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
+    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+
 # OpenSSLのソースコードをダウンロード
 RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     tar -xf openssl-3.3.0.tar.gz && \
