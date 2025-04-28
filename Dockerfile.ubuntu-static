@@ -148,9 +148,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXinerama-1.1.5.t
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libxcb
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.14.0.tar.gz && \
-    tar -xf libxcb-1.14.0.tar.gz && \
-    cd libxcb-1.14.0 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.14.tar.gz && \
+    tar -xf libxcb-1.14.tar.gz && \
+    cd libxcb-1.14 && \
     ./configure --prefix=/usr --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
 
 # libX11
