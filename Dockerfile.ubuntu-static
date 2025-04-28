@@ -32,16 +32,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# libXau
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
-    tar -xf libXau-1.0.12.tar.gz && \
-    cd libXau-1.0.12 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
-
 # libXdmcp
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
     tar -xf libXdmcp-1.1.5.tar.gz && \
     cd libXdmcp-1.1.5 && \
+    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXau
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
+    tar -xf libXau-1.0.12.tar.gz && \
+    cd libXau-1.0.12 && \
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libpthread-stubs
