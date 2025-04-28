@@ -226,7 +226,7 @@ ARG LIBXKBCOMMON_VERSION=1.9.0
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
-    meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true \
+    LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true \
     -Dextra_link_args="-lXau -lXdmcp" && \
     ninja -C builddir && \
     ninja -C builddir install
