@@ -71,7 +71,7 @@ RUN wget https://download.sourceforge.net/libpng/libpng-1.6.43.tar.gz && \
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
     tar -xzf freetype-2.13.2.tar.gz && \
     cd freetype-2.13.2 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
+    ./configure --prefix=/usr --disable-shared --enable-static --with-zlib=yes && make -j$(nproc) && make install
 
 # xorgproto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
