@@ -235,9 +235,12 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
 RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     tar -xf openssl-3.3.0.tar.gz && \
     cd openssl-3.3.0 && \
-    ./Configure no-shared linux-x86_64 --prefix=/usr && \
-    make -j$(nproc) && \
-    make install_sw
+    cmake -S . -B build \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_SHARED_LIBS=OFF && \
+    cmake --build build --parallel && \
+    cmake --install build
 
 # Qt ソース取得とビルド
 WORKDIR /build
