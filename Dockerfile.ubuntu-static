@@ -274,7 +274,8 @@ RUN mkdir qt-build && cd qt-build && \
       -DX11_XCB_LIB=/usr/lib/libX11-xcb.a \
       -DXCB_XCB_LIB=/usr/lib/libxcb.a \
       -DXCB_LIBRARIES="/usr/lib/libxcb.a;/usr/lib/libXau.a;/usr/lib/libXdmcp.a" \
-      -DBUILD_SHARED_LIBS=OFF \
+      -DQT_EXTRA_DEFINES="QT_NO_PRIVATE_MODULE_WARNING" \
+　　　　-DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
       -DFEATURE_dbus=ON \
