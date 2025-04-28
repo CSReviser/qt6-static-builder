@@ -45,9 +45,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.9.tar.gz
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libpthread-stubs
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libpthread-stubs-0.4.tar.gz && \
-    tar -xzf libpthread-stubs-0.4.tar.gz && \
-    cd libpthread-stubs-0.4 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libpthread-stubs-0.5.tar.gz && \
+    tar -xzf libpthread-stubs-0.5.tar.gz && \
+    cd libpthread-stubs-0.5 && \
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
