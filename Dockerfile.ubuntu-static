@@ -272,7 +272,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DCMAKE_BUILD_TYPE=Release \
       -DX11_X11_LIB=/usr/lib/libX11.a \
       -DQT_BUILD_PKGCONFIG=ON \
-      -DQt6Gui_EXTRA_LIBRARIES="xcb;Xau;Xdmcp"
+      -DQt6Gui_EXTRA_LIBRARIES="xcb;Xau;Xdmcp" \
       -DXCB_LIBRARIES="/usr/lib/libxcb.a;/usr/lib/libXau.a;/usr/lib/libXdmcp.a" \
       -DQT_EXTRA_DEFINES="QT_NO_PRIVATE_MODULE_WARNING" \
 　　　　-DBUILD_SHARED_LIBS=OFF \
