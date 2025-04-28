@@ -237,6 +237,8 @@ RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     cd openssl-3.3.0 && \
     # `openssl-cmake`リポジトリをクローン
     git clone https://github.com/jimmy-park/openssl-cmake.git && \
+    # `openssl-cmake` の CMakeLists.txt を `openssl-3.3.0` にコピー
+    cp -r openssl-cmake/* . && \
     # OpenSSLのビルド
     mkdir build && \
     cd build && \
@@ -245,7 +247,7 @@ RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
           -DOPENSSL_USE_STATIC_LIBS=ON \
           -DOPENSSL_BUILD_STATIC=ON \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_PREFIX_PATH=../openssl-cmake \
+          -DOPENSSL_ROOT_DIR=../ \
           .. && \
     cmake --build . --parallel && \
     cmake --install .
