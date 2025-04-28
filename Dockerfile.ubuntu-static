@@ -269,8 +269,8 @@ RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../qtbase-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
-      -DOPENSSL_ROOT_DIR=/usr \
-      -DOpenSSL_DIR=/usr/lib/cmake/OpenSSL \
+      -DOPENSSL_USE_STATIC_LIBS=TRUE \
+      -DOpenSSL_DIR=/usr/local/lib64/cmake/OpenSSL \
       -DX11_X11_LIB=/usr/lib/libX11.a \
       -DX11_XCB_LIB=/usr/lib/libX11-xcb.a \
       -DXCB_XCB_LIB=/usr/lib/libxcb.a \
