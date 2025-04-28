@@ -157,14 +157,14 @@ ARG XCB_UTIL_CURSOR_VERSION=0.1.5
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
     tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
     cd xcb-util-${XCB_UTIL_VERSION} && \
-    ./configure --prefix=/usr --disable-shared --enable-static && \
+    ./configure --prefix=/usr --with-xcb=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # xcb-util-image
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
-    ./configure --prefix=/usr --disable-shared --enable-static && \
+    ./configure --prefix=/usr --with-xcb=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # xcb-util-keysyms
