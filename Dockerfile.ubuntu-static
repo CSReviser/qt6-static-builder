@@ -10,6 +10,10 @@ ARG INSTALL_PREFIX=/opt/qt6-static
 ENV QT_VERSION=${QT_VERSION}
 ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV DEBIAN_FRONTEND=noninteractive
+ENV CMAKE_PREFIX_PATH="/usr/local"
+ENV CPPFLAGS="-I/usr/local/include"
+ENV LDFLAGS="-L/usr/local/lib"
+ENV CMAKE_EXE_LINKER_FLAGS="-static"
 
 # 必要なパッケージインストール
 RUN apt-get update && apt-get install -y --no-install-recommends \
