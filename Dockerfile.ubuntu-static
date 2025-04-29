@@ -111,7 +111,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xtrans-1.4.0.tar.gz
     cd xtrans-1.4.0 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
-
 # libICE
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libICE-1.0.10.tar.gz && \
     tar -xzf libICE-1.0.10.tar.gz && \
@@ -125,7 +124,12 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libICE-1.0.10.tar.g
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.3.tar.gz && \
     tar -xzf libSM-1.2.3.tar.gz && \
     cd libSM-1.2.3 && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+    SM_CFLAGS="-I/usr/local/include" \
+    SM_LIBS="-L/usr/local/lib -lSM" \
+    ICE_CFLAGS="-I/usr/local/include" \
+    ICE_LIBS="-L/usr/local/lib -lICE" \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # zlib (静的ビルド強制)
 RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
