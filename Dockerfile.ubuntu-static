@@ -133,7 +133,7 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
 
 # xkbcommon (static)
 RUN git clone https://github.com/xkbcommon/libxkbcommon.git && cd libxkbcommon && \
-    meson setup build --prefix=/usr/local --default-library=static -Dshared_libs=false -Ddefault_library=static && \
+    meson setup build --prefix=/usr/local -Dshared_libs=false -Ddefault_library=static && \
     meson compile -C build && meson install -C build
 
 
