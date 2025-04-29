@@ -87,6 +87,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.14.1.
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.9.tar.gz && \
     tar -xf libXau-1.0.9.tar.gz && \
     cd libXau-1.0.9 && \
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libXdmcp
