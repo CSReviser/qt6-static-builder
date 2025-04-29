@@ -14,6 +14,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # 必要なパッケージインストール
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    cmake \
     ninja-build \
     git \
     curl \
@@ -248,7 +249,6 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr/local --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
     ninja -C builddir && \
     ninja -C builddir install
-
 
 # Qt ソース取得とビルド
 WORKDIR /build
