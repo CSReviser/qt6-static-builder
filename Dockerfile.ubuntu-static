@@ -83,6 +83,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.14.1.
     cd xcb-proto-1.14.1 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
+RUN echo "prefix=/usr/local\nincludedir=\${prefix}/include\n\nName: xproto\nDescription: X11 protocol headers\nVersion: 2024.1\nCflags: -I\${includedir}" > /usr/local/lib/pkgconfig/xproto.pc
 # libXau
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.9.tar.gz && \
     tar -xf libXau-1.0.9.tar.gz && \
