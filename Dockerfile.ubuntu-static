@@ -105,45 +105,37 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.6.tar.g
     cd libXext-1.3.6 && \
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
-# libxml-2.0
+# libxml2 (static)
 RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
-    tar -xf v2.14.2.tar.gz && \
-    cd libxml2-2.14.2 && \
+    tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
     cmake -B build -GNinja \
-    -D BUILD_SHARED_LIBS=OFF \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D LIBXML2_WITH_ICONV=OFF \
-    -D LIBXML2_WITH_PYTHON=OFF \
-    -D LIBXML2_WITH_ZLIB=ON && \
-    cmake --build build -j$(nproc) && cmake --install build
+      -D BUILD_SHARED_LIBS=OFF \
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D LIBXML2_WITH_PYTHON=OFF \
+      -D LIBXML2_WITH_ZLIB=ON \
+      -D LIBXML2_WITH_ICONV=OFF && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build
 
-
-# expat (for fontconfig)
-RUN wget https://github.com/libexpat/libexpat/releases/download/R_2_6_2/expat-2.6.2.tar.gz && \
-    tar -xf expat-2.6.2.tar.gz && \
-    cd expat-2.6.2 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && \
-    make install
-
-# freetype
+# FreeType (static)
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
-    tar -xf freetype-2.13.2.tar.gz && \
-    cd freetype-2.13.2 && \
-    ./configure --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && \
-    make install
+    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
+    ./configure --prefix=/usr/local --enable-static --disable-shared && \
+    make -j$(nproc) && make install
 
-# fontconfig (using expat, without libxml2)
+# Fontconfig (static with libxml2)
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
-    tar -xzf fontconfig-2.15.0.tar.gz && \
-    cd fontconfig-2.15.0 && \
-    PKG_CONFIG_PATH=/usr/lib/pkgconfig ./configure \
-      --prefix=/usr --disable-shared --enable-static --disable-libxml2 \
-      --with-freetype-config=/usr/bin/freetype-config \
-      --with-expat-includes=/usr/include --with-expat-lib=/usr/lib && \
-    make -j$(nproc) && \
-    make install
+    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
+    ./configure --prefix=/usr/local --enable-static --disable-shared \
+        --enable-libxml2 --with-freetype-config=/usr/local/bin/freetype-config \
+        CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" CFLAGS="-fPIC" && \
+    make -j$(nproc) && make install
+
+# xkbcommon (static)
+RUN git clone https://github.com/xkbcommon/libxkbcommon.git && cd libxkbcommon && \
+    meson setup build --prefix=/usr/local --default-library=static -Dshared_libs=false -Ddefault_library=static && \
+    meson compile -C build && meson install -C build
+
 
 # libxkbfile (optional)
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-1.1.0.tar.gz && \
@@ -245,13 +237,13 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar
     ./configure --prefix=/usr --disable-shared --enable-static && make -j$(nproc) && make install
 
 # Build libxkbcommon
-ARG LIBXKBCOMMON_VERSION=1.9.0
-RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
-    LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
-    ninja -C builddir && \
-    ninja -C builddir install
+#ARG LIBXKBCOMMON_VERSION=1.9.0
+#RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+#    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+#    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
+ #   LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
+#    ninja -C builddir && \
+#    ninja -C builddir install
 
 # CMake 最新版をインストール
 RUN apt-get update && \
