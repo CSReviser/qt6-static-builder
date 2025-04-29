@@ -29,6 +29,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libdbus-1-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
+    libxcb1-dev \
+    libx11-xcb-dev \
+    libxcb-glx0-dev \
+    libxcb-shm0-dev \
+    libxcb-icccm4-dev \
+    libxcb-sync-dev \
+    libxcb-xfixes0-dev \
+    libxcb-shape0-dev \
+    libxcb-randr0-dev \
+    libxcb-xkb-dev \
+    libx11-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxcb-image0-dev \
+    libxrender-dev \
+    libfontconfig1-dev \
+    libfreetype6-dev \
+    libjpeg-dev \
+    libpng-dev \
+    zlib1g-dev \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
