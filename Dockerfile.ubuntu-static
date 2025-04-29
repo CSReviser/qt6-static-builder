@@ -128,6 +128,42 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
         CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" CFLAGS="-fPIC" && \
     make -j$(nproc) && make install
 
+# libxkbfile (optional)
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-1.1.0.tar.gz && \
+    tar -xzf libxkbfile-1.1.0.tar.gz && \
+    cd libxkbfile-1.1.0 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXfixes
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.0.tar.gz && \
+    tar -xzf libXfixes-6.0.0.tar.gz && \
+    cd libXfixes-6.0.0 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXi
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXi-1.8.2.tar.gz && \
+    tar -xzf libXi-1.8.2.tar.gz && \
+    cd libXi-1.8.2 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXinerama
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXinerama-1.1.5.tar.gz && \
+    tar -xzf libXinerama-1.1.5.tar.gz && \
+    cd libXinerama-1.1.5 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libxcb
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.14.tar.gz && \
+    tar -xf libxcb-1.14.tar.gz && \
+    cd libxcb-1.14 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
+
+# libX11
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.gz && \
+    tar -xf libX11-1.8.12.tar.gz && \
+    cd libX11-1.8.12 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
 # Qt ソース取得とビルド
 WORKDIR /build
 
