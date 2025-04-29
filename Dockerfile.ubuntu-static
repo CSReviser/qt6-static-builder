@@ -53,7 +53,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxi-dev \
     libxkbcommon-dev \
     libxkbcommon-x11-dev \
-    libxrender-dev
+    libxrender-dev \
     libjpeg-dev \
     libpng-dev \
     zlib1g-dev \
