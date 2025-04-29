@@ -259,33 +259,33 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir install
 
 # CMake 最新版をインストール
-RUN apt-get update && \
-    apt-get install -y wget && \
-    wget https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2-linux-x86_64.sh && \
-    mkdir /opt/cmake && \
-    sh cmake-3.29.2-linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
-    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
+#RUN apt-get update && \
+#    apt-get install -y wget && \
+#    wget https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2-linux-x86_64.sh && \
+#    mkdir /opt/cmake && \
+#    sh cmake-3.29.2-linux-x86_64.sh --prefix=/opt/cmake --skip-license && \
+#    ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
 
 # OpenSSLのソースコードをダウンロード
-RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
-    tar -xf openssl-3.3.0.tar.gz && \
-    cd openssl-3.3.0 && \
-    # `openssl-cmake`リポジトリをクローン
-    git clone https://github.com/jimmy-park/openssl-cmake.git && \
-    # `openssl-cmake` の CMakeLists.txt を `openssl-3.3.0` にコピー
-    cp -r openssl-cmake/* . && \
-    # OpenSSLのビルド
-    mkdir build && \
-    cd build && \
-    cmake -DCMAKE_INSTALL_PREFIX=/usr \
-          -DBUILD_SHARED_LIBS=OFF \
-          -DOPENSSL_USE_STATIC_LIBS=ON \
-          -DOPENSSL_BUILD_STATIC=ON \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DOPENSSL_ROOT_DIR=../ \
-          .. && \
-    cmake --build . --parallel && \
-    cmake --install .
+#RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
+#    tar -xf openssl-3.3.0.tar.gz && \
+#    cd openssl-3.3.0 && \
+#    # `openssl-cmake`リポジトリをクローン
+#    git clone https://github.com/jimmy-park/openssl-cmake.git && \
+#    # `openssl-cmake` の CMakeLists.txt を `openssl-3.3.0` にコピー
+#    cp -r openssl-cmake/* . && \
+#    # OpenSSLのビルド
+#    mkdir build && \
+#    cd build && \
+#    cmake -DCMAKE_INSTALL_PREFIX=/usr \
+#          -DBUILD_SHARED_LIBS=OFF \
+#          -DOPENSSL_USE_STATIC_LIBS=ON \
+#          -DOPENSSL_BUILD_STATIC=ON \
+#          -DCMAKE_BUILD_TYPE=Release \
+#          -DOPENSSL_ROOT_DIR=../ \
+#          .. && \
+#    cmake --build . --parallel && \
+#    cmake --install .
 
 # Qt ソース取得とビルド
 WORKDIR /build
