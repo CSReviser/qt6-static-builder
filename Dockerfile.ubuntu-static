@@ -77,7 +77,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
-      -DFEATURE_dbus=ON \
+      -DFEATURE_dbus=OFF \
       -DFEATURE_icu=OFF \
       -DQT_FEATURE_opengl_desktop=OFF \
       -DQT_FEATURE_static=ON \
