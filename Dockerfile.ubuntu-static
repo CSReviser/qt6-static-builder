@@ -308,8 +308,8 @@ RUN mkdir qt-build && cd qt-build && \
         -release \
         -xcb -xcb-xlib \
         -fontconfig \
-        -freetype=qt -harfbuzz=qt \
-        -libpng=qt -libjpeg=qt -zlib=qt \
+        -qt-freetype -qt-harfbuzz \
+        -qt-libpng -qt-libjpeg -qt-zlib \
         -skip qtxmlpatterns \
         -nomake examples -nomake tests && \
         cmake --build . --parallel && cmake --install .
