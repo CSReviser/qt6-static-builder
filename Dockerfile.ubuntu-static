@@ -148,7 +148,7 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
 # FreeType (static)
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
     tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
-    ./configure --prefix=/usr/local --enable-static --disable-shared && \
+    ./configure --prefix=/usr/local --enable-static --disable-shared CFLAGS="-fPIC" && \
     make -j$(nproc) && make install
 
 # Fontconfig (static with libxml2)
