@@ -83,18 +83,13 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.14.1.
     cd xcb-proto-1.14.1 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
-# 確認用: xorgproto インストール後に情報チェック
-RUN echo "Checking xorgproto install..." && \
-    find /usr/local/lib/pkgconfig -name xproto.pc || echo "xproto.pc not found" && \
-    find /usr/local/include/X11 -name Xfuncproto.h || echo "Xfuncproto.h not found" && \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig pkg-config --exists xproto && echo "xproto found by pkg-config" || echo "xproto NOT found"
-
 # libXau
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.9.tar.gz && \
     tar -xf libXau-1.0.9.tar.gz && \
     cd libXau-1.0.9 && \
-    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+    XAU_CFLAGS="-I/usr/local/include" XAU_LIBS="-L/usr/local/lib -lXau" \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # libXdmcp
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.3.tar.gz && \
