@@ -21,6 +21,11 @@ ENV PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     pkg-config \
+    xutils-dev \
+    x11proto-dev \
+    autoconf \
+    automake \
+    libtool
     cmake \
     ninja-build \
     git \
