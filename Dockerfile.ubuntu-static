@@ -132,9 +132,18 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
     make -j$(nproc) && make install
 
 # xkbcommon (static)
-RUN git clone https://github.com/xkbcommon/libxkbcommon.git && cd libxkbcommon && \
-    meson setup build --prefix=/usr/local -Dshared_libs=false -Ddefault_library=static && \
-    meson compile -C build && meson install -C build
+#RUN git clone https://github.com/xkbcommon/libxkbcommon.git && cd libxkbcommon && \
+#    meson setup build --prefix=/usr/local -Dshared_libs=false -Ddefault_library=static && \
+#    meson compile -C build && meson install -C build
+
+# Build libxkbcommon
+ARG LIBXKBCOMMON_VERSION=1.9.0
+RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
+    LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
+    ninja -C builddir && \
+    ninja -C builddir install
 
 
 # libxkbfile (optional)
