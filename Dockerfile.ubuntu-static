@@ -275,6 +275,31 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     tar -xf qtbase-everywhere-src-${QT_VERSION}.tar.xz
 
 RUN mkdir qt-build && cd qt-build && \
+
+# Configure Qt with static linking and required features
+ENV CMAKE_PREFIX_PATH="/usr/local"
+ENV CPPFLAGS="-I/usr/local/include"
+ENV LDFLAGS="-L/usr/local/lib"
+ENV CMAKE_EXE_LINKER_FLAGS="-static"
+RUN cd /opt/qt-everywhere-src-6.9.0/build && \
+    ../configure \
+        -prefix /usr/local/Qt6.9 \
+        -static -no-shared \
+        -opensource -confirm-license \
+        -release \
+        -xcb -xcb-xlib \
+        -fontconfig \
+        -freetype qt -harfbuzz qt \
+        -libpng qt -libjpeg qt -zlib qt \
+        -skip qtxmlpatterns \
+        -nomake examples -nomake tests
+
+# Build and install Qt
+RUN cd /opt/qt-everywhere-src-6.9.0/build && cmake --build . --parallel && cmake --install .
+
+
+
+
     cmake -GNinja ../qtbase-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
