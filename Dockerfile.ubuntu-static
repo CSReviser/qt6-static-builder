@@ -280,7 +280,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     tar -xf qtbase-everywhere-src-${QT_VERSION}.tar.xz
 
 RUN mkdir qt-build && cd qt-build && \
-    ../configure \
+    ../qtbase-everywhere-src-${QT_VERSION}/configure \
         -prefix /usr/local/Qt6.9 \
         -static -no-shared \
         -opensource -confirm-license \
