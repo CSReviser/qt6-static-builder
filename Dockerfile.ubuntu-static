@@ -25,11 +25,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     byacc \
     gperf \
     python3 \
-    xz-utils \
-    pkg-config \
-    autoconf \
-    automake \
-    libtool  \
     ca-certificates \
     libdbus-1-dev \
     libgl1-mesa-dev \
