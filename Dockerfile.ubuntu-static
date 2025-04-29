@@ -301,61 +301,66 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     tar -xf qtbase-everywhere-src-${QT_VERSION}.tar.xz
 
 RUN mkdir qt-build && cd qt-build && \
-    ../qtbase-everywhere-src-${QT_VERSION}/configure \
-        -prefix /usr/local/Qt6.9 \
-        -static -no-shared \
-        -opensource -confirm-license \
-        -release \
-        -xcb -xcb-xlib \
-        -fontconfig \
-        -qt-freetype -qt-harfbuzz \
-        -qt-libpng -qt-libjpeg -qt-zlib \
-        -skip qtxmlpatterns \
-        -nomake examples -nomake tests && \
-        cmake --build . --parallel && cmake --install .
+    cmake -GNinja ../qtbase-everywhere-src-${QT_VERSION} \
+      -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DX11_X11_LIB=/usr/lib/libX11.a \
+      -DXCB_LIBRARIES="/usr/lib/libxcb.a;/usr/lib/libXau.a;/usr/lib/libXdmcp.a" \
+      -DCMAKE_PREFIX_PATH="/usr/local" \
+      -DCMAKE_INSTALL_PREFIX=/usr/local \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DQT_INTERNAL_CALLED_FROM_CONFIGURE:BOOL=TRUE \
+      -DINPUT_static=ON \
+      -D CMAKE_EXE_LINKER_FLAGS="-lxml2" \
+      -DQT_EXTRA_DEFINES="QT_NO_PRIVATE_MODULE_WARNING" \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DQT_BUILD_EXAMPLES=OFF \
+      -DQT_BUILD_TESTS=OFF \
+      -DFEATURE_dbus=ON \
+      -DFEATURE_icu=OFF \
+      -DQT_FEATURE_opengl_desktop=OFF \
+      -DQT_FEATURE_static=ON \
+      -DQT_FEATURE_openssl=ON \
+      -DQT_FEATURE_openssl_linked=OFF \
+      -DFEATURE_png=ON \
+      -DFEATURE_jpeg=ON \
+      -DFEATURE_freetype=ON \
+      -DFEATURE_harfbuzz=ON \
+      -DQT_FEATURE_gui=ON \
+      -DQT_FEATURE_widgets=ON \
+      -DQT_FEATURE_xlib=ON \
+      -DQT_FEATURE_xcb=ON \
+      -DQT_FEATURE_xcb_xlib=ON \
+      -DFEATURE_xcb_xlib=ON \
+      -DQT_FEATURE_xkbcommon=ON \
+      -DQT_FEATURE_fontconfig=ON \
+      -DQT_FEATURE_sessionmanager=ON \
+      -DQT_FEATURE_glib=OFF \
+      -DQT_FEATURE_xrender=ON \
+      -DFEATURE_system_zlib=OFF \
+      -DFEATURE_system_png=OFF \
+      -DFEATURE_system_jpeg=OFF \
+      -DFEATURE_system_freetype=OFF \
+      -DINPUT_freetype=qt \
+      -DFEATURE_system_harfbuzz=OFF && \
+    cmake --build . --parallel && \
+    cmake --install .
+
+#    ../qtbase-everywhere-src-${QT_VERSION}/configure \
+#        -prefix /usr/local/Qt6.9 \
+#        -static -no-shared \
+#        -opensource -confirm-license \
+#        -release \
+#        -xcb -xcb-xlib \
+#        -fontconfig \
+#        -qt-freetype -qt-harfbuzz \
+#        -qt-libpng -qt-libjpeg -qt-zlib \
+#        -skip qtxmlpatterns \
+#        -nomake examples -nomake tests && \
+#        cmake --build . --parallel && cmake --install .
 
 
-#    cmake -GNinja ../qtbase-everywhere-src-${QT_VERSION} \
-#      -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-#      -DCMAKE_BUILD_TYPE=Release \
-#      -DX11_X11_LIB=/usr/lib/libX11.a \
-#      -DXCB_LIBRARIES="/usr/lib/libxcb.a;/usr/lib/libXau.a;/usr/lib/libXdmcp.a" \
-#      -DCMAKE_PREFIX_PATH="/usr/local" \
-#      -DCMAKE_INSTALL_PREFIX=/usr/local \
-#      -DCMAKE_BUILD_TYPE=Release \
-#      -DINPUT_static=ON \
-#      -D CMAKE_EXE_LINKER_FLAGS="-lxml2" \
-#      -DQT_EXTRA_DEFINES="QT_NO_PRIVATE_MODULE_WARNING" \
-#　　　　-DBUILD_SHARED_LIBS=OFF \
-#      -DQT_BUILD_EXAMPLES=OFF \
-#      -DQT_BUILD_TESTS=OFF \
-#      -DFEATURE_dbus=ON \
-#      -DFEATURE_icu=OFF \
-#      -DQT_FEATURE_opengl_desktop=OFF \
-#      -DQT_FEATURE_static=ON \
-#      -DQT_FEATURE_openssl=ON \
-#      -DQT_FEATURE_openssl_linked=OFF \
-#      -DFEATURE_png=ON \
-#      -DFEATURE_jpeg=ON \
-#      -DFEATURE_freetype=ON \
-#      -DFEATURE_harfbuzz=ON \
-#      -DQT_FEATURE_gui=ON \
-#      -DQT_FEATURE_widgets=ON \
-#      -DQT_FEATURE_xlib=ON \
-#      -DQT_FEATURE_xcb=ON \
-#      -DQT_FEATURE_xcb_xlib=ON \
-#      -DQT_FEATURE_xkbcommon=ON \
-#      -DQT_FEATURE_fontconfig=ON \
-#      -DQT_FEATURE_sessionmanager=ON \
-#      -DQT_FEATURE_glib=OFF \
-#      -DQT_FEATURE_xrender=ON \
-#      -DFEATURE_system_zlib=OFF \
-#      -DFEATURE_system_png=OFF \
-#      -DFEATURE_system_jpeg=OFF \
-#      -DFEATURE_system_freetype=OFF \
-#      -DFEATURE_system_harfbuzz=OFF && \
-#    cmake --build . --parallel && \
-#    cmake --install .
+
 
 # PATH追加
 ENV PATH="${INSTALL_PREFIX}/bin:${PATH}"
