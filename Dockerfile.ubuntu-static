@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     x11proto-dev \
     autoconf \
     automake \
-    libtool
+    libtool \
     cmake \
     ninja-build \
     git \
