@@ -161,7 +161,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz 
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.gz && \
     tar -xf libX11-1.8.12.tar.gz && \
     cd libX11-1.8.12 && \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
