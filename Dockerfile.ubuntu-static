@@ -194,7 +194,6 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
 RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
     tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
     meson setup build \
-      --default-library=static \
       --prefix=/usr/local \
       -Dbuild_shared_libs=false \
       -Ddefault_library=static \
