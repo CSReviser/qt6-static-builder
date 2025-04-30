@@ -131,6 +131,24 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.3.tar.gz 
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# xextproto
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xextproto-7.3.0.tar.gz && \
+    tar -xzf xextproto-7.3.0.tar.gz && \
+    cd xextproto-7.3.0 && \
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+
+# kbproto
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/kbproto-1.0.7.tar.gz && \
+    tar -xzf kbproto-1.0.7.tar.gz && \
+    cd kbproto-1.0.7 && \
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+
+# inputproto
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/inputproto-2.3.2.tar.gz && \
+    tar -xzf inputproto-2.3.2.tar.gz && \
+    cd inputproto-2.3.2 && \
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+
 # libxcb
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz && \
     tar -xzf libxcb-1.15.tar.gz && \
