@@ -206,6 +206,7 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
     find /usr/local/lib/pkgconfig -name "*harfbuzz*.pc"
 
 # freetype (static with harfbuzz)
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
     tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
     cmake -B build -GNinja \
