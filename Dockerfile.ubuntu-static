@@ -407,7 +407,16 @@ RUN mkdir qt-build && cd qt-build && \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
-      -DQT_FEATURE_opengl_desktop=OFF \
+      -DQT_FEATURE_gui=ON \
+      -DQT_FEATURE_widgets=ON \
+      -DQT_FEATURE_xlib=ON \
+      -DQT_FEATURE_xcb=ON \
+      -DQT_FEATURE_xcb_xlib=ON \
+      -DQT_FEATURE_xkbcommon=ON \
+      -DQT_FEATURE_fontconfig=ON \
+      -DQT_FEATURE_sessionmanager=ON \
+      -DQT_FEATURE_glib=OFF \
+      -DQT_FEATURE_xrender=ON \
       -DHARFBUZZ_LIBRARIES=/usr/lib/x86_64-linux-gnu/libharfbuzz.a \
       -DQT_FEATURE_static=ON && \
     cmake --build . --parallel && \
