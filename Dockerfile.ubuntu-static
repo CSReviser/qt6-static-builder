@@ -158,7 +158,10 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz 
     sed -i '/^Libs:/ s/$/ -lXau -lXdmcp/' /usr/local/lib/pkgconfig/xcb.pc && \
     cat /usr/local/lib/pkgconfig/xcb.pc
 
-
+# デバッグ用: libxcb の static 依存ライブラリ確認
+RUN pkg-config --static --libs xcb && \
+    ldd /usr/local/lib/libxcb.so || true && \
+    nm -g /usr/local/lib/libxcb.a | grep Xau || true
 
 # libxcb
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz && \
