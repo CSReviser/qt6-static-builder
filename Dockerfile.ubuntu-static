@@ -203,6 +203,8 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
     ninja -C build && \
     ninja -C build install
 
+# freetype ビルド直前の手順に追加
+RUN sed -i 's|#\\s*module:\\s*bdf\\s*|module: bdf|' modules.cfg
 # freetype (static with harfbuzz)
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
