@@ -226,27 +226,6 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
         CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" CFLAGS="-fPIC" && \
     make -j$(nproc) && make install
 
-# FreeType (static with pkg-config support)
-RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
-    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
-    cmake -B build -GNinja \
-      -D CMAKE_INSTALL_PREFIX=/usr/local \
-      -D BUILD_SHARED_LIBS=OFF \
-      -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
-      -D CMAKE_BUILD_TYPE=Release \
-      -D FT_WITH_ZLIB=ON && \
-    cmake --build build -j$(nproc) && \
-    cmake --install build
-
-# Fontconfig (static with libxml2 and freetype2)
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
-    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
-    ./configure --prefix=/usr/local --enable-static --disable-shared \
-        --enable-libxml2 \
-        CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" CFLAGS="-fPIC" && \
-    make -j$(nproc) && make install
-
 # libxkbfile (optional)
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-1.1.0.tar.gz && \
     tar -xzf libxkbfile-1.1.0.tar.gz && \
