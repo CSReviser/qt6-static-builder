@@ -226,6 +226,14 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# libXrender
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.11.tar.gz && \
+    tar -xzf libXrender-0.9.11.tar.gz && \
+    cd libXrender-0.9.11 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
 # libXcursor
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXcursor-1.2.1.tar.gz && \
     tar -xzf libXcursor-1.2.1.tar.gz && \
@@ -319,14 +327,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-wm-${XCB_U
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
     tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
     cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# libXrender
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.11.tar.gz && \
-    tar -xzf libXrender-0.9.11.tar.gz && \
-    cd libXrender-0.9.11 && \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
