@@ -390,7 +390,7 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
 RUN wget https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz && \
     tar -xf glib-2.78.3.tar.xz && \
     cd glib-2.78.3 && \
-    meson setup build --prefix=/usr --default-library=static -Dglib_debug=disabled -Ddefault_library=static && \
+    meson setup build --prefix=/usr -Dglib_debug=disabled -Ddefault_library=static && \
     ninja -C build && \
     ninja -C build install
 
