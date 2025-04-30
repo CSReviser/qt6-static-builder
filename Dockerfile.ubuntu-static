@@ -204,22 +204,21 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
     ninja -C build && \
     ninja -C build install
 
-# freetype ビルド直前の手順に追加
-RUN sed -i 's|#\\s*module:\\s*bdf\\s*|module: bdf|' modules.cfg
 # freetype (static with harfbuzz)
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
-    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
-    cmake -B build -GNinja \
-      -D CMAKE_INSTALL_PREFIX=/usr/local \
-      -D BUILD_SHARED_LIBS=OFF \
-      -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
-      -D CMAKE_BUILD_TYPE=Release \
-      -D FT_WITH_HARFBUZZ=ON \
-      -D FT_WITH_ZLIB=ON \
-      -D FT_ENABLE_BDF=ON  && \
-    cmake --build build -j$(nproc) && \
-    cmake --install build
+    tar -xf freetype-2.13.2.tar.gz && \
+    cd freetype-2.13.2 && \
+    ./configure \
+      --prefix=/usr/local \
+      --enable-static \
+      --disable-shared \
+      --with-zlib=/usr/local \
+      --with-png=/usr/local \
+      --with-harfbuzz=/usr/local \
+      --with-brotli=no \
+      --with-bzip2=no \
+      --with-pic && \
+    make -j$(nproc) && make install
 
 # Brotli をビルド・インストール
 RUN git clone https://github.com/google/brotli.git && \
