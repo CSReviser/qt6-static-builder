@@ -215,6 +215,19 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar
     cmake --build build -j$(nproc) && \
     cmake --install build
 
+# fontconfig (static)
+RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
+    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
+    env \
+      PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
+      CPPFLAGS="-I/usr/local/include" \
+      LDFLAGS="-L/usr/local/lib" \
+      CFLAGS="-fPIC" \
+    ./configure --prefix=/usr/local --enable-static --disable-shared \
+        --enable-libxml2 && \
+    make -j$(nproc) && \
+    make install
+
 # fontconfig
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
