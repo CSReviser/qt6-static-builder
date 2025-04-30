@@ -222,28 +222,10 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar
     make install
 
 RUN set -ex && \
-    echo "=== freetype-config ===" && freetype-config --libs && \
-    echo "=== Check symbols in libfreetype.a ===" && \
-    nm /usr/local/lib/libfreetype.a | grep hb_ || echo "No harfbuzz symbols found"
-
-# freetypeのビルド
-RUN RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
-    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
-    set -ex && \
-    ./configure \
-        --prefix=/usr/local \
-        --with-harfbuzz=yes \
-        --enable-static \
-        --disable-shared \
-        --with-pic \
-        --without-bzip2 && \
-    make -j$(nproc) && \
-    make install
-
-RUN set -ex && \
-    echo "=== freetype-config ===" && freetype-config --libs && \
-    echo "=== Check symbols in libfreetype.a ===" && \
-    nm /usr/local/lib/libfreetype.a | grep hb_ || echo "No harfbuzz symbols found"
+    echo "=== Check harfbuzz via pkg-config ===" && \
+    pkg-config --modversion harfbuzz && \
+    pkg-config --cflags harfbuzz && \
+    pkg-config --libs harfbuzz
 
 # Brotli をビルド・インストール
 RUN git clone https://github.com/google/brotli.git && \
