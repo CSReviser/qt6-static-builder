@@ -423,7 +423,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_harfbuzz=OFF \ 
       -DQT_FEATURE_opengl_desktop=OFF \
       -DHARFBUZZ_INCLUDE_DIR=/usr/include/harfbuzz \
-      -DHARFBUZZ_LIBRARIES=/usr/lib/x86_64-linux-gnu/libharfbuzz.a && \
+      -DHARFBUZZ_LIBRARIES=/usr/lib/x86_64-linux-gnu/libharfbuzz.a \
       -DQT_FEATURE_static=ON && \
     cmake --build . --parallel && \
     cmake --install .
