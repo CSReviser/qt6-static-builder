@@ -216,13 +216,16 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar
     cmake --install build
 
 # fontconfig
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
     ./configure --prefix=/usr/local --enable-static --disable-shared \
         --enable-libxml2 \
-        CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" CFLAGS="-fPIC" && \
-    make -j$(nproc) && make install
+        CPPFLAGS="-I/usr/local/include" \
+        LDFLAGS="-L/usr/local/lib" \
+        CFLAGS="-fPIC" && \
+    make -j$(nproc) && \
+    make install
 
 # libxkbfile (optional)
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-1.1.0.tar.gz && \
