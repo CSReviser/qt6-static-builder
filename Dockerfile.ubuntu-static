@@ -163,14 +163,6 @@ RUN pkg-config --static --libs xcb && \
     ldd /usr/local/lib/libxcb.so || true && \
     nm -g /usr/local/lib/libxcb.a | grep Xau || true
 
-# libxcb
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz && \
-    tar -xzf libxcb-1.15.tar.gz && \
-    cd libxcb-1.15 && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig && \
-    make -j$(nproc) && make install
-
 # libX11
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.gz && \
     tar -xf libX11-1.8.12.tar.gz && \
@@ -446,9 +438,12 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --build . --parallel && \
     cmake --install .
 
-# harfbuzzシンボル確認
-RUN set -ex && \
-    echo "=== Check symbols in harfbuzz.a ===" && \find /opt/qt6-static -name 'libQt6Gui.a' -exec nm {} \; | grep hb_
+RUN echo "==== XCB pkg-config ====" && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig pkg-config --static --libs xcb && \
+    echo "==== libQt6XcbQpa.a symbols ====" && \
+    nm -g /usr/local/qt6-static/lib/libQt6XcbQpa.a | grep Xau || true && \
+    echo "==== libxcb.a symbols ====" && \
+    nm -g /usr/local/lib/libxcb.a | grep Xau || true
 
 # PATH追加
 ENV PATH="${INSTALL_PREFIX}/bin:${PATH}"
