@@ -429,7 +429,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_widgets=ON \
       -DQT_FEATURE_xlib=ON \
       -DQT_FEATURE_xcb=ON \
-      -DQT_FEATURE_xcb_xlib=ON \
+      -DQT_FEATURE_xcb_xlib=OFF \
       -DQT_FEATURE_xkbcommon=ON \
       -DQT_FEATURE_fontconfig=ON \
       -DQT_FEATURE_sessionmanager=ON \
