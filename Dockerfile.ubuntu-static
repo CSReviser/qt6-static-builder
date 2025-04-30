@@ -204,6 +204,32 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
     ninja -C build && \
     ninja -C build install
 
+# freetype (static with harfbuzz, debug-logging enabled)
+RUN set -ex && \
+    wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
+    tar -xf freetype-2.13.2.tar.gz && \
+    cd freetype-2.13.2 && \
+    echo "===== pkg-config: harfbuzz status =====" && \
+    pkg-config --modversion harfbuzz || echo "harfbuzz not found via pkg-config" && \
+    pkg-config --libs --static harfbuzz || echo "harfbuzz static libs not found" && \
+    pkg-config --cflags harfbuzz || echo "harfbuzz cflags not found" && \
+    echo "===== Begin configure =====" && \
+    ./configure \
+      --prefix=/usr/local \
+      --enable-static \
+      --disable-shared \
+      --with-zlib=/usr/local \
+      --with-png=/usr/local \
+      --with-harfbuzz=/usr/local \
+      --with-brotli=no \
+      --with-bzip2=no \
+      --with-pic && \
+    echo "===== Begin make =====" && \
+    make -j$(nproc) V=1 && \
+    echo "===== Begin make install =====" && \
+    make install && \
+    echo "===== Freetype build with harfbuzz completed ====="
+
 # freetype (static with harfbuzz)
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
     tar -xf freetype-2.13.2.tar.gz && \
