@@ -422,9 +422,14 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_freetype=OFF \
       -DFEATURE_system_harfbuzz=OFF \ 
       -DQT_FEATURE_opengl_desktop=OFF \
+      -DHARFBUZZ_INCLUDE_DIR=/usr/include/harfbuzz \
+      -DHARFBUZZ_LIBRARIES=/usr/lib/x86_64-linux-gnu/libharfbuzz.a && \
       -DQT_FEATURE_static=ON && \
     cmake --build . --parallel && \
     cmake --install .
+
+# harfbuzzシンボル確認
+RUN find /opt/qt6-static -name 'libQt6Gui.a' -exec nm {} \; | grep hb_
 
 # PATH追加
 ENV PATH="${INSTALL_PREFIX}/bin:${PATH}"
