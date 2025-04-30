@@ -84,9 +84,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.1.
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 RUN echo "prefix=/usr/local\nincludedir=\${prefix}/include\n\nName: xproto\nDescription: X11 protocol headers\nVersion: 2024.1\nCflags: -I\${includedir}" > /usr/local/lib/pkgconfig/xproto.pc
-# fixesproto
-RUN echo -e "prefix=/usr/local\nincludedir=\${prefix}/include\n\nName: fixesproto\nDescription: X Fixes extension headers\nVersion: 6.0\nCflags: -I\${includedir}" \
-    > /usr/local/lib/pkgconfig/fixesproto.pc
 
 # libXau
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.9.tar.gz && \
@@ -225,7 +222,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-1.1.0.ta
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar.gz && \
     tar -xzf libXfixes-6.0.1.tar.gz && \
     cd libXfixes-6.0.1 && \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
