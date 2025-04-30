@@ -14,7 +14,7 @@ ENV CMAKE_PREFIX_PATH="/usr/local"
 ENV CPPFLAGS="-I/usr/local/include"
 ENV LDFLAGS="-L/usr/local/lib"
 ENV CMAKE_EXE_LINKER_FLAGS="-static"
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig
 ENV PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig
 
 # 必要なパッケージインストール
@@ -335,7 +335,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar.gz && \
     tar -xzf libXrandr-1.5.4.tar.gz && \
     cd libXrandr-1.5.4 && \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
