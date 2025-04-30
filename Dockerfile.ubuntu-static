@@ -386,6 +386,14 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
     make -j$(nproc) && \
     make install
 
+# glib
+RUN wget https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz && \
+    tar -xf glib-2.78.3.tar.xz && \
+    cd glib-2.78.3 && \
+    meson setup build --prefix=/usr --default-library=static -Dglib_debug=disabled -Ddefault_library=static && \
+    ninja -C build && \
+    ninja -C build install
+
 # Qt ソース取得とビルド
 WORKDIR /build
 
@@ -399,23 +407,6 @@ RUN mkdir qt-build && cd qt-build && \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
-      -DQT_FEATURE_openssl=ON \
-      -DQT_FEATURE_openssl_linked=ON \
-      -DQT_FEATURE_gui=ON \
-      -DQT_FEATURE_widgets=ON \
-      -DQT_FEATURE_xlib=ON \
-      -DQT_FEATURE_xcb=ON \
-      -DQT_FEATURE_xcb_xlib=ON \
-      -DQT_FEATURE_xkbcommon=ON \
-      -DQT_FEATURE_fontconfig=ON \
-      -DQT_FEATURE_sessionmanager=ON \
-      -DQT_FEATURE_glib=ON \
-      -DQT_FEATURE_xrender=ON \
-      -DFEATURE_dbus=OFF \
-      -DFEATURE_icu=OFF \
-      -DFEATURE_png=ON \
-      -DFEATURE_jpeg=ON \
-      -DFEATURE_freetype=ON \
       -DQT_FEATURE_opengl_desktop=OFF \
       -DHARFBUZZ_LIBRARIES=/usr/lib/x86_64-linux-gnu/libharfbuzz.a \
       -DQT_FEATURE_static=ON && \
