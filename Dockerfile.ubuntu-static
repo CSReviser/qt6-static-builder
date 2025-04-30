@@ -233,6 +233,15 @@ RUN echo "===== PKG_CONFIG_PATH 確認 =====" && \
     pkg-config --modversion harfbuzz || echo "harfbuzz not found by pkg-config" && \
     pkg-config --modversion freetype2 || echo "freetype2 not found by pkg-config"
 
+# Brotli をビルド・インストール
+RUN git clone https://github.com/google/brotli.git && \
+    cd brotli && \
+    mkdir out && \
+    cd out && \
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .. && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../.. && rm -rf brotli
 
 # fontconfig (static)
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
