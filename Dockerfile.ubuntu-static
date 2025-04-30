@@ -36,8 +36,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     byacc \
     gperf \
     ca-certificates \
-    libfontconfig1-dev \
-    libfreetype-dev \
     libgtk-3-dev \
     libx11-dev \
     libx11-xcb-dev \
