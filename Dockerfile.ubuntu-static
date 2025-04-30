@@ -209,8 +209,9 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig
 ENV PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig
 
 # freetypeのビルド
-WORKDIR /freetype-2.13.2
-RUN set -ex && \
+RUN RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
+    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
+    set -ex && \
     ./configure \
         --prefix=/usr/local \
         --with-harfbuzz=yes \
