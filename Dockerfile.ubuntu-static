@@ -429,7 +429,8 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --install .
 
 # harfbuzzシンボル確認
-RUN find /opt/qt6-static -name 'libQt6Gui.a' -exec nm {} \; | grep hb_
+RUN set -ex && \
+    echo "=== Check symbols in harfbuzz.a ===" && \find /opt/qt6-static -name 'libQt6Gui.a' -exec nm {} \; | grep hb_
 
 # PATH追加
 ENV PATH="${INSTALL_PREFIX}/bin:${PATH}"
