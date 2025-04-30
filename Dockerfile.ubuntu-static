@@ -415,7 +415,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_xkbcommon=ON \
       -DQT_FEATURE_fontconfig=ON \
       -DQT_FEATURE_sessionmanager=ON \
-      -DQT_FEATURE_glib=OFF \
+      -DQT_FEATURE_glib=ON \
       -DQT_FEATURE_xrender=ON \
       -DHARFBUZZ_LIBRARIES=/usr/lib/x86_64-linux-gnu/libharfbuzz.a \
       -DQT_FEATURE_static=ON && \
