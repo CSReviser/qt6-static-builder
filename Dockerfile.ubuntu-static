@@ -227,9 +227,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar
     make -j$(nproc) && make install
 
 # libXrender
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.11.tar.gz && \
-    tar -xzf libXrender-0.9.11.tar.gz && \
-    cd libXrender-0.9.11 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.gz && \
+    tar -xzf libXrender-0.9.12.tar.gz && \
+    cd libXrender-0.9.12 && \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
