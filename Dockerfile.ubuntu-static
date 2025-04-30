@@ -191,6 +191,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.g
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# シンボル確認
+RUN nm -g /usr/local/lib/libX11.a | grep 'XOpenDisplay' || echo "XOpenDisplay not found"
+
 # libxml2 (static)
 RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
