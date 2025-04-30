@@ -215,6 +215,21 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar
     cmake --build build -j$(nproc) && \
     cmake --install build
 
+# 確認用 .pc ファイル検査
+RUN echo "===== PKG_CONFIG_PATH 確認 =====" && \
+    export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" && \
+    echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH" && \
+    echo "===== harfbuzz.pc 確認 =====" && \
+    (cat /usr/local/lib/pkgconfig/harfbuzz.pc || echo "harfbuzz.pc not found!") && \
+    echo && \
+    echo "===== freetype2.pc 確認 =====" && \
+    (cat /usr/local/lib/pkgconfig/freetype2.pc || echo "freetype2.pc not found!") && \
+    echo && \
+    echo "===== pkg-config でバージョン確認 =====" && \
+    pkg-config --modversion harfbuzz || echo "harfbuzz not found by pkg-config" && \
+    pkg-config --modversion freetype2 || echo "freetype2 not found by pkg-config"
+
+
 # fontconfig (static)
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
