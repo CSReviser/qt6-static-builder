@@ -213,7 +213,8 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar
       -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
       -D CMAKE_BUILD_TYPE=Release \
       -D FT_WITH_HARFBUZZ=ON \
-      -D FT_WITH_ZLIB=ON && \
+      -D FT_WITH_ZLIB=ON \
+      -D FT_ENABLE_BDF=ON  && \
     cmake --build build -j$(nproc) && \
     cmake --install build
 
