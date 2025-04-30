@@ -230,6 +230,11 @@ RUN set -ex && \
     make install && \
     echo "===== Freetype build with harfbuzz completed ====="
 
+RUN set -ex && \
+    echo "=== freetype-config ===" && freetype-config --libs && \
+    echo "=== Check symbols in libfreetype.a ===" && \
+    nm /usr/local/lib/libfreetype.a | grep hb_ || echo "No harfbuzz symbols found"
+
 # freetype (static with harfbuzz)
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
     tar -xf freetype-2.13.2.tar.gz && \
