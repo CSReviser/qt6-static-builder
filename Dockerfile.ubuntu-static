@@ -142,12 +142,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/kbproto-1.0.7.tar
     cd kbproto-1.0.7 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
-# inputproto
-#RUN wget https://xorg.freedesktop.org/archive/individual/proto/inputproto-2.3.2.tar.gz && \
-#    tar -xzf inputproto-2.3.2.tar.gz && \
-#    cd inputproto-2.3.2 && \
-#    ./configure --prefix=/usr/local && make -j$(nproc) && make install
-
 # libxcb
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz && \
     tar -xzf libxcb-1.15.tar.gz && \
@@ -195,20 +189,6 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
       -D LIBXML2_WITH_ICONV=OFF && \
     cmake --build build -j$(nproc) && \
     cmake --install build
-
-# FreeType (static)
-RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
-    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
-    ./configure --prefix=/usr/local --enable-static --disable-shared CFLAGS="-fPIC" && \
-    make -j$(nproc) && make install
-
-# Fontconfig (static with libxml2)
-RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
-    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
-    ./configure --prefix=/usr/local --enable-static --disable-shared \
-        --enable-libxml2 --with-freetype-config=/usr/local/bin/freetype-config \
-        CPPFLAGS="-I/usr/local/include" LDFLAGS="-L/usr/local/lib" CFLAGS="-fPIC" && \
-    make -j$(nproc) && make install
 
 # FreeType (static + pkg-config support)
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
