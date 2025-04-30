@@ -145,10 +145,10 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/kbproto-1.0.7.tar
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 # inputproto
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/inputproto-2.3.2.tar.gz && \
-    tar -xzf inputproto-2.3.2.tar.gz && \
-    cd inputproto-2.3.2 && \
-    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+#RUN wget https://xorg.freedesktop.org/archive/individual/proto/inputproto-2.3.2.tar.gz && \
+#    tar -xzf inputproto-2.3.2.tar.gz && \
+#    cd inputproto-2.3.2 && \
+#    ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 # libxcb
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz && \
