@@ -208,6 +208,24 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig
 ENV PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig
 
+# FreeType (static)
+RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
+    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
+    ./configure \
+        --prefix=/usr/local \
+        --with-harfbuzz=yes \
+        --enable-static \
+        --disable-shared \
+        --with-pic \
+        --without-bzip2 && \
+    make -j$(nproc) && \
+    make install
+
+RUN set -ex && \
+    echo "=== freetype-config ===" && freetype-config --libs && \
+    echo "=== Check symbols in libfreetype.a ===" && \
+    nm /usr/local/lib/libfreetype.a | grep hb_ || echo "No harfbuzz symbols found"
+
 # freetypeのビルド
 RUN RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
     tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
