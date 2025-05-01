@@ -403,7 +403,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     tar -xf qtbase-everywhere-src-${QT_VERSION}.tar.xz
 
 RUN mkdir qt-build && cd qt-build && \
-    cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
+    cmake -GNinja ../qtbase-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=OFF \
