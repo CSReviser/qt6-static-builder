@@ -91,7 +91,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.
 
 RUN set -ex && \
     echo "=== Check symbols in xorgproto.a ===" && \
-    nm /usr/local/lib/xorgproto.a | grep hb_ || echo "No harfbuzz symbols found"
+    nm /usr/local/lib/*.a | grep hb_ || echo "No xorgproto symbols found"
 
 # xcb-proto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.1.tar.xz && \
