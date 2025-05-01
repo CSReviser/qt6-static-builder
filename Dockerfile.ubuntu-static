@@ -426,3 +426,5 @@ RUN echo "==== XCB pkg-config ====" && \
 
 # PATH追加
 ENV PATH="${INSTALL_PREFIX}/bin:${PATH}"
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
+ENV PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig
