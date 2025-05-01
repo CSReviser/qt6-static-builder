@@ -361,7 +361,10 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XC
     tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static --with-pic && \
-    make -j$(nproc) && make install
+    make -j$(nproc) && make install && \
+    echo "===> Checking libxcb-image.a symbols (xcb_create_pixmap_from_bitmap_data / xcb_aux_create_gc)" && \
+    nm /usr/local/lib/libxcb-image.a | grep -E 'xcb_create_pixmap_from_bitmap_data|xcb_aux_create_gc' || \
+      (echo "ERROR: missing expected symbols!" && exit 1)&& \
 
 # xcb-util-keysyms
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
@@ -414,7 +417,7 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
     env \
       PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig" \
       CPPFLAGS="-I/usr/local/include" \
-      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lxcb-util -lxcb-util-image -static" \
+      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -static" \
       CFLAGS="-fPIC" \
     ./configure --prefix=/usr/local --enable-static --disable-shared --with-pic \
         --enable-libxml2 && \
