@@ -286,12 +286,22 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXmu-1.1.4.tar.gz
     make -j$(nproc) && make install
 
 # xcb-util family
-ARG XCB_UTIL_VERSION=0.3.6
-ARG XCB_UTIL_IMAGE_VERSION=0.3.6
-ARG XCB_UTIL_KEYSYMS_VERSION=0.3.6
+ARG XCB_UTIL_VERSION=0.4.1
+ARG XCB_UTIL_IMAGE_VERSION=0.4.1
+ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
 ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
 ARG XCB_UTIL_WM_VERSION=0.4.2
 ARG XCB_UTIL_CURSOR_VERSION=0.1.5
+
+# xcb-aux (手動でビルドする)
+RUN mkdir -p /tmp/xcb-aux && cd /tmp/xcb-aux && \
+    wget https://cgit.freedesktop.org/xcb/util/plain/xcb-aux/xcb-aux.c -O xcb-aux.c && \
+    wget https://cgit.freedesktop.org/xcb/util/plain/xcb-aux/xcb-aux.h -O xcb-aux.h && \
+    gcc -c -fPIC xcb-aux.c -o xcb-aux.o && \
+    ar rcs libxcb-aux.a xcb-aux.o && \
+    cp libxcb-aux.a /usr/local/lib/ && \
+    cp xcb-aux.h /usr/local/include/ && \
+    rm -rf /tmp/xcb-aux
 
 # Download and build xcb-util
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
