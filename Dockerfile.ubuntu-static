@@ -439,11 +439,11 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_jpeg=ON \
       -DFEATURE_freetype=ON \
       -DFEATURE_harfbuzz=ON \
-      -DFEATURE_system_zlib=OFF \
-      -DFEATURE_system_png=OFF \
-      -DFEATURE_system_jpeg=OFF \
-      -DFEATURE_system_freetype=OFF \
-      -DFEATURE_system_harfbuzz=OFF \
+      -DFEATURE_system_zlib=ON \
+      -DFEATURE_system_png=ON \
+      -DFEATURE_system_jpeg=ON \
+      -DFEATURE_system_freetype=ON \
+      -DFEATURE_system_harfbuzz=ON \
       -DQT_FEATURE_static=ON && \
     cmake --build . --parallel && \
     cmake --install .
