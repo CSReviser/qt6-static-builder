@@ -89,13 +89,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
     tar -xf xorgproto-2024.1.tar.gz && \
     cd xorgproto-2024.1 && \
-    ./configure --prefix=/usr/local  --disable-shared --enable-static --with-pic && make -j$(nproc) && make install
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.1.tar.xz && \
     tar -xf xcb-proto-1.15.1.tar.xz && \
     cd xcb-proto-1.15.1 && \
-    ./configure --prefix=/usr/local  --disable-shared --enable-static --with-pic && make -j$(nproc) && make install
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 RUN echo "prefix=/usr/local\nincludedir=\${prefix}/include\n\nName: xproto\nDescription: X11 protocol headers\nVersion: 2024.1\nCflags: -I\${includedir}" > /usr/local/lib/pkgconfig/xproto.pc
 
@@ -118,7 +118,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.3.tar.
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libpthread-stubs-0.5.tar.gz && \
     tar -xzf libpthread-stubs-0.5.tar.gz && \
     cd libpthread-stubs-0.5 && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    ./configure --prefix=/usr/local && \
     make -j$(nproc) && make install
 
 # xtrans
