@@ -414,7 +414,7 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
     env \
       PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig" \
       CPPFLAGS="-I/usr/local/include" \
-      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lxcb-util-image -lxcb-util -static" \
+      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lxcb-util -lxcb-util-image -static" \
       CFLAGS="-fPIC" \
     ./configure --prefix=/usr/local --enable-static --disable-shared --with-pic \
         --enable-libxml2 && \
@@ -436,7 +436,6 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-      -DCMAKE_EXE_LINKER_FLAGS="-lxml2 -lfreetype -lxcb-util" \
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
