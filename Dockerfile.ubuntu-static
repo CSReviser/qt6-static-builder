@@ -81,6 +81,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
 
+
+    && rm -rf /var/lib/apt/lists/*
+
 # Qt取得 & ビルド
 # Download and extract Qt module source
 WORKDIR /build
