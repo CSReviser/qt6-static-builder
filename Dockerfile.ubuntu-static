@@ -439,7 +439,7 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --install .
 
 # Qt configure 実行
-RUN cd /opt/qt6-static && \
+RUN cd /qtbase-everywhere-src-${QT_VERSION} && \
     ./configure ...options... && \
     echo "==== qtbase/config.summary ====" && \
     cat qtbase/config.summary
