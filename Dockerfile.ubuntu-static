@@ -111,7 +111,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_freetype=ON \
       -DFEATURE_system_harfbuzz=ON && \
     cmake --build . --parallel && \
-    cmake --install . 
+    cmake --install .
 
 
 
