@@ -222,6 +222,9 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     cmake --build build -j$(nproc) && \
     cmake --install build
 
+RUN nm -g --defined-only /usr/local/lib/libxml2.a | grep xmlParseChunk || \
+    (echo "ERROR: xmlParseChunk not found in libxml2.a" && exit 1)
+
 # harfbuzz (static, .pc生成確認)
 RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
     tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
@@ -251,6 +254,9 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar
       HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)" && \
     make -j$(nproc) && \
     make install
+
+RUN nm -g --defined-only /usr/local/lib/libfreetype.a | grep FT_Get_BDF_Property || \
+    (echo "ERROR: FT_Get_BDF_Property not found in libfreetype.a" && exit 1)
 
 RUN set -ex && \
     echo "=== Check symbols in libfreetype.a ===" && \
