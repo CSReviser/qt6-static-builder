@@ -145,13 +145,15 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/kbproto-1.0.7.tar
     cd kbproto-1.0.7 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
-# libxcb
+# libxcb ビルド
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz && \
     tar -xzf libxcb-1.15.tar.gz && \
     cd libxcb-1.15 && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig && \
-    make -j$(nproc) && make install
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install && \
+    # 静的リンク用に xcb.pc に依存ライブラリを追記
+    sed -i '/^Libs:/ s/$/ -lXau -lXdmcp/' /usr/local/lib/pkgconfig/xcb.pc && \
+    cat /usr/local/lib/pkgconfig/xcb.pc
 
 # libX11
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.gz && \
