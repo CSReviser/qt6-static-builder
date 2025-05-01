@@ -20,7 +20,31 @@ RUN apt-get update && apt-get install -y \
     curl \
     ca-certificates \
     libx11-dev \
+    libfontconfig1-dev \
+    libfreetype-dev \
+    libgtk-3-dev \
+    libx11-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
     libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev \
     libxfixes-dev \
     libxi-dev \
     libxrender-dev \
@@ -79,7 +103,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_BUILD_TESTS=OFF \
       -DFEATURE_dbus=ON \
       -DFEATURE_icu=OFF \
-      -DQT_FEATURE_opengl_desktop=OFF \
+      -DQT_FEATURE_opengl_desktop=ON \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_openssl=ON \
       -DQT_FEATURE_openssl_linked=ON \
@@ -91,17 +115,16 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_widgets=ON \
       -DQT_FEATURE_xlib=ON \
       -DQT_FEATURE_xcb=ON \
-      -DQT_FEATURE_xcb_xlib=ON \
       -DQT_FEATURE_xkbcommon=ON \
       -DQT_FEATURE_fontconfig=ON \
       -DQT_FEATURE_sessionmanager=ON \
       -DQT_FEATURE_glib=OFF \
       -DQT_FEATURE_xrender=ON \
-      -DFEATURE_system_zlib=OFF \
-      -DFEATURE_system_png=OFF \
-      -DFEATURE_system_jpeg=OFF \
-      -DFEATURE_system_freetype=OFF \
-      -DFEATURE_system_harfbuzz=OFF && \
+      -DFEATURE_system_zlib=ON \
+      -DFEATURE_system_png=ON \
+      -DFEATURE_system_jpeg=ON \
+      -DFEATURE_system_freetype=ON \
+      -DFEATURE_system_harfbuzz=ON && \
     cmake --build . --parallel && \
     cmake --install . 
 
