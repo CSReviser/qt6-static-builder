@@ -30,7 +30,6 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     ca-certificates \
-    libx11-dev \
     libfontconfig1-dev \
     libfreetype-dev \
     libgtk-3-dev \
@@ -56,30 +55,7 @@ RUN apt-get update && apt-get install -y \
     libxkbcommon-dev \
     libxkbcommon-x11-dev \
     libxrender-dev \
-    libxfixes-dev \
-    libxi-dev \
-    libxrender-dev \
-    libxcb1-dev \
-    libx11-xcb-dev \
-    libxcb-glx0-dev \
-    libxcb-keysyms1-dev \
-    libxcb-image0-dev \
-    libxcb-shm0-dev \
-    libxcb-icccm4-dev \
-    libxcb-sync-dev \
-    libxcb-xfixes0-dev \
-    libxcb-shape0-dev \
-    libxcb-randr0-dev \
-    libxcb-render-util0-dev \
-    libxcb-util-dev \
-    libxcb-cursor-dev \
-    libxcb-xkb-dev \
-    libxkbcommon-x11-dev \
-    libxcb-util-dev \
     libxcb-xinerama0-dev \
-    libxkbcommon-dev \
-    libfontconfig1-dev \
-    libfreetype-dev \
     libfreetype6-dev \
     libjpeg-dev \
     libpng-dev \
@@ -88,7 +64,6 @@ RUN apt-get update && apt-get install -y \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libglib2.0-dev \
-    libgtk-3-dev \
     libssl-dev \
     libwayland-dev \
     libwayland-egl-backend-dev \
