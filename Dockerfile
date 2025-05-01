@@ -103,7 +103,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_BUILD_TESTS=OFF \
       -DFEATURE_dbus=ON \
       -DFEATURE_icu=OFF \
-      -DQT_FEATURE_opengl_desktop=ON \
+      -DQT_FEATURE_opengl_desktop=OFF \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_openssl=ON \
       -DQT_FEATURE_openssl_linked=ON \
@@ -120,11 +120,11 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_sessionmanager=ON \
       -DQT_FEATURE_glib=OFF \
       -DQT_FEATURE_xrender=ON \
-      -DFEATURE_system_zlib=ON \
-      -DFEATURE_system_png=ON \
-      -DFEATURE_system_jpeg=ON \
-      -DFEATURE_system_freetype=ON \
-      -DFEATURE_system_harfbuzz=ON && \
+      -DFEATURE_system_zlib=OFF \
+      -DFEATURE_system_png=OFF \
+      -DFEATURE_system_jpeg=OFF \
+      -DFEATURE_system_freetype=OFF \
+      -DFEATURE_system_harfbuzz=OFF && \
     cmake --build . --parallel && \
     cmake --install . 
 
