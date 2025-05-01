@@ -440,6 +440,12 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --build . --parallel && \
     cmake --install .
 
+# Qt configure 実行
+RUN cd /path/to/qt6 && \
+    ./configure ...options... && \
+    echo "==== qtbase/config.summary ====" && \
+    cat qtbase/config.summary
+
 RUN echo "==== XCB pkg-config ====" && \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig pkg-config --static --libs xcb && \
     echo "==== libQt6XcbQpa.a symbols ====" && \
