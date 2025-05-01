@@ -23,11 +23,20 @@ ENV PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig
 # 必要なパッケージインストール
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    qt6-base-dev \
+    xutils-dev \
+    x11proto-dev \
+    autoconf \
+    automake \
+    libtool \
     cmake \
     ninja-build \
     git \
     curl \
+    wget \
+    meson \
+    bison \
+    byacc \
+    gperf \
     ca-certificates \
     libfontconfig1-dev \
     libfreetype-dev \
