@@ -225,43 +225,6 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
 RUN nm -g --defined-only /usr/local/lib/libxml2.a | grep xmlParseChunk || \
     (echo "ERROR: xmlParseChunk not found in libxml2.a" && exit 1)
 
-# harfbuzz (static, .pc生成確認)
-RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
-    tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
-    meson setup build \
-      --prefix=/usr/local \
-      --buildtype=release \
-      --libdir=lib \
-      -Ddefault_library=static \
-      -Dtests=disabled \
-      -Ddocs=disabled \
-      -Dbenchmark=disabled \
-      -Dintrospection=disabled && \
-    ninja -C build && \
-    ninja -C build install
-
-# FreeType (static)
-RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
-    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
-    ./configure \
-      --prefix=/usr/local \
-      --with-harfbuzz=yes \
-      --enable-static \
-      --disable-shared \
-      --with-pic \
-      --without-bzip2 \
-      HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
-      HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)" && \
-    make -j$(nproc) && \
-    make install
-
-RUN nm -g --defined-only /usr/local/lib/libfreetype.a | grep FT_Get_BDF_Property || \
-    (echo "ERROR: FT_Get_BDF_Property not found in libfreetype.a" && exit 1)
-
-RUN set -ex && \
-    echo "=== Check symbols in libfreetype.a ===" && \
-    nm /usr/local/lib/libfreetype.a | grep hb_ || echo "No harfbuzz symbols found"
-
 # Brotli をビルド・インストール
 RUN git clone https://github.com/google/brotli.git && \
     cd brotli && \
@@ -356,13 +319,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static --with-pic && \
     make -j$(nproc) && make install
 
-# xcb-util-image
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
-    tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
-    cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
-    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static --with-pic && \
-    make -j$(nproc) && make install 
-
 # xcb-util-keysyms
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
     tar -xzf xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
@@ -414,7 +370,7 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
     env \
       PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig" \
       CPPFLAGS="-I/usr/local/include" \
-      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -static" \
+      LDFLAGS="-L/usr/local/lib -lxml2 -lz -static" \
       CFLAGS="-fPIC" \
     ./configure --prefix=/usr/local --enable-static --disable-shared --with-pic \
         --enable-libxml2 && \
