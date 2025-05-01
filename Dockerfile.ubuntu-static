@@ -410,6 +410,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+      -DCMAKE_EXE_LINKER_FLAGS="-lxml2 -lfreetype -lxcb-util" \
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
