@@ -408,12 +408,14 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
     env \
       PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig" \
       CPPFLAGS="-I/usr/local/include" \
-      LDFLAGS="-L/usr/local/lib" \
+      LDFLAGS="-L/usr/local/lib -static" \
       CFLAGS="-fPIC" \
     ./configure --prefix=/usr/local --enable-static --disable-shared --with-pic \
         --enable-libxml2 && \
     make -j$(nproc) && \
-    make install
+    make install&& \
+    echo "===> Checking libfontconfig.a symbols (libxml2 / freetype / FT_Get_BDF_Property)" && \
+    nm /usr/local/lib/libfontconfig.a | grep -E 'xml|FT_Get_BDF_Property|freetype' || (echo "ERROR: missing expected symbols!" && exit 1)
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
