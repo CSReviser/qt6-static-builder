@@ -278,54 +278,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL
     make install && \
     ldconfig
 
-
-# 1. xcb-util全体取得
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
-    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz
-
-# 2. libxcb-util（本体）のビルド
-RUN cd xcb-util-${XCB_UTIL_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
-    make -j$(nproc) && make install
-
-# 3. libxcb-image（旧APIあり）の手動ビルド
-RUN mkdir -p xcb-util-${XCB_UTIL_VERSION}-image && \
-    cp -r xcb-util-${XCB_UTIL_VERSION}/image xcb-util-${XCB_UTIL_VERSION}-image/src && \
-    mkdir -p xcb-util-${XCB_UTIL_VERSION}-image/build && \
-    cd xcb-util-${XCB_UTIL_VERSION}-image/build && \
-    echo 'CC=gcc' > Makefile && \
-    echo 'AR=ar' >> Makefile && \
-    echo 'CFLAGS=-fPIC -I/usr/include -I/usr/include/xcb -I/usr/local/include' >> Makefile && \
-    echo 'LDFLAGS=' >> Makefile && \
-    echo 'SRCS=../src/xcb_image.c' >> Makefile && \
-    echo 'OBJS=xcb_image.o' >> Makefile && \
-    echo 'TARGET=libxcb-image.a' >> Makefile && \
-    echo '' >> Makefile && \
-    echo 'all: $(TARGET)' >> Makefile && \
-    echo '' >> Makefile && \
-    echo '$(TARGET): $(OBJS)' >> Makefile && \
-    echo '	$(AR) rcs $(TARGET) $(OBJS)' >> Makefile && \
-    echo '' >> Makefile && \
-    echo '%.o: %.c' >> Makefile && \
-    echo '	$(CC) $(CFLAGS) -c -o $@ $<' >> Makefile && \
-    echo '' >> Makefile && \
-    echo 'install:' >> Makefile && \
-    echo '	cp $(TARGET) /usr/local/lib/' >> Makefile && \
-    echo '	mkdir -p /usr/local/include/xcb' >> Makefile && \
-    echo '	cp ../src/xcb_image.h /usr/local/include/xcb/' >> Makefile && \
-    echo '' >> Makefile && \
-    echo 'clean:' >> Makefile && \
-    echo '	rm -f $(OBJS) $(TARGET)' >> Makefile && \
-    make && make install && ldconfig
-
 RUN nm /usr/local/lib/libxcb-image.a | grep xcb_aux_create_ || echo "OK: xcb_aux_create_gc not found"
-
-# xcb-util-keysyms
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
-    tar -xzf xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
-    cd xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
-    make -j$(nproc) && make install
 
 # xcb-util-renderutil
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
