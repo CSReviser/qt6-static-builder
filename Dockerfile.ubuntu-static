@@ -293,6 +293,21 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-cursor-${X
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# xcb-util-wm の .pc ファイル手動修正（必要なら）
+RUN echo 'prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: xcb-icccm
+Description: XCB ICCCM utilities
+Version: 0.4.1
+Requires: xcb
+Libs: -L${libdir} -lxcb-icccm
+Libs.private: -lxcb-icccm
+Cflags: -I${includedir}' > /usr/local/lib/pkgconfig/
+
+
 RUN find /usr/local/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_win_gravity || echo "OK: xcb_icccm_size_hints_set_win_gravity not found"
 RUN find /usr/local/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_min_size || echo "OK: xcb_icccm_size_hints_set_min_size not found"
 RUN find /usr/local/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_max_size || echo "OK: xcb_icccm_size_hints_set_max_size not found"
