@@ -375,6 +375,10 @@ ENV PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
 ENV PKG_CONFIG_USE_STATIC_LIBS=1
 ENV PKG_CONFIG="pkg-config --static"
 
+RUN pkg-config --static --libs xcb-icccm && \
+    pkg-config --static --libs xcb-util && \
+    pkg-config --static --libs xcb
+
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
@@ -410,6 +414,10 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_harfbuzz=OFF && \
     cmake --build . --parallel && \
     cmake --install .
+
+RUN pkg-config --static --libs xcb-icccm && \
+    pkg-config --static --libs xcb-util && \
+    pkg-config --static --libs xcb
 
 RUN grep libxcb-image ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeCache.txt || echo "No direct reference to libxcb-image"
 
