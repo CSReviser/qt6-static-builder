@@ -302,6 +302,50 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-image-${XC
     ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
     make -j$(nproc) && make install
 
+# XCB util 0.3.6 のビルド（libxcb-util + libxcb-image）
+ENV XCB_UTIL_VERSION=0.3.6
+
+# 1. xcb-util全体取得
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz
+
+# 2. libxcb-util（本体）のビルド
+RUN cd xcb-util-${XCB_UTIL_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# 3. libxcb-image（旧APIあり）の手動ビルド
+RUN mkdir -p xcb-util-${XCB_UTIL_VERSION}-image && \
+    cp -r xcb-util-${XCB_UTIL_VERSION}/image xcb-util-${XCB_UTIL_VERSION}-image/src && \
+    mkdir -p xcb-util-${XCB_UTIL_VERSION}-image/build && \
+    cd xcb-util-${XCB_UTIL_VERSION}-image/build && \
+    cat > Makefile << 'EOF' && \
+CC=gcc
+AR=ar
+CFLAGS=-fPIC -I/usr/include -I/usr/include/xcb -I/usr/local/include
+LDFLAGS=
+SRCS=../src/xcb_image.c
+OBJS=xcb_image.o
+TARGET=libxcb-image.a
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(AR) rcs $(TARGET) $(OBJS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+install:
+	cp $(TARGET) /usr/local/lib/
+	mkdir -p /usr/local/include/xcb
+	cp ../src/xcb_image.h /usr/local/include/xcb/
+
+clean:
+	rm -f $(OBJS) $(TARGET)
+EOF
+    make && make install && ldconfig
+
 RUN nm /usr/local/lib/libxcb-image.a | grep xcb_aux_create_ || echo "OK: xcb_aux_create_gc not found"
 
 # xcb-util-keysyms
