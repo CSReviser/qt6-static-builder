@@ -271,7 +271,11 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL
     make install && \
     ldconfig
 
+RUN find /usr/local/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_win_gravity || echo "OK: xcb_icccm_size_hints_set_win_gravity not found"
+RUN find /usr/local/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_min_size || echo "OK: xcb_icccm_size_hints_set_min_size not found"
+RUN find /usr/local/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_max_size || echo "OK: xcb_icccm_size_hints_set_max_size not found"
 RUN find /usr/local/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
+
 # ライブラリ一覧を出力（何が生成されたか確認）
 RUN echo "Installed static libs:" && ls -l /usr/local/lib/*.a || echo "No static libs found"
 # 全 .a ファイルを対象にシンボル調査
