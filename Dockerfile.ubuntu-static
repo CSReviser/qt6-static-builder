@@ -342,7 +342,26 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir && \
     ninja -C builddir install
 
+# xcb-icccm を static ビルド（確認目的でのみ）
+RUN git clone https://gitlab.freedesktop.org/xorg/lib/libxcb-icccm.git && \
+    cd libxcb-icccm && \
+    ./autogen.sh --prefix=$PREFIX --enable-static --disable-shared && \
+    make -j$(nproc) && make install
 
+# 確認ステップ: libxcb-icccm.a が存在し、シンボルを含んでいるか
+RUN ls -l $PREFIX/lib/libxcb-icccm.a && \
+    nm $PREFIX/lib/libxcb-icccm.a | grep 'T xcb_icccm_set_wm_hints'
+
+# pkg-config 確認（Qtのconfigureで使えるかどうか）
+ENV PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
+RUN pkg-config --modversion xcb-icccm && \
+    pkg-config --libs xcb-icccm && \
+    pkg-config --cflags xcb-icccm
+
+# テスト用にシンプルなリンク確認プログラムを書く
+RUN echo '#include <xcb/xcb_icccm.h>\nint main() { xcb_size_hints_t hints; xcb_icccm_size_hints_set_min_size(&hints, 640, 480); return 0; }' > test.c && \
+    gcc -static test.c -o test -I$PREFIX/include -L$PREFIX/lib -lxcb-icccm -lxcb && \
+    ./test
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
