@@ -263,14 +263,14 @@ ARG XCB_UTIL_WM_VERSION=0.3.9
 ARG XCB_UTIL_CURSOR_VERSION=0.1.4
 
 # Download and build xcb-util
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     tar -xzf xcb-util-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     cd xcb-util-${XCB_UTIL_IMAGE_VERSION} && \
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # xcb-util-image
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
