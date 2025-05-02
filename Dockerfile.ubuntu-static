@@ -270,14 +270,12 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-0.4.1.tar.
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-# xcb-util（旧版）取得と展開
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
-    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
-    cd xcb-util-${XCB_UTIL_VERSION} && \
-    ./configure --prefix=/usr/local && \
-    make -j$(nproc) && \
-    make install && \
-    ldconfig
+# xcb-util-image
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
+    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # xcb-util-renderutil
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
@@ -299,6 +297,15 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-cursor-${X
     cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
+
+# xcb-util（旧版）取得と展開
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    cd xcb-util-${XCB_UTIL_VERSION} && \
+    ./configure --prefix=/usr/local && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
 
 # 省略: 各種 xcb-util 系ライブラリのビルド後に入れる確認用ステップ
 RUN echo "---- Installed .pc files ----" && \
