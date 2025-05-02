@@ -342,12 +342,7 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir && \
     ninja -C builddir install
 
-# xcb-icccm を static ビルド（確認目的でのみ）
-RUN git clone https://gitlab.freedesktop.org/xorg/lib/libxcb-icccm.git && \
-    cd libxcb-icccm && \
-    ./autogen.sh --prefix=$PREFIX --enable-static --disable-shared && \
-    make -j$(nproc) && make install
-
+ENV PREFIX=/usr/local
 # 確認ステップ: libxcb-icccm.a が存在し、シンボルを含んでいるか
 RUN ls -l $PREFIX/lib/libxcb-icccm.a && \
     nm $PREFIX/lib/libxcb-icccm.a | grep 'T xcb_icccm_set_wm_hints'
