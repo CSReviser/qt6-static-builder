@@ -370,7 +370,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_jpeg=OFF \
       -DFEATURE_system_freetype=OFF \
       -DFEATURE_system_harfbuzz=OFF && \
-    cmake --build . --parallel -- VERBOSE=1 && \
+    cmake --build . --parallel --VERBOSE=1 && \
     cmake --install .
 
 RUN grep libxcb-image ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeCache.txt || echo "No direct reference to libxcb-image"
