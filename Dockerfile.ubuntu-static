@@ -295,9 +295,10 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
-    LDFLAGS="-L/usr/local/lib" \
-    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install 
+    # 関数ごと削除（10行程度を仮定）
+    sed -i '/xcb_create_pixmap_from_bitmap_data/,/}/d' src/xcb_image.c && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
 
 RUN nm /usr/local/lib/libxcb-image.a | grep xcb_aux_create_ || echo "OK: xcb_aux_create_gc not found"
 
