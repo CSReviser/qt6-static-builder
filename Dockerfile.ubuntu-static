@@ -353,7 +353,13 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
 # Download and extract Qt module source
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
-    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
+    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
+    cd ${QT_MODULE}-everywhere-src-${QT_VERSION} && \
+    # 正しいファイルパスを指定して関数削除
+    ls -al && \
+    grep -r 'xcb_create_pixmap_from_bitmap_data' && \
+    sed -i '/xcb_create_pixmap_from_bitmap_data/,/^}/d' src/plugins/platforms/xcb/qxcbcursor.cpp && \
+    nm /usr/local/lib/libxcb-image.a | grep xcb_aux_create_ || echo "OK: xcb_aux_create_gc not found"
 
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
