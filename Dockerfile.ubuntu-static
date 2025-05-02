@@ -18,7 +18,6 @@ ENV CPPFLAGS="-I/usr/local/include"
 ENV LDFLAGS="-L/usr/local/lib"
 ENV CMAKE_EXE_LINKER_FLAGS="-static"
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
-ENV PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig
 ENV CFLAGS="-fPIC"
 ENV CXXFLAGS="-fPIC"
 
@@ -352,7 +351,8 @@ ENV PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
 RUN pkg-config --modversion xcb-icccm && \
     pkg-config --libs xcb-icccm && \
     pkg-config --cflags xcb-icccm &&\
-    ls -l /usr/local/lib/pkgconfig/*.pc
+    ls -l /usr/local/lib/pkgconfig/*.pc &&\
+    ls -l /usr/local/share/pkgconfig/*.pc
 
 # テスト用にシンプルなリンク確認プログラムを書く
 RUN echo '#include <xcb/xcb_icccm.h>\nint main() { xcb_size_hints_t hints; xcb_icccm_size_hints_set_min_size(&hints, 640, 480); return 0; }' > test.c && \
@@ -366,7 +366,6 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz 
 
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig"
-ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig"
 ENV PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
 ENV PKG_CONFIG_USE_STATIC_LIBS=1
 ENV PKG_CONFIG="pkg-config --static"
