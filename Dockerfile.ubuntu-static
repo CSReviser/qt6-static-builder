@@ -369,11 +369,18 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 RUN sed -i '/qt_internal_extend_target.*QXcbIntegration.*/a \ \ LIBRARIES xcb-icccm' \
     ${QT_MODULE}-everywhere-src-${QT_VERSION}/src/plugins/platforms/xcb/CMakeLists.txt
 
+ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig"
+ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig"
+ENV PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
+ENV PKG_CONFIG_USE_STATIC_LIBS=1
+ENV PKG_CONFIG="pkg-config --static"
+
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_PREFIX_PATH="/usr/local" \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
