@@ -255,7 +255,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXmu-1.1.4.tar.gz
     make -j$(nproc) && make install
 
 # xcb-util family
-ARG XCB_UTIL_VERSION=0.3.6
+ARG XCB_UTIL_VERSION=0.3.5
 ARG XCB_UTIL_IMAGE_VERSION=0.4.1
 ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
 ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
@@ -343,7 +343,6 @@ RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_EXE_LINKER_FLAGS="-lxcb-util" \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
