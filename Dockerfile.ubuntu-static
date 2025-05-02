@@ -274,6 +274,11 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL
     make install && \
     ldconfig
 
+RUN find /usr/local/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
+# ライブラリ一覧を出力（何が生成されたか確認）
+RUN echo "Installed static libs:" && ls -l /usr/local/lib/*.a || echo "No static libs found"
+# 全 .a ファイルを対象にシンボル調査
+RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
 RUN nm /usr/local/lib/libxcb-util.a | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
 
 # xcb-util-renderutil
