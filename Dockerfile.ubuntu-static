@@ -297,6 +297,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-image-${XC
     cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
     # 正しいファイルパスを指定して関数削除
     cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && ls -al && \
+    grep -r 'xcb_create_pixmap_from_bitmap_data' && \
     sed -i '/xcb_create_pixmap_from_bitmap_data/,/^}/d' xcb_image.c && \
     ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
     make -j$(nproc) && make install
