@@ -258,7 +258,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXmu-1.1.4.tar.gz
     make -j$(nproc) && make install
 
 # xcb-util family
-ARG XCB_UTIL_VERSION=0.3.6
+ARG XCB_UTIL_VERSION=0.3.0
 ARG XCB_UTIL_IMAGE_VERSION=0.4.1
 ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
 ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
@@ -318,13 +318,6 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir && \
     ninja -C builddir install
 
-# xcb-icccm のビルド・インストール
-WORKDIR /build
-RUN git clone https://github.com/freedesktop/xcb-util.git && \
-    cd xcb-util/xcb-icccm && \
-    ./autogen.sh --prefix=/opt/qt6-static --disable-shared --enable-static && \
-    make -j$(nproc) && \
-    make install
 
 
 # Qt取得 & ビルド
