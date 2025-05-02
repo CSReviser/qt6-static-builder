@@ -49,15 +49,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     meson \
     python3-pip \
-    pkg-config \
+    pkg-config && \
+    pip3 install mako \
     && rm -rf /var/lib/apt/lists/*
 
-
-# xorgproto
+# xorgproto 最新版を Meson でビルド
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
-    tar -xf xorgproto-2024.1.tar.gz && \
-    cd xorgproto-2024.1 && \
-    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+    tar -xf xorgproto-2024.1.tar.gz && cd xorgproto-2024.1 && \
+    meson setup build --prefix=/usr/local && \
+    ninja -C build && ninja -C build install
 
 # xcb-proto
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.1.tar.xz && \
