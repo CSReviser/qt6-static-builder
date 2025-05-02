@@ -278,6 +278,13 @@ RUN echo "Installed static libs:" && ls -l /usr/local/lib/*.a || echo "No static
 RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
 RUN nm /usr/local/lib/libxcb-util.a | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
 
+# xcb-util-renderutil
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    cd xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
 # xcb-util-cursor
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
     tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
@@ -342,6 +349,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+      -DCMAKE_EXE_LINKER_FLAGS="-lxcb-util" \
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
