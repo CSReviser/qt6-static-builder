@@ -277,9 +277,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXmu-1.1.4.tar.gz
     make -j$(nproc) && make install
 
 # xcb-util family
-ARG XCB_UTIL_VERSION=0.3.6
-ARG XCB_UTIL_IMAGE_VERSION=0.3.8
-ARG XCB_UTIL_KEYSYMS_VERSION=0.3.8
+ARG XCB_UTIL_VERSION=0.4.1
+ARG XCB_UTIL_IMAGE_VERSION=0.4.1
+ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
 ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
 ARG XCB_UTIL_WM_VERSION=0.4.2
 ARG XCB_UTIL_CURSOR_VERSION=0.1.5
@@ -298,6 +298,8 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-image-${XC
     LDFLAGS="-L/usr/local/lib" \
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install 
+
+RUN nm /usr/local/lib/libxcb-image.a | grep xcb_aux_create_ || echo "OK: xcb_aux_create_gc not found"
 
 # xcb-util-keysyms
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
@@ -385,7 +387,7 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --build . --parallel && \
     cmake --install .
 
-
+RUN grep libxcb-image build/CMakeCache.txt || echo "No direct reference to libxcb-image"
 
 RUN echo "==== XCB pkg-config ====" && \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig pkg-config --static --libs xcb && \
