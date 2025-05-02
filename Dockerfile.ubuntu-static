@@ -347,7 +347,6 @@ RUN ls -l $PREFIX/lib/libxcb-icccm.a && \
     nm $PREFIX/lib/libxcb-icccm.a | grep 'T xcb_icccm_set_wm_hints'
 
 # pkg-config 確認（Qtのconfigureで使えるかどうか）
-ENV PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
 RUN pkg-config --modversion xcb-icccm && \
     pkg-config --libs xcb-icccm && \
     pkg-config --cflags xcb-icccm &&\
