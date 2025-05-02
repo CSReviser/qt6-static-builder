@@ -149,6 +149,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.g
     ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
     make -j$(nproc) && make install
 
+# libxml2 (static)
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
+    tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
+    cmake -B build -GNinja \
+      -D BUILD_SHARED_LIBS=OFF \
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D LIBXML2_WITH_PYTHON=OFF \
+      -D LIBXML2_WITH_ZLIB=ON \
+      -D LIBXML2_WITH_ICONV=OFF && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build
+
 # zlib (静的ビルド強制)
 RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
     tar -xzf zlib-1.3.1.tar.gz && \
@@ -280,18 +292,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
     ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
     make -j$(nproc) && make install
-
-# libxml2 (static)
-RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
-    tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
-    cmake -B build -GNinja \
-      -D BUILD_SHARED_LIBS=OFF \
-      -D CMAKE_INSTALL_PREFIX=/usr/local \
-      -D LIBXML2_WITH_PYTHON=OFF \
-      -D LIBXML2_WITH_ZLIB=ON \
-      -D LIBXML2_WITH_ICONV=OFF && \
-    cmake --build build -j$(nproc) && \
-    cmake --install build
 
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
