@@ -276,20 +276,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XC
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-# xcb-util-wm
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
-    tar -xzf xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
-    cd xcb-util-wm-${XCB_UTIL_WM_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util-cursor
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
-    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
-    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
 # xcb-util（旧版）取得と展開
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
     tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
@@ -299,10 +285,24 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL
     make install && \
     ldconfig
 
+# xcb-util-wm
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    tar -xzf xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    cd xcb-util-wm-${XCB_UTIL_WM_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
 # xcb-util-renderutil
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
     tar -xzf xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
     cd xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-cursor
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
