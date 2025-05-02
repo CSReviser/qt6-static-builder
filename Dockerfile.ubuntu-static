@@ -338,6 +338,10 @@ WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz 
 
+# Force link xcb-icccm into the xcb plugin to resolve undefined reference
+RUN echo 'target_link_libraries(QXcbIntegration PRIVATE xcb-icccm)' >> \
+    ${QT_MODULE}-everywhere-src-${QT_VERSION}/src/plugins/platforms/xcb/CMakeLists.txt
+
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
@@ -370,7 +374,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_jpeg=OFF \
       -DFEATURE_system_freetype=OFF \
       -DFEATURE_system_harfbuzz=OFF && \
-    cmake --build . --parallel && \
+    cmake --build . --parallel -- VERBOSE=1 && \
     cmake --install .
 
 RUN grep libxcb-image ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeCache.txt || echo "No direct reference to libxcb-image"
