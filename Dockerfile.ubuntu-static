@@ -347,13 +347,12 @@ ENV PREFIX=/usr/local
 RUN ls -l $PREFIX/lib/libxcb-icccm.a && \
     nm $PREFIX/lib/libxcb-icccm.a | grep 'T xcb_icccm_set_wm_hints'
 
-RUN ls -l /usr/local/lib/pkgconfig/xproto.pc
-
 # pkg-config 確認（Qtのconfigureで使えるかどうか）
 ENV PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
 RUN pkg-config --modversion xcb-icccm && \
     pkg-config --libs xcb-icccm && \
-    pkg-config --cflags xcb-icccm
+    pkg-config --cflags xcb-icccm &&\
+    ls -l /usr/local/lib/pkgconfig/*.pc
 
 # テスト用にシンプルなリンク確認プログラムを書く
 RUN echo '#include <xcb/xcb_icccm.h>\nint main() { xcb_size_hints_t hints; xcb_icccm_size_hints_set_min_size(&hints, 640, 480); return 0; }' > test.c && \
