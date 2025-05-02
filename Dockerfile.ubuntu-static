@@ -41,24 +41,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gperf \
     ca-certificates \
     libgtk-3-dev \
-    libx11-dev \
-    libx11-xcb-dev \
-    libxext-dev \
-    libxfixes-dev \
-    libxi-dev \
-    libxrender-dev \
     zlib1g-dev \
     libdbus-1-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libglib2.0-dev \
     libssl-dev \
-    libwayland-dev \
-    libwayland-egl-backend-dev \
     meson \
     python3-pip \
     pkg-config \
-    libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 
