@@ -265,10 +265,6 @@ ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
 ARG XCB_UTIL_WM_VERSION=0.4.2
 ARG XCB_UTIL_CURSOR_VERSION=0.1.5
 
-# XCB util 0.3.6 のビルド（libxcb-util + libxcb-image）
-# 環境変数の定義（任意）
-ENV XCB_UTIL_VERSION=0.3.6
-
 # xcb-util（旧版）取得と展開
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
     tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
