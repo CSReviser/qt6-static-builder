@@ -281,6 +281,13 @@ RUN echo "Installed static libs:" && ls -l /usr/local/lib/*.a || echo "No static
 RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
 RUN nm /usr/local/lib/libxcb-util.a | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
 
+# xcb-util-cursor
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
 # libXrandr
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar.gz && \
     tar -xzf libXrandr-1.5.4.tar.gz && \
