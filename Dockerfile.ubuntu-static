@@ -387,7 +387,7 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --build . --parallel && \
     cmake --install .
 
-RUN grep libxcb-image build/CMakeCache.txt || echo "No direct reference to libxcb-image"
+RUN grep libxcb-image ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeCache.txt || echo "No direct reference to libxcb-image"
 
 RUN echo "==== XCB pkg-config ====" && \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig pkg-config --static --libs xcb && \
