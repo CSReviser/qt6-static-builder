@@ -320,8 +320,8 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
 
 # xcb-icccm のビルド・インストール
 WORKDIR /build
-RUN git clone https://gitlab.freedesktop.org/xorg/lib/libxcb-icccm.git && \
-    cd libxcb-icccm && \
+RUN git clone https://github.com/freedesktop/xcb-util.git && \
+    cd xcb-util/xcb-icccm && \
     ./autogen.sh --prefix=/opt/qt6-static --disable-shared --enable-static && \
     make -j$(nproc) && \
     make install
