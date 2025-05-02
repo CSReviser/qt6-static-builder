@@ -274,7 +274,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL
     make install && \
     ldconfig
 
-RUN nm /usr/local/lib/xcb-icccm.a | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
+RUN nm /usr/local/lib/libxcb-util.a | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
 
 # xcb-util-renderutil
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
