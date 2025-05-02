@@ -40,7 +40,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     byacc \
     gperf \
     ca-certificates \
-    libxcb-icccm4-dev \
     libgtk-3-dev \
     zlib1g-dev \
     libdbus-1-dev \
@@ -343,35 +342,7 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir && \
     ninja -C builddir install
 
-# harfbuzz (static, .pc生成確認)
-RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
-    tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
-    meson setup build \
-      --prefix=/usr/local \
-      --buildtype=release \
-      --libdir=lib \
-      -Ddefault_library=static \
-      -Dtests=disabled \
-      -Ddocs=disabled \
-      -Dbenchmark=disabled \
-      -Dintrospection=disabled && \
-    ninja -C build && \
-    ninja -C build install
 
-# FreeType (static)
-RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
-    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
-    ./configure \
-      --prefix=/usr/local \
-      --with-harfbuzz=yes \
-      --enable-static \
-      --disable-shared \
-      --with-pic \
-      --without-bzip2 \
-      HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
-      HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)" && \
-    make -j$(nproc) && \
-    make install
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
