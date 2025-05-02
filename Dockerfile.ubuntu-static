@@ -266,6 +266,19 @@ ARG XCB_UTIL_WM_VERSION=0.4.2
 ARG XCB_UTIL_CURSOR_VERSION=0.1.5
 
 # XCB util 0.3.6 のビルド（libxcb-util + libxcb-image）
+# 環境変数の定義（任意）
+ENV XCB_UTIL_VERSION=0.3.6
+
+# xcb-util（旧版）取得と展開
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    cd xcb-util-${XCB_UTIL_VERSION} && \
+    ./configure --prefix=/usr/local && \
+    make -j$(nproc) && \
+    make install && \
+    ldconfig
+
+
 # 1. xcb-util全体取得
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
     tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz
