@@ -277,34 +277,14 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXmu-1.1.4.tar.gz
     make -j$(nproc) && make install
 
 # xcb-util family
-ARG XCB_UTIL_VERSION=0.4.1
+ARG CB_UTIL_VERSION=0.3.6
 ARG XCB_UTIL_IMAGE_VERSION=0.4.1
 ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
 ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
 ARG XCB_UTIL_WM_VERSION=0.4.2
 ARG XCB_UTIL_CURSOR_VERSION=0.1.5
 
-# Download and build xcb-util
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
-    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
-    cd xcb-util-${XCB_UTIL_VERSION} && \
-    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static --with-pic && \
-    make -j$(nproc) && make install
-
-# xcb-util-image
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
-    tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
-    cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
-    # 正しいファイルパスを指定して関数削除
-    ls -al && \
-    grep -r 'xcb_create_pixmap_from_bitmap_data' && \
-    sed -i '/xcb_create_pixmap_from_bitmap_data/,/^}/d' image/xcb_image.c && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
-    make -j$(nproc) && make install
-
 # XCB util 0.3.6 のビルド（libxcb-util + libxcb-image）
-ENV XCB_UTIL_VERSION=0.3.6
-
 # 1. xcb-util全体取得
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
     tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz
@@ -397,13 +377,7 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
 # Download and extract Qt module source
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
-    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
-    cd ${QT_MODULE}-everywhere-src-${QT_VERSION} && \
-    # 正しいファイルパスを指定して関数削除
-    ls -al && \
-    grep -r 'xcb_create_pixmap_from_bitmap_data' && \
-    sed -i '/xcb_create_pixmap_from_bitmap_data/,/^}/d' src/plugins/platforms/xcb/qxcbcursor.cpp && \
-    nm /usr/local/lib/libxcb-image.a | grep xcb_aux_create_ || echo "OK: xcb_aux_create_gc not found"
+    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz 
 
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
