@@ -304,7 +304,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-${XCB_UTIL
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
     cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
-    LDFLAGS="-L/usr/local/lib" LIBS="-lxcb-util" \
+    LDFLAGS="-L/usr/local/lib" \
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install 
 
