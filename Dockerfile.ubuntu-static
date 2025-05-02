@@ -420,5 +420,16 @@ RUN echo "==== XCB pkg-config ====" && \
     echo "==== libxcb.a symbols ====" && \
     nm -g /usr/local/lib/libxcb.a | grep Xau || true
 
+RUN find /usr/local/qt6-static/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_win_gravity || echo "OK: xcb_icccm_size_hints_set_win_gravity not found"
+RUN find /usr/local/qt6-static/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_min_size || echo "OK: xcb_icccm_size_hints_set_min_size not found"
+RUN find /usr/local/qt6-static/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_size_hints_set_max_size || echo "OK: xcb_icccm_size_hints_set_max_size not found"
+RUN find /usr/local/qt6-static/lib -name "*.a" -exec echo "Checking {}" \; -exec nm {} \; | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
+
+# ライブラリ一覧を出力（何が生成されたか確認）
+RUN echo "Installed static libs:" && ls -l /usr/local/qt6-static/lib/*.a || echo "No static libs found"
+# 全 .a ファイルを対象にシンボル調査
+RUN find /usr/local/qt6-static/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
+RUN nm /usr/local/qt6-static/lib/*.a | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
+
 # PATH登録
 ENV PATH="/opt/qt6-static/bin:$PATH"
