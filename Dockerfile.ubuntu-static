@@ -192,15 +192,15 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
 
 
 # libxcb
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.gz && \
-    tar -xf libxcb-1.17.0.tar.gz && \
-    cd libxcb-1.17.0 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.13.0.tar.gz && \
+    tar -xf libxcb-1.13.0.tar.gz && \
+    cd libxcb-1.13.0 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
 
 # libX11
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.gz && \
-    tar -xf libX11-1.8.12.tar.gz && \
-    cd libX11-1.8.12 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz && \
+    tar -xf libX11-1.6.9.tar.gz && \
+    cd libX11-1.6.9 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 
