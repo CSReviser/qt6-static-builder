@@ -422,7 +422,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_PREFIX_PATH="/usr/local" \
-      -DBUILD_SHARED_LIBS=ON \
+      -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
       -DFEATURE_dbus=ON \
