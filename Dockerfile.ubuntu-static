@@ -372,7 +372,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_PREFIX_PATH="/usr/local" \
-      -DCMAKE_EXE_LINKER_FLAGS="-Wl,--start-group -lxcb-icccm -lxcb -lXau -lXdmcp -Wl,--end-group"
+      -DCMAKE_EXE_LINKER_FLAGS="-Wl,--start-group -lxcb-icccm -lxcb -lXau -lXdmcp -Wl,--end-group" \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
