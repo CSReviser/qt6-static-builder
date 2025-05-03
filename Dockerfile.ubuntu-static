@@ -237,39 +237,25 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
-      -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DCMAKE_PREFIX_PATH="/usr/local;/usr/lib/x86_64-linux-gnu/cmake" \
-      -DCMAKE_EXE_LINKER_FLAGS="-Wl,--start-group -lxcb -lxcb-icccm -lxcb-image -lxcb-keysyms -lxcb-render-util -lxcb-xinerama -lxcb-xkb -lxkbcommon -lxkbcommon-x11 -Wl,--end-group" \
-      -DBUILD_SHARED_LIBS=OFF \
-      -DQT_BUILD_EXAMPLES=OFF \
-      -DQT_BUILD_TESTS=OFF \
-      -DFEATURE_dbus=ON \
-      -DFEATURE_icu=OFF \
-      -DQT_FEATURE_opengl_desktop=OFF \
-      -DQT_FEATURE_static=ON \
-      -DQT_FEATURE_openssl=ON \
-      -DQT_FEATURE_openssl_linked=ON \
-      -DQT_FEATURE_gui=ON \
-      -DQT_FEATURE_widgets=ON \
-      -DQT_FEATURE_xlib=ON \
-      -DQT_FEATURE_xcb=ON \
-      -DQT_FEATURE_xkbcommon=ON \
-      -DQT_FEATURE_fontconfig=ON \
-      -DQT_FEATURE_sessionmanager=ON \
-      -DQT_FEATURE_glib=OFF \
-      -DQT_FEATURE_xrender=ON \
-      -DFEATURE_png=ON \
-      -DFEATURE_jpeg=ON \
-      -DFEATURE_freetype=ON \
-      -DFEATURE_harfbuzz=ON \
-      -DFEATURE_system_zlib=OFF \
-      -DFEATURE_system_png=OFF \
-      -DFEATURE_system_jpeg=OFF \
-      -DFEATURE_system_freetype=OFF \
-      -DFEATURE_system_harfbuzz=OFF && \
-    cmake --build . --parallel && \
-    cmake --install .
+
+# ビルド
+WORKDIR /build/qtbase
+RUN mkdir build && cd build && \
+    ../configure \
+    -prefix /opt/qt6-static \
+    -static \
+    -release \
+    -opensource -confirm-license \
+    -nomake tests -nomake examples \
+    -skip qt3d -skip qttools -skip qtdoc -skip qtsvg -skip qtwayland \
+    -qt-zlib -qt-libpng -qt-libjpeg -qt-freetype -qt-harfbuzz \
+    -qt-xcb \
+    -opengl desktop \
+    -platform linux-g++ \
+    -v && \
+    cmake --build build --parallel && \
+    cmake --install build
+
 
 # Configure, build, and install Qt statically
 #RUN mkdir qt-build && cd qt-build && \
