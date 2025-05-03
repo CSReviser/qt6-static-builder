@@ -1,0 +1,35 @@
+name: Build Qt 6.9.0 Static (XCB)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-qt:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image for static Qt
+        run: |
+          docker build -f Dockerfile.qt6-static-xcb -t qt6-static-xcb:6.9.0 .
+
+      - name: Extract Qt static build
+        run: |
+          docker create --name qt6-container qt6-static-xcb:6.9.0
+          docker cp qt6-container:/opt/qt6-static ./qt6-static
+          docker rm qt6-container
+
+      - name: Compress Qt static build
+        run: |
+          tar --use-compress-program=zstd -cf qt6-static-xcb-6.9.0.tar.zst qt6-static
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qt6-static-xcb-6.9.0
+          path: qt6-static-xcb-6.9.0.tar.zst
