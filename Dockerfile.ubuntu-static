@@ -410,8 +410,8 @@ RUN pkg-config --static --libs xcb-icccm && \
     pkg-config --static --libs xcb
 
 RUN grep libxcb-image ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeCache.txt || echo "No direct reference to libxcb-image" && \
-    grep -i icccm ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeCache.txt && \
-    grep -i icccm ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeFiles/CMakeOutput.log
+#    grep -i icccm ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeCache.txt && \
+#    grep -i icccm ${QT_MODULE}-everywhere-src-${QT_VERSION}/CMakeFiles/CMakeOutput.log
 
 RUN echo "==== XCB pkg-config ====" && \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig pkg-config --static --libs xcb && \
