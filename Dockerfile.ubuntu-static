@@ -243,10 +243,8 @@ RUN mkdir qt-build && cd qt-build && \
     -opensource -confirm-license \
     -nomake tests -nomake examples \
     -qt-zlib -qt-libpng -qt-libjpeg -qt-freetype -qt-harfbuzz \
-    -qt-xcb \
     -opengl desktop \
-    -platform linux-g++ \
-    -v && \
+    -platform linux-g++ && \
     cmake --build build --parallel && \
     cmake --install build
 
