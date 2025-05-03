@@ -349,6 +349,23 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-cursor-${X
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# libXrandr
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar.gz && \
+    tar -xzf libXrandr-1.5.4.tar.gz && \
+    cd libXrandr-1.5.4 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# Build libxkbcommon
+ARG LIBXKBCOMMON_VERSION=1.9.0
+RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
+    LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr/local --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
+    ninja -C builddir && \
+    ninja -C builddir install
+
 # 省略: 各種 xcb-util 系ライブラリのビルド後に入れる確認用ステップ
 RUN echo "---- Installed .pc files ----" && \
     ls -1 /usr/local/lib/pkgconfig/*.pc && \
@@ -366,24 +383,6 @@ RUN echo "Installed static libs:" && ls -l /usr/local/lib/*.a || echo "No static
 # 全 .a ファイルを対象にシンボル調査
 RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
 RUN nm /usr/local/lib/libxcb-util.a | grep xcb_icccm_ || echo "OK: xcb_icccm_ not found"
-
-
-# libXrandr
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar.gz && \
-    tar -xzf libXrandr-1.5.4.tar.gz && \
-    cd libXrandr-1.5.4 && \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
-    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
-    make -j$(nproc) && make install
-
-# Build libxkbcommon
-ARG LIBXKBCOMMON_VERSION=1.9.0
-RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
-    LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr/local --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
-    ninja -C builddir && \
-    ninja -C builddir install
 
 ENV PREFIX=/usr/local
 # 確認ステップ: libxcb-icccm.a が存在し、シンボルを含んでいるか
