@@ -1,0 +1,64 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV QT_VERSION=v6.9.0
+ENV MAKEFLAGS="-j$(nproc)"
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    cmake \
+    ninja-build \
+    python3 \
+    perl \
+    pkg-config \
+    libx11-dev \
+    libxext-dev \
+    libxrender-dev \
+    libxcb1-dev \
+    libxcb-render0-dev \
+    libxcb-shape0-dev \
+    libxcb-xfixes0-dev \
+    libxcb-randr0-dev \
+    libxcb-shm0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-sync-dev \
+    libxcb-xinerama0-dev \
+    libxcb-util-dev \
+    libxkbcommon-dev \
+    libfontconfig-dev \
+    libfreetype6-dev \
+    libglib2.0-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libzstd-dev \
+    libinput-dev \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+# Qt 6.9.0 を取得
+RUN git clone --depth=1 -b ${QT_VERSION} https://github.com/qt/qtbase.git
+
+# ビルド
+WORKDIR /build/qtbase
+RUN mkdir build && cd build && \
+    ../configure \
+    -prefix /opt/qt6-static \
+    -static \
+    -release \
+    -opensource -confirm-license \
+    -nomake tests -nomake examples \
+    -skip qt3d -skip qttools -skip qtdoc -skip qtsvg -skip qtwayland \
+    -qt-zlib -qt-libpng -qt-libjpeg -qt-freetype -qt-harfbuzz \
+    -qt-xcb \
+    -opengl desktop \
+    -platform linux-g++ \
+    -v && \
+    cmake --build build --parallel && \
+    cmake --install build
+
+ENV PATH=/opt/qt6-static/bin:$PATH
