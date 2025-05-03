@@ -173,6 +173,129 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz 
     sed -i '/^Libs:/ s/$/ -lXau -lXdmcp/' /usr/local/lib/pkgconfig/xcb.pc && \
     cat /usr/local/lib/pkgconfig/xcb.pc
 
+# libX11
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.gz && \
+    tar -xf libX11-1.8.12.tar.gz && \
+    cd libX11-1.8.12 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libxml2 (static)
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
+    tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
+    cmake -B build -GNinja \
+      -D BUILD_SHARED_LIBS=OFF \
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D LIBXML2_WITH_PYTHON=OFF \
+      -D LIBXML2_WITH_ZLIB=ON \
+      -D LIBXML2_WITH_ICONV=OFF && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build
+
+# zlib (静的ビルド強制)
+RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+    tar -xzf zlib-1.3.1.tar.gz && \
+    cd zlib-1.3.1 && \
+    ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
+
+# libXext
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.gz && \
+    tar -xzf libXext-1.3.5.tar.gz && \
+    cd libXext-1.3.5 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# Brotli をビルド・インストール
+RUN git clone https://github.com/google/brotli.git && \
+    cd brotli && \
+    mkdir out && \
+    cd out && \
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .. && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../.. && rm -rf brotli
+
+# libxkbfile (optional)
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxkbfile-1.1.0.tar.gz && \
+    tar -xzf libxkbfile-1.1.0.tar.gz && \
+    cd libxkbfile-1.1.0 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && make -j$(nproc) && make install
+
+# libXfixes
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar.gz && \
+    tar -xzf libXfixes-6.0.1.tar.gz && \
+    cd libXfixes-6.0.1 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libXrender
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.gz && \
+    tar -xzf libXrender-0.9.12.tar.gz && \
+    cd libXrender-0.9.12 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libXcursor
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXcursor-1.2.1.tar.gz && \
+    tar -xzf libXcursor-1.2.1.tar.gz && \
+    cd libXcursor-1.2.1 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libXi
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXi-1.8.2.tar.gz && \
+    tar -xzf libXi-1.8.2.tar.gz && \
+    cd libXi-1.8.2 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && make -j$(nproc) && make install
+
+# libXinerama
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXinerama-1.1.5.tar.gz && \
+    tar -xzf libXinerama-1.1.5.tar.gz && \
+    cd libXinerama-1.1.5 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libXxf86vm
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXxf86vm-1.1.4.tar.gz && \
+    tar -xzf libXxf86vm-1.1.4.tar.gz && \
+    cd libXxf86vm-1.1.4 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libXt
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXt-1.3.0.tar.gz && \
+    tar -xzf libXt-1.3.0.tar.gz && \
+    cd libXt-1.3.0 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libXmu
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXmu-1.1.4.tar.gz && \
+    tar -xzf libXmu-1.1.4.tar.gz && \
+    cd libXmu-1.1.4 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+
+
+# Build libxkbcommon
+ARG LIBXKBCOMMON_VERSION=1.9.0
+RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
+    LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr/local --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
+    ninja -C builddir && \
+    ninja -C builddir install
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
