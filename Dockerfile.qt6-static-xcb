@@ -55,8 +55,7 @@ RUN mkdir build && cd build && \
     -skip qt3d -skip qttools -skip qtdoc -skip qtsvg -skip qtwayland \
     -qt-zlib -qt-libpng -qt-libjpeg -qt-freetype -qt-harfbuzz \
     -opengl desktop \
-    -platform linux-g++ \
-    -v && \
+    -platform linux-g++ && \
     cmake --build build --parallel && \
     cmake --install build
 
