@@ -24,6 +24,31 @@ ENV CXXFLAGS="-fPIC"
 # 必要なパッケージインストール
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    libfontconfig1-dev \
+    libfreetype-dev \
+    libgtk-3-dev \
+    libx11-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev \
     xutils-dev \
     x11proto-dev \
     autoconf \
