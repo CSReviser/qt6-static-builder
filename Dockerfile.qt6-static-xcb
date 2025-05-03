@@ -54,7 +54,6 @@ RUN mkdir build && cd build && \
     -nomake tests -nomake examples \
     -skip qt3d -skip qttools -skip qtdoc -skip qtsvg -skip qtwayland \
     -qt-zlib -qt-libpng -qt-libjpeg -qt-freetype -qt-harfbuzz \
-    -qt-xcb \
     -opengl desktop \
     -platform linux-g++ \
     -v && \
