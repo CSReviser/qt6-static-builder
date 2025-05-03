@@ -98,6 +98,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.
     cd xcb-proto-1.17.0 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
+# libxml-2.0
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
+    tar -xf v2.14.2.tar.gz && \
+    cd libxml2-2.14.2 && \
+    cmake -B build -GNinja \
+    -D BUILD_SHARED_LIBS=OFF \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D LIBXML2_WITH_ICONV=OFF \
+    -D LIBXML2_WITH_PYTHON=OFF \
+    -D LIBXML2_WITH_ZLIB=ON && \
+    cmake --build build -j$(nproc) && cmake --install build
+
 # libXau
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
     tar -xf libXau-1.0.12.tar.gz && \
@@ -191,17 +203,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.8.12.tar.g
     cd libX11-1.8.12 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
-# libxml-2.0
-RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
-    tar -xf v2.14.2.tar.gz && \
-    cd libxml2-2.14.2 && \
-    cmake -B build -GNinja \
-    -D BUILD_SHARED_LIBS=OFF \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D LIBXML2_WITH_ICONV=OFF \
-    -D LIBXML2_WITH_PYTHON=OFF \
-    -D LIBXML2_WITH_ZLIB=ON && \
-    cmake --build build -j$(nproc) && cmake --install build
 
 # xcb-util family
 ARG XCB_UTIL_VERSION=0.4.1
@@ -236,20 +237,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-keysyms-${
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
     tar -xzf xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
     cd xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util-wm
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
-    tar -xzf xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
-    cd xcb-util-wm-${XCB_UTIL_WM_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util-cursor
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
-    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
-    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
