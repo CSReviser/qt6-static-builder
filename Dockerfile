@@ -120,6 +120,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_sessionmanager=ON \
       -DQT_FEATURE_glib=OFF \
       -DQT_FEATURE_xrender=ON \
+　　　　-DFEATURE_system_xbc=OFF \
       -DFEATURE_system_zlib=OFF \
       -DFEATURE_system_png=OFF \
       -DFEATURE_system_jpeg=OFF \
