@@ -17,7 +17,7 @@ ENV CMAKE_PREFIX_PATH="/usr/local"
 ENV CPPFLAGS="-I/usr/local/include"
 ENV LDFLAGS="-L/usr/local/lib"
 ENV CMAKE_EXE_LINKER_FLAGS="-static"
-# ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 ENV CFLAGS="-fPIC"
 ENV CXXFLAGS="-fPIC"
 
@@ -85,6 +85,93 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pkg-config && \
     pip3 install mako \
     && rm -rf /var/lib/apt/lists/*
+
+# xorgproto 最新版を Meson でビルド
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
+    tar -xf xorgproto-2024.1.tar.gz && cd xorgproto-2024.1 && \
+    meson setup build --prefix=/usr/local && \
+    ninja -C build && ninja -C build install
+
+# xcb-proto
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.1.tar.xz && \
+    tar -xf xcb-proto-1.15.1.tar.xz && \
+    cd xcb-proto-1.15.1 && \
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+
+# libXau
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.9.tar.gz && \
+    tar -xf libXau-1.0.9.tar.gz && \
+    cd libXau-1.0.9 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libXdmcp
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.3.tar.gz && \
+    tar -xf libXdmcp-1.1.3.tar.gz && \
+    cd libXdmcp-1.1.3 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libpthread-stubs
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libpthread-stubs-0.5.tar.gz && \
+    tar -xzf libpthread-stubs-0.5.tar.gz && \
+    cd libpthread-stubs-0.5 && \
+    ./configure --prefix=/usr/local && \
+    make -j$(nproc) && make install
+
+# xorgproto (プロトコル定義)
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
+    tar -xf xorgproto-2024.1.tar.gz && \
+    cd xorgproto-2024.1 && \
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+
+# xtrans
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xtrans-1.4.0.tar.gz && \
+    tar -xzf xtrans-1.4.0.tar.gz && \
+    cd xtrans-1.4.0 && \
+    ./configure --prefix=/usr/local  --disable-shared --enable-static --with-pic && make -j$(nproc) && make install
+
+# libICE
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libICE-1.0.10.tar.gz && \
+    tar -xzf libICE-1.0.10.tar.gz && \
+    cd libICE-1.0.10 && \
+    ICE_CFLAGS="-I/usr/local/include" \
+    ICE_LIBS="-L/usr/local/lib -lICE" \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# libSM
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.3.tar.gz && \
+    tar -xzf libSM-1.2.3.tar.gz && \
+    cd libSM-1.2.3 && \
+    SM_CFLAGS="-I/usr/local/include" \
+    SM_LIBS="-L/usr/local/lib -lSM" \
+    ICE_CFLAGS="-I/usr/local/include" \
+    ICE_LIBS="-L/usr/local/lib -lICE" \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# xextproto
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xextproto-7.3.0.tar.gz && \
+    tar -xzf xextproto-7.3.0.tar.gz && \
+    cd xextproto-7.3.0 && \
+    ./configure --prefix=/usr/local  --disable-shared --enable-static --with-pic && make -j$(nproc) && make install
+
+# kbproto
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/kbproto-1.0.7.tar.gz && \
+    tar -xzf kbproto-1.0.7.tar.gz && \
+    cd kbproto-1.0.7 && \
+    ./configure --prefix=/usr/local  --disable-shared --enable-static --with-pic && make -j$(nproc) && make install
+
+# libxcb ビルド
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.15.tar.gz && \
+    tar -xzf libxcb-1.15.tar.gz && \
+    cd libxcb-1.15 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install && \
+    # 静的リンク用に xcb.pc に依存ライブラリを追記
+    sed -i '/^Libs:/ s/$/ -lXau -lXdmcp/' /usr/local/lib/pkgconfig/xcb.pc && \
+    cat /usr/local/lib/pkgconfig/xcb.pc
 
 
 # Qt取得 & ビルド
