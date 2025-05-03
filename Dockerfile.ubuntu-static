@@ -236,12 +236,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
-    cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
-
-# ビルド
-WORKDIR /build/qtbase
-RUN mkdir build && cd build && \
-    ../configure \
+    ../${QT_MODULE}-everywhere-src-${QT_VERSION}/configure \
     -prefix /opt/qt6-static \
     -static \
     -release \
