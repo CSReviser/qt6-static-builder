@@ -423,13 +423,12 @@ RUN mkdir qt-build && cd qt-build && \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_PREFIX_PATH="/usr/local" \
-      -DCMAKE_EXE_LINKER_FLAGS="-Wl,--start-group -lxcb-icccm -lxcb -lXau -lXdmcp -Wl,--end-group" \
       -DBUILD_SHARED_LIBS=ON \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
       -DFEATURE_dbus=ON \
       -DFEATURE_icu=OFF \
-      -DQT_FEATURE_opengl_desktop=ON \
+      -DQT_FEATURE_opengl_desktop=OFF \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_openssl=ON \
       -DQT_FEATURE_openssl_linked=ON \
@@ -440,7 +439,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_xkbcommon=ON \
       -DQT_FEATURE_fontconfig=ON \
       -DQT_FEATURE_sessionmanager=ON \
-      -DQT_FEATURE_glib=OFF \
+      -DQT_FEATURE_glib=ON \
       -DQT_FEATURE_xrender=ON \
       -DFEATURE_png=ON \
       -DFEATURE_jpeg=ON \
