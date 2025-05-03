@@ -1,5 +1,71 @@
 # Dockerfile.ubuntu-static
 
+
+# Install dependencies for xcb-util and build tools
+RUN apt-get update && apt-get install -y \
+    xutils-dev \
+    libpthread-stubs0-dev \
+    libxau-dev \
+    libxdmcp-dev \
+    x11proto-core-dev \
+    xcb-proto \
+    libx11-dev \
+    libx11-xcb-dev \
+    libxcb1-dev \
+    libxcb-util0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xinerama0-dev \
+    libxcb-xkb-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure, build, and install Qt statically
+RUN mkdir qt-build && cd qt-build && \
+    cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
+      -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_PREFIX_PATH="/usr/local;/usr/lib/x86_64-linux-gnu/cmake" \
+      -DCMAKE_EXE_LINKER_FLAGS="-Wl,--start-group -lxcb -lxcb-icccm -lxcb-image -lxcb-keysyms -lxcb-render-util -lxcb-xinerama -lxcb-xkb -lxkbcommon -lxkbcommon-x11 -Wl,--end-group" \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DQT_BUILD_EXAMPLES=OFF \
+      -DQT_BUILD_TESTS=OFF \
+      -DFEATURE_dbus=ON \
+      -DFEATURE_icu=OFF \
+      -DQT_FEATURE_opengl_desktop=OFF \
+      -DQT_FEATURE_static=ON \
+      -DQT_FEATURE_openssl=ON \
+      -DQT_FEATURE_openssl_linked=ON \
+      -DQT_FEATURE_gui=ON \
+      -DQT_FEATURE_widgets=ON \
+      -DQT_FEATURE_xlib=ON \
+      -DQT_FEATURE_xcb=ON \
+      -DQT_FEATURE_xkbcommon=ON \
+      -DQT_FEATURE_fontconfig=ON \
+      -DQT_FEATURE_sessionmanager=ON \
+      -DQT_FEATURE_glib=OFF \
+      -DQT_FEATURE_xrender=ON \
+      -DFEATURE_png=ON \
+      -DFEATURE_jpeg=ON \
+      -DFEATURE_freetype=ON \
+      -DFEATURE_harfbuzz=ON \
+      -DFEATURE_system_zlib=OFF \
+      -DFEATURE_system_png=OFF \
+      -DFEATURE_system_jpeg=OFF \
+      -DFEATURE_system_freetype=OFF \
+      -DFEATURE_system_harfbuzz=OFF && \
+    cmake --build . --parallel && \
+    cmake --install .
+
+
 FROM ubuntu:22.04
 
 # build-args
