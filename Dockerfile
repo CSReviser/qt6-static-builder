@@ -102,6 +102,21 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.
       HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
       HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
 
+# harfbuzz (static, .pc生成確認)
+RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
+    tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
+    meson setup build \
+      --prefix=/usr/local \
+      --buildtype=release \
+      --libdir=lib \
+      -Ddefault_library=static \
+      -Dtests=disabled \
+      -Ddocs=disabled \
+      -Dbenchmark=disabled \
+      -Dintrospection=disabled && \
+    ninja -C build && \
+    ninja -C build install
+
 # fontconfig (static)
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
@@ -149,11 +164,11 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_sessionmanager=ON \
       -DQT_FEATURE_glib=OFF \
       -DQT_FEATURE_xrender=ON \
-      -DQT_FEATURE_system_zlib=OFF \
-      -DQT_FEATURE_system_png=OFF \
+      -DQT_FEATURE_system_zlib=ON \
+      -DQT_FEATURE_system_png=ON \
       -DQT_FEATURE_system_jpeg=OFF \
-      -DQT_FEATURE_system_freetype=OFF \
-      -DQT_FEATURE_system_harfbuzz=OFF && \
+      -DQT_FEATURE_system_freetype=OM \
+      -DQT_FEATURE_system_harfbuzz=ON && \
     cmake --build . --parallel && \
     cmake --install .
 
