@@ -128,8 +128,8 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
     ninja -C build install
 
 # fontconfig (static)
-RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
-    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
+RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.6.0.tar.gz && \
+    tar -xf fontconfig-2.6.0.tar.gz && cd fontconfig-2.6.0 && \
     env \
       PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
       CPPFLAGS="-I/usr/local/include" \
