@@ -91,9 +91,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.1.tar.xz && \
-    tar -xf xcb-proto-1.15.1.tar.xz && \
-    cd xcb-proto-1.15.1 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.14.1.tar.xz && \
+    tar -xf xcb-proto-1.14.1.tar.xz && \
+    cd xcb-proto-1.14.1 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 # libxml-2.0
@@ -109,15 +109,15 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     cmake --build build -j$(nproc) && cmake --install build
 
 # libXau
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.10.tar.gz && \
-    tar -xf libXau-1.0.10.tar.gz && \
-    cd libXau-1.0.10 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.9.tar.gz && \
+    tar -xf libXau-1.0.9.tar.gz && \
+    cd libXau-1.0.9 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libXdmcp
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.4.tar.gz && \
-    tar -xf libXdmcp-1.1.4.tar.gz && \
-    cd libXdmcp-1.1.4 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.1.tar.gz && \
+    tar -xf libXdmcp-1.1.1.tar.gz && \
+    cd libXdmcp-1.1.1 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libpthread-stubs
@@ -184,9 +184,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
 
 
 # libxcb
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz && \
-    tar -xf libxcb-1.15.tar.gz && \
-    cd libxcb-1.15 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.11.tar.gz && \
+    tar -xf libxcb-1.11.tar.gz && \
+    cd libxcb-1.11 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
 
 # libX11
