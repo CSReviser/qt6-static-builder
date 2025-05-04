@@ -103,6 +103,17 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.
     make -j$(nproc) && \
     make install
     
+./configure \
+  --prefix=/usr/local \
+  --with-harfbuzz=yes \
+  --enable-static \
+  --disable-shared \
+  --with-pic \
+  --with-bdfformat \
+  --without-bzip2 \
+  HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
+  HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
+
 # fontconfig (static)
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
