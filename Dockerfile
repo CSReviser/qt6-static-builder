@@ -106,25 +106,15 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
     env \
-      PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig" \
+      PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
       CPPFLAGS="-I/usr/local/include" \
-      LDFLAGS="-L/usr/local/lib" \
+      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lpng -lXext" \
       CFLAGS="-fPIC" \
-    ./configure --prefix=/usr/local --enable-static --disable-shared \
-        --enable-libxml2 && \
-    make -j$(nproc) && \
-    make install
-
-env \
-  PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
-  CPPFLAGS="-I/usr/local/include" \
-  LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lpng -lXext" \
-  CFLAGS="-fPIC" \
-./configure \
-  --prefix=/usr/local \
-  --enable-static \
-  --disable-shared \
-  --enable-libxml2
+    ./configure \
+      --prefix=/usr/local \
+      --enable-static \
+      --disable-shared \
+      --enable-libxml2
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
