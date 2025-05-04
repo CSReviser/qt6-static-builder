@@ -74,8 +74,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglu1-mesa-dev \
     libssl-dev \
     libpthread-stubs0-dev \
-    libxau-dev \
-    libxdmcp-dev \
     x11proto-core-dev \
     xcb-proto \
     libxcb-util0-dev \
@@ -186,9 +184,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
 
 
 # libxcb
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.16.tar.gz && \
-    tar -xf libxcb-1.16.tar.gz && \
-    cd libxcb-1.16 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz && \
+    tar -xf libxcb-1.15.tar.gz && \
+    cd libxcb-1.15 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
 
 # libX11
