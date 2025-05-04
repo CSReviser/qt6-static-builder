@@ -133,10 +133,7 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
     env \
       PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
       CPPFLAGS="-I/usr/local/include" \
-PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
-      CPPFLAGS="-I/usr/local/include" \
-      LDFLAGS="-L/usr/local/lib -lxml2 -lz -lm -ldl" \
-      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lpng -lXext" \
+      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lpng -lXext -lm -ldl"
       CFLAGS="-fPIC" \
     ./configure \
       --prefix=/usr/local \
