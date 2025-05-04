@@ -91,8 +91,8 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.g
     make -j$(nproc) && make install
 
 # FreeType (static)
-RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
-    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
+RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.3.0.tar.gz && \
+    tar -xf freetype-2.3.0.tar.gz && cd freetype-2.3.0 && \
     ./configure \
       --prefix=/usr/local \
       --with-harfbuzz=yes \
