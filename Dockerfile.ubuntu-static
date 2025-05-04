@@ -84,6 +84,66 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pip3 install mako \
     && rm -rf /var/lib/apt/lists/*
 
+# zlib (静的ビルド強制)
+RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+    tar -xzf zlib-1.3.1.tar.gz && \
+    cd zlib-1.3.1 && \
+    ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
+
+# libxml2 (static)
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
+    tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
+    cmake -B build -GNinja \
+      -D BUILD_SHARED_LIBS=OFF \
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D LIBXML2_WITH_PYTHON=OFF \
+      -D LIBXML2_WITH_ZLIB=ON \
+      -D LIBXML2_WITH_ICONV=OFF && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build
+
+# libpng
+RUN wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
+    tar -xzf libpng-1.6.37.tar.gz && \
+    cd libpng-1.6.37 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXext
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.gz && \
+    tar -xzf libXext-1.3.5.tar.gz && \
+    cd libXext-1.3.5 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# FreeType (static)
+RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.gz && \
+    tar -xf freetype-2.9.1.tar.gz && cd freetype-2.9.1 && \
+    ./configure \
+      --prefix=/usr/local \
+      --with-harfbuzz=yes \
+      --enable-static \
+      --disable-shared \
+      --with-pic \
+      --with-bdfformat \
+      --without-bzip2 \
+      HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
+      HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
+
+# fontconfig (static)
+RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
+    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
+    env \
+      PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
+      CPPFLAGS="-I/usr/local/include" \
+      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lpng -lXext" \
+      CFLAGS="-fPIC" \
+    ./configure \
+      --prefix=/usr/local \
+      --enable-static \
+      --disable-shared \
+      --enable-libxml2
+
 # xorgproto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2018.1.tar.gz && \
     tar -xf xorgproto-2018.1.tar.gz && \
