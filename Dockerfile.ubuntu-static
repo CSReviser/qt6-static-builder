@@ -85,9 +85,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # xorgproto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
-    tar -xf xorgproto-2024.1.tar.gz && \
-    cd xorgproto-2024.1 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2018.1.tar.gz && \
+    tar -xf xorgproto-2018.1.tar.gz && \
+    cd xorgproto-2018.1 && \
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
