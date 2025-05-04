@@ -242,12 +242,38 @@ RUN mkdir qt-build && cd qt-build && \
     -release \
     -opensource -confirm-license \
     -nomake tests -nomake examples \
-    -qt-zlib -qt-libpng -qt-libjpeg -qt-freetype -qt-harfbuzz \
-    -opengl desktop \
-    -platform linux-g++ && \
-    cmake --build build --parallel && \
-    cmake --install build
+    -qt-zlib -qt-
 
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_SHARED_LIBS=OFF \
+      -DQT_BUILD_EXAMPLES=OFF \
+      -DQT_BUILD_TESTS=OFF \
+      -DQT_FEATURE_static=ON \
+      -DQT_FEATURE_gui=ON \
+      -DQT_FEATURE_widgets=ON \
+      -DQT_FEATURE_dbus=ON \
+      -DQT_FEATURE_icu=OFF \
+      -DQT_FEATURE_opengl_desktop=OFF \
+      -DQT_FEATURE_openssl=ON \
+      -DQT_FEATURE_openssl_linked=ON \
+      -DQT_FEATURE_png=ON \
+      -DQT_FEATURE_jpeg=ON \
+      -DQT_FEATURE_freetype=ON \
+      -DQT_FEATURE_harfbuzz=ON \
+      -DQT_FEATURE_xlib=ON \
+      -DQT_FEATURE_xcb=ON \
+      -DQT_FEATURE_xkbcommon=ON \
+      -DQT_FEATURE_fontconfig=ON \
+      -DQT_FEATURE_sessionmanager=ON \
+      -DQT_FEATURE_glib=OFF \
+      -DQT_FEATURE_xrender=ON \
+      -DQT_FEATURE_system_zlib=OFF \
+      -DQT_FEATURE_system_png=OFF \
+      -DQT_FEATURE_system_jpeg=OFF \
+      -DQT_FEATURE_system_freetype=OFF \
+      -DQT_FEATURE_system_harfbuzz=OFF && \
+    cmake --build . --parallel && \
+    cmake --install .
 
 # Configure, build, and install Qt statically
 #RUN mkdir qt-build && cd qt-build && \
