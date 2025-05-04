@@ -80,6 +80,16 @@ RUN wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
     cd libpng-1.6.37 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
+# libjpeg-turbo (static)
+RUN wget https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-3.0.2.tar.gz && \
+    tar -xzf libjpeg-turbo-3.0.2.tar.gz && cd libjpeg-turbo-3.0.2 && \
+    cmake -B build -G"Unix Makefiles" \
+        -DCMAKE_INSTALL_PREFIX=/usr/local \
+        -DENABLE_SHARED=OFF \
+        -DENABLE_STATIC=ON && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build
+
 # libXext
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.gz && \
     tar -xzf libXext-1.3.5.tar.gz && \
