@@ -143,6 +143,14 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
     make -j$(nproc) && \
     make install
 
+# ICU (static)
+RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz && \
+    tar -xzf icu4c-74_2-src.tgz && \
+    cd icu/source && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && \
+    make install
+
 # Qt取得 & ビルド
 # Download and extract Qt module source
 WORKDIR /build
