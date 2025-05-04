@@ -57,6 +57,23 @@ RUN apt-get update && apt-get install -y \
     libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# libxml2 (static)
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
+    tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
+    cmake -B build -GNinja \
+      -D BUILD_SHARED_LIBS=OFF \
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D LIBXML2_WITH_PYTHON=OFF \
+      -D LIBXML2_WITH_ZLIB=ON \
+      -D LIBXML2_WITH_ICONV=OFF && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build
+
+# zlib (静的ビルド強制)
+RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+    tar -xzf zlib-1.3.1.tar.gz && \
+    cd zlib-1.3.1 && \
+    ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
 
 # libpng
 RUN wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
