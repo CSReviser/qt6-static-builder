@@ -99,8 +99,8 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.g
     make -j$(nproc) && make install
 
 # FreeType (static)
-RUN wget https://repo.jing.rocks/nongnu/freetype/freetype-2.7.1.tar.gz && \
-    tar -xf freetype-2.7.1.tar.gz && cd freetype-2.7.1 && \
+RUN wget https://repo.jing.rocks/nongnu/freetype/freetype-2.9.1.tar.gz && \
+    tar -xf freetype-2.9.1.tar.gz && cd freetype-2.9.1 && \
     ./configure \
       --prefix=/usr/local \
       --with-harfbuzz=yes \
@@ -128,8 +128,8 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
     ninja -C build install
 
 # fontconfig (static)
-RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.12.0.tar.gz && \
-    tar -xf fontconfig-2.12.0.tar.gz && cd fontconfig-2.12.0 && \
+RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
+    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
     env \
       PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
       CPPFLAGS="-I/usr/local/include" \
