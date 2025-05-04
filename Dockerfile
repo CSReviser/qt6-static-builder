@@ -69,30 +69,30 @@ RUN mkdir qt-build && cd qt-build && \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
-      -DFEATURE_dbus=ON \ 
-      -DFEATURE_icu=OFF \
       -DQT_FEATURE_static=ON \
-      -DQT_FEATURE_openssl=ON \
-      -DQT_FEATURE_openssl_linked=ON \
       -DQT_FEATURE_gui=ON \
       -DQT_FEATURE_widgets=ON \
+      -DQT_FEATURE_dbus=ON \
+      -DQT_FEATURE_icu=OFF \
+      -DQT_FEATURE_opengl_desktop=OFF \
+      -DQT_FEATURE_openssl=ON \
+      -DQT_FEATURE_openssl_linked=ON \
+      -DQT_FEATURE_png=ON \
+      -DQT_FEATURE_jpeg=ON \
+      -DQT_FEATURE_freetype=ON \
+      -DQT_FEATURE_harfbuzz=ON \
       -DQT_FEATURE_xlib=ON \
       -DQT_FEATURE_xcb=ON \
       -DQT_FEATURE_xkbcommon=ON \
-      -DQT_FEATURE_xrender=ON \
       -DQT_FEATURE_fontconfig=ON \
       -DQT_FEATURE_sessionmanager=ON \
-      -DFEATURE_glib=OFF \
-      -DQT_FEATURE_opengl=OFF \
-      -DFEATURE_system_zlib=OFF \
-      -DFEATURE_system_png=OFF \
-      -DFEATURE_system_jpeg=OFF \
-      -DFEATURE_system_freetype=OFF \
-      -DFEATURE_system_harfbuzz=OFF \
-      -DFEATURE_png=ON \
-      -DFEATURE_jpeg=ON \
-      -DFEATURE_freetype=ON \
-      -DFEATURE_harfbuzz=ON && \
+      -DQT_FEATURE_glib=OFF \
+      -DQT_FEATURE_xrender=ON \
+      -DQT_FEATURE_system_zlib=OFF \
+      -DQT_FEATURE_system_png=OFF \
+      -DQT_FEATURE_system_jpeg=OFF \
+      -DQT_FEATURE_system_freetype=OFF \
+      -DQT_FEATURE_system_harfbuzz=OFF && \
     cmake --build . --parallel && \
     cmake --install .
 
