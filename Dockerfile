@@ -63,8 +63,8 @@ RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
     ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
 
 # libxml2 (static)
-RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
-    tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.9.9.tar.gz && \
+    tar -xf v2.9.9.tar.gz && cd libxml2-2.9.9 && \
     cmake -B build -GNinja \
       -D BUILD_SHARED_LIBS=OFF \
       -D CMAKE_INSTALL_PREFIX=/usr/local \
