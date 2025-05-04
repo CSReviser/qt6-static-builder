@@ -164,7 +164,8 @@ RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | gr
 RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlCtxtGetLastError || echo "OK: xmlCtxtGetLastError not found"
 RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlFreeParserCtxt || echo "OK: xmlFreeParserCtxt not found"
 RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xml || echo "OK: xml not found"
-
+RUN echo "---- Installed .pc files ----" && \
+    ls -1 /usr/local/lib/pkgconfig/*.pc
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
