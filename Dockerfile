@@ -48,7 +48,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
-      -DFEATURE_dbus=ON \                   # 必要に応じて OFF にしてもOK
+      -DFEATURE_dbus=ON \ 
       -DFEATURE_icu=OFF \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_openssl=ON \
@@ -62,7 +62,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_fontconfig=ON \
       -DQT_FEATURE_sessionmanager=ON \
       -DFEATURE_glib=OFF \
-      -DQT_FEATURE_opengl=OFF \             # WrapOpenGL_FOUND=FALSE 対策
+      -DQT_FEATURE_opengl=OFF \
       -DFEATURE_system_zlib=OFF \
       -DFEATURE_system_png=OFF \
       -DFEATURE_system_jpeg=OFF \
