@@ -8,6 +8,7 @@ ARG QT_MODULE=qtbase
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
 ENV INSTALL_PREFIX=/opt/qt6-static
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 
 # 依存インストール
 # Install dependencies
@@ -54,6 +55,50 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
+
+
+# libpng
+RUN wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
+    tar -xzf libpng-1.6.37.tar.gz && \
+    cd libpng-1.6.37 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXext
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.gz && \
+    tar -xzf libXext-1.3.5.tar.gz && \
+    cd libXext-1.3.5 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# FreeType (static)
+RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.13.2.tar.gz && \
+    tar -xf freetype-2.13.2.tar.gz && cd freetype-2.13.2 && \
+    ./configure \
+      --prefix=/usr/local \
+      --with-harfbuzz=yes \
+      --enable-static \
+      --disable-shared \
+      --with-pic \
+      --without-bzip2 \
+      HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
+      HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)" && \
+    make -j$(nproc) && \
+    make install
+    
+# fontconfig (static)
+RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
+    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
+    env \
+      PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig" \
+      CPPFLAGS="-I/usr/local/include" \
+      LDFLAGS="-L/usr/local/lib" \
+      CFLAGS="-fPIC" \
+    ./configure --prefix=/usr/local --enable-static --disable-shared \
+        --enable-libxml2 && \
+    make -j$(nproc) && \
+    make install
+
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
