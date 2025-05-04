@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     wget \
+    gperf \
     ca-certificates \
     libxcb1-dev libxcb-util-dev libx11-dev \
     libxext-dev libxrender-dev libxkbcommon-dev \
