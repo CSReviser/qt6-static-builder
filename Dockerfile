@@ -52,6 +52,7 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-dev \
     libgtk-3-dev \
     libssl-dev \
+    libfontconfig1-dev \
     meson \
     python3-pip \
     pkg-config \
@@ -132,22 +133,6 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
     ninja -C build && \
     ninja -C build install
 
-# fontconfig (static)
-RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
-    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
-    env \
-      PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
-      CPPFLAGS="-I/usr/local/include" \
-      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lpng -lXext -lm -ldl" \
-      CFLAGS="-fPIC" \
-    ./configure \
-      --prefix=/usr/local \
-      --enable-static \
-      --disable-shared \
-      --enable-libxml2 && \
-    make -j$(nproc) && \
-    make install
-
 # ICU (static)
 RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz && \
     tar -xzf icu4c-74_2-src.tgz && \
@@ -155,17 +140,6 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && \
     make install
-
-
-# 全 .a ファイルを対象にシンボル調査
-RUN find /usr/local/lib -name "fcxm*a" -exec echo "== {} ==" \; -exec nm {} \; | grep xml || echo "OK: xml not found"
-RUN find /usr/local/lib -name "libxml2.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlSAX2GetLineNumber || echo "OK: xmlSAX2GetLineNumber not found"
-RUN find /usr/local/lib -name "libxml2.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlParseChunk || echo "OK: xmlParseChunk not found"
-RUN find /usr/local/lib -name "libxml2.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlCtxtGetLastError || echo "OK: xmlCtxtGetLastError not found"
-RUN find /usr/local/lib -name "libxml2.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlFreeParserCtxt || echo "OK: xmlFreeParserCtxt not found"
-RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xml || echo "OK: xml not found"
-RUN echo "---- Installed .pc files ----" && \
-    ls -1 /usr/local/lib/pkgconfig/*.pc
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
