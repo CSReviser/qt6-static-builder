@@ -81,8 +81,8 @@ RUN wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libjpeg-turbo (static)
-RUN wget https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-3.0.2.tar.gz && \
-    tar -xzf libjpeg-turbo-3.0.2.tar.gz && cd libjpeg-turbo-3.0.2 && \
+RUN wget https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-3.0.1.tar.gz && \
+    tar -xzf libjpeg-turbo-3.0.1.tar.gz && cd libjpeg-turbo-3.0.1 && \
     cmake -B build -G"Unix Makefiles" \
         -DCMAKE_INSTALL_PREFIX=/usr/local \
         -DENABLE_SHARED=OFF \
