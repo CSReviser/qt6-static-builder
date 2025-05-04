@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     gperf \
+    libtool \
+    automake \
     ca-certificates \
     libxcb1-dev libxcb-util-dev libx11-dev \
     libxext-dev libxrender-dev libxkbcommon-dev \
