@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     ninja-build \
     git \
     curl \
+    wget \
     ca-certificates \
     libxcb1-dev libxcb-util-dev libx11-dev \
     libxext-dev libxrender-dev libxkbcommon-dev \
