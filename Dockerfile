@@ -169,7 +169,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_gui=ON \
       -DQT_FEATURE_widgets=ON \
       -DQT_FEATURE_dbus=ON \
-      -DQT_FEATURE_icu=OFF \
+      -DQT_FEATURE_icu=ON \
       -DQT_FEATURE_opengl_desktop=OFF \
       -DQT_FEATURE_openssl=ON \
       -DQT_FEATURE_openssl_linked=ON \
