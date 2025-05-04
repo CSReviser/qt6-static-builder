@@ -159,7 +159,9 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
 
 # 全 .a ファイルを対象にシンボル調査
 RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlSAX2GetLineNumber || echo "OK: xmlSAX2GetLineNumber not found"
-RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xml || echo "OK: xml not found"
+RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlParseChunk || echo "OK: xmlParseChunk not found"
+RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlCtxtGetLastError || echo "OK: xmlCtxtGetLastError not found"
+RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlFreeParserCtxt || echo "OK: xmlFreeParserCtxt not found"
 
 
 # Qt取得 & ビルド
