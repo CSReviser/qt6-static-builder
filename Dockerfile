@@ -178,7 +178,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_xrender=ON \
       -DQT_FEATURE_system_zlib=ON \
       -DQT_FEATURE_system_png=ON \
-      -DQT_FEATURE_system_jpeg=OFF \
+      -DQT_FEATURE_system_jpeg=ON \
       -DQT_FEATURE_system_freetype=OM \
       -DQT_FEATURE_system_harfbuzz=ON && \
     cmake --build . --parallel && \
