@@ -151,6 +151,12 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
     make -j$(nproc) && \
     make install
 
+
+# 全 .a ファイルを対象にシンボル調査
+RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xmlSAX2GetLineNumber || echo "OK: xmlSAX2GetLineNumber not found"
+RUN find /usr/local/lib -name "*.a" -exec echo "== {} ==" \; -exec nm {} \; | grep xml || echo "OK: xml not found"
+
+
 # Qt取得 & ビルド
 # Download and extract Qt module source
 WORKDIR /build
