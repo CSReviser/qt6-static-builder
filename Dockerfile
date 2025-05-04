@@ -139,7 +139,9 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
       --prefix=/usr/local \
       --enable-static \
       --disable-shared \
-      --enable-libxml2
+      --enable-libxml2 && \
+    make -j$(nproc) && \
+    make install
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
