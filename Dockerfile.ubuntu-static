@@ -111,15 +111,15 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     cmake --build build -j$(nproc) && cmake --install build
 
 # libXau
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
-    tar -xf libXau-1.0.12.tar.gz && \
-    cd libXau-1.0.12 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.10.tar.gz && \
+    tar -xf libXau-1.0.10.tar.gz && \
+    cd libXau-1.0.10 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libXdmcp
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
-    tar -xf libXdmcp-1.1.5.tar.gz && \
-    cd libXdmcp-1.1.5 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.4.tar.gz && \
+    tar -xf libXdmcp-1.1.4.tar.gz && \
+    cd libXdmcp-1.1.4 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libpthread-stubs
