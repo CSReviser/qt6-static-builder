@@ -23,8 +23,6 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     libxcb1-dev libxcb-util-dev libx11-dev \
     libxext-dev libxrender-dev libxkbcommon-dev \
-    libfontconfig1-dev libfreetype6-dev \
-    libpng-dev libjpeg-dev zlib1g-dev \
     libx11-xcb-dev \
     libxcb-cursor-dev \
     libxcb-glx0-dev \
