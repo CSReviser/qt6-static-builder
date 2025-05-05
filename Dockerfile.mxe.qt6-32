@@ -62,6 +62,6 @@ WORKDIR /opt
 RUN git clone https://github.com/mxe/mxe.git && \
     cd mxe && \
     git checkout 01243f96 && \
-    make MXE_TARGETS='i686-w64-mingw32.static' qt6-qtbase gcc cmake -j$(nproc)
+    make MXE_TARGETS='i686-w64-mingw32.static' qt6-qtbase gcc cmake ffmpeg -j$(nproc)
 
 ENV PATH="/opt/mxe/usr/bin:$PATH"
