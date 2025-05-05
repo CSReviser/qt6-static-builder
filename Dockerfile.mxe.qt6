@@ -61,6 +61,6 @@ RUN pip3 install mako
 WORKDIR /opt
 RUN git clone https://github.com/mxe/mxe.git && \
     cd mxe && \
-    make MXE_TARGETS='x86_64-w64-mingw32.static' qt6-qtbase gcc cmake -j$(nproc)
+    make MXE_TARGETS='x86_64-w64-mingw32.static' qt6-qtbase gcc cmake ffmpeg -j$(nproc)
 
 ENV PATH="/opt/mxe/usr/bin:$PATH"
