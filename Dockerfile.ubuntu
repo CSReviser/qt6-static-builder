@@ -265,11 +265,11 @@ ENV CFLAGS="-I/usr/include"
 ENV LDFLAGS="-L/usr/lib"
 
 # Qt6 ソースダウンロードとビルド
-RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qtbase-everywhere-src-${QT_VERSION}.tar.xz && \
-    tar -xf qtbase-everywhere-src-${QT_VERSION}.tar.xz
+RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qt-everywhere-src-${QT_VERSION}.tar.xz && \
+    tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz
 
 RUN mkdir qt-build && cd qt-build && \
-    cmake -GNinja ../qtbase-everywhere-src-${QT_VERSION} \
+    cmake -GNinja ../qt-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DCMAKE_BUILD_TYPE=Release \
 			-DCMAKE_FIND_LIBRARY_SUFFIXES=".a" \
