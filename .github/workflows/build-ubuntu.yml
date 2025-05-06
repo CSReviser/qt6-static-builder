@@ -1,4 +1,4 @@
-name: Build & Push Qt6 Static Docker Image (Ubuntu)
+name: ubuntu Build & Push Qt6 Static Docker Image (Ubuntu)
 
 on:
   workflow_dispatch:
@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-static:6.9.0-ubuntu22.04
-      IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-static:latest
+      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-static-ubuntu:6.9.0-ubuntu22.04
+      IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-static-ubuntu:latest
       QT_VERSION: 6.9.0
 
     steps:
