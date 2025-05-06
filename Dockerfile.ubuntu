@@ -252,14 +252,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-# glib
-RUN wget https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz && \
-    tar -xf glib-2.78.3.tar.xz && \
-    cd glib-2.78.3 && \
-    meson setup build --prefix=/usr --default-library=static -Dglib_debug=disabled -Ddefault_library=static && \
-    ninja -C build && \
-    ninja -C build install
-
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
 ARG QT_VERSION=6.9.0
