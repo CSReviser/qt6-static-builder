@@ -252,13 +252,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-# xcb-util-icccm
-RUN git clone --depth 1 --branch 0.4.2 https://gitlab.freedesktop.org/mirrors/xcb/util-icccm.git && \
-    cd util-icccm && \
-    ./autogen.sh && \
-    ./configure --prefix=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
 # glib
 RUN wget https://download.gnome.org/sources/glib/2.78/glib-2.78.3.tar.xz && \
     tar -xf glib-2.78.3.tar.xz && \
@@ -316,7 +309,40 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_system_png=OFF \
       -DFEATURE_system_jpeg=OFF \
       -DFEATURE_system_freetype=OFF \
-      -DFEATURE_system_harfbuzz=OFF && \
+      -DFEATURE_system_harfbuzz=OFF \
+		  -DQT_BUILD_QT3D=OFF \
+		  -DQT_BUILD_QTCHARTS=OFF \
+		  -DQT_BUILD_QTDECLARATIVE=OFF \
+		  -DQT_BUILD_QTMULTIMEDIA=OFF \
+		  -DQT_BUILD_QTNETWORKAUTH=OFF \
+		  -DQT_BUILD_QTOPCUA=OFF \
+		  -DQT_BUILD_QTPOSITIONING=OFF \
+		  -DQT_BUILD_QTQUICK3D=OFF \
+		  -DQT_BUILD_QTREMOTEOBJECTS=OFF \
+		  -DQT_BUILD_QTSCXML=OFF \
+		  -DQT_BUILD_QTSENSORS=OFF \
+		  -DQT_BUILD_QTSERIALBUS=OFF \
+		  -DQT_BUILD_QTSERIALPORT=OFF \
+		  -DQT_BUILD_QTSPEECH=OFF \
+		  -DQT_BUILD_QTSVG=OFF \
+		  -DQT_BUILD_QTTOOLS=OFF \
+		  -DQT_BUILD_QTWAYLAND=OFF \
+		  -DQT_BUILD_QTWEBCHANNEL=OFF \
+		  -DQT_BUILD_QTWEBENGINE=OFF \
+		  -DQT_BUILD_QTWEBSOCKETS=OFF \
+		  -DQT_BUILD_QTWEBVIEW=OFF \
+		  -DQT_BUILD_QTLOCATION=OFF \
+		  -DQT_BUILD_QTHTTPServer=OFF \
+		  -DQT_BUILD_QTCOAP=OFF \
+		  -DQT_BUILD_QTGRPC=OFF \
+		  -DQT_BUILD_QTPROTO=OFF \
+		  -DQT_BUILD_QTQUICKEFFECTMAKER=OFF \
+		  -DQT_BUILD_QTQUICKTIMELINE=OFF \
+		  -DQT_BUILD_QTSTATEMACHINE=OFF \
+		  -DQT_BUILD_QTVIRTUALKEYBOARD=OFF \
+		  -DQT_BUILD_QTWINEXTRAS=OFF \
+		  -DQT_BUILD_QTX11EXTRAS=OFF \
+		  -DQT_BUILD_QTXMLPATTERNS=OFF && \
     cmake --build . --parallel && \
     cmake --install . 
 
