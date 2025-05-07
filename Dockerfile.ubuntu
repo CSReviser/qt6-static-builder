@@ -266,10 +266,6 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --build . --parallel && \
     cmake --install . 
 
-# ========== 最小実行ステージ ==========
-FROM ubuntu:22.04
 
-ARG INSTALL_PREFIX=/opt/qt6-static
-COPY --from=builder ${INSTALL_PREFIX} ${INSTALL_PREFIX}
-
-ENV PATH="${INSTALL_PREFIX}/bin:${PATH}"
+# PATH登録
+ENV PATH="/opt/qt6-static/bin:$PATH"
