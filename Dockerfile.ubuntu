@@ -122,6 +122,22 @@ RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.
       HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
       HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
 
+
+# harfbuzz (static, .pc生成確認)
+RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
+    tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
+    meson setup build \
+      --prefix=/usr/local \
+      --buildtype=release \
+      --libdir=lib \
+      -Ddefault_library=static \
+      -Dtests=disabled \
+      -Ddocs=disabled \
+      -Dbenchmark=disabled \
+      -Dintrospection=disabled && \
+    ninja -C build && \
+    ninja -C build install
+
 # fontconfig (static)
 RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
     tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
