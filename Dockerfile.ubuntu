@@ -184,6 +184,7 @@ RUN mkdir qt-build && cd qt-build && \
       -prefix "${INSTALL_PREFIX}" \
       -static -release \
       -opensource -confirm-license \
+      -skip qtdoc \
       -skip qt3d \
       -skip qtcharts \
       -skip qtdeclarative \
