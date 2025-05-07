@@ -195,7 +195,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_dbus=ON \
       -DQT_FEATURE_icu=OFF \
       -DQT_FEATURE_opengl_desktop=OFF \
-      -DQT_FEATURE_opengl=OFF \
+      -DQT_FEATURE_opengl=ON \
       -DQT_FEATURE_opengles2=OFF \
       -DOpenGL_GL_PREFERENCE=LEGACY \
       -DOpenGL_DIR=/usr/lib/x86_64-linux-gnu/cmake/OpenGL \
@@ -221,6 +221,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_system_jpeg=OFF \
       -DQT_FEATURE_system_freetype=OFF \
       -DQT_FEATURE_system_harfbuzz=OFF \
+      -DQT_BUILD_QTBASE=ON \
       -DQT_BUILD_QT3D=OFF \
       -DQT_BUILD_QTCHARTS=OFF \
       -DQT_BUILD_QTDECLARATIVE=OFF \
