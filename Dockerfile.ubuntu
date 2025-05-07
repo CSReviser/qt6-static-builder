@@ -194,6 +194,8 @@ RUN mkdir qt-build && cd qt-build && \
       -skip qtlanguageserver \
       -skip qtshadertools \
       -skip qtquick3dphysics \
+      -skip qtimageformats \
+      -skip qttranslations \
       -skip qtcharts \
       -skip qtlottie \
       -skip qtdeclarative \
