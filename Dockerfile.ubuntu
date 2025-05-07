@@ -187,6 +187,13 @@ RUN mkdir qt-build && cd qt-build && \
       -skip qtdoc \
       -skip qtmqtt \
       -skip qt3d \
+      -skip qtactiveqt \
+      -skip qtconnectivity \
+      -skip qtdatavis3d \
+      -skip timageformats \
+      -skip qtlanguageserver \
+      -skip qtshadertools \
+      -skip qtquick3dphysics \
       -skip qtcharts \
       -skip qtlottie \
       -skip qtdeclarative \
