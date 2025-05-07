@@ -189,7 +189,6 @@ RUN mkdir qt-build && cd qt-build && \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
-      -DQT_REPO_MODULE_VERSION="disabled" \
       -DQT_BUILD_ADDON=OFF \
       -DQT_BUILD_GRAPHICS=OFF \
       -DQT_BUILD_QTGRAPHS=OFF \
