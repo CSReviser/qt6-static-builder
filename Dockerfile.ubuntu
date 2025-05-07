@@ -161,7 +161,19 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
     make -j$(nproc) && \
     make install
 
-
+# fontconfig (static)
+RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
+    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
+    env \
+      PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
+      CPPFLAGS="-I/usr/local/include" \
+      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lpng -lXext" \
+      CFLAGS="-fPIC" \
+    ./configure \
+      --prefix=/usr/local \
+      --enable-static \
+      --disable-shared \
+      --enable-libxml2
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
@@ -240,17 +252,17 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-xcb \
       -feature-xcb-xlib \
       -feature-xkbcommon \
-      -no-feature-fontconfig \
+      -feature-fontconfig \
       -feature-sessionmanager \
       -feature-openssl \
       -openssl-linked \
       -no-feature-glib \
       -no-feature-icu \
-      -no-feature-system-zlib \
-      -no-feature-system-png \
-      -no-feature-system-jpeg \
-      -no-feature-system-freetype \
-      -no-feature-system-harfbuzz && \
+      -feature-system-zlib \
+      -feature-system-png \
+      -feature-system-jpeg \
+      -feature-system-freetype \
+      -feature-system-harfbuzz && \
     cmake --build . --parallel && \
     cmake --install . 
 
