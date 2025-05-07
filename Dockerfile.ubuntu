@@ -258,6 +258,7 @@ RUN mkdir qt-build && cd qt-build && \
       -openssl-linked \
       -no-feature-glib \
       -no-feature-icu \
+      -no-feature-system-freetype \
       -no-feature-system-zlib \
       -no-feature-system-png \
       -no-feature-system-jpeg \
