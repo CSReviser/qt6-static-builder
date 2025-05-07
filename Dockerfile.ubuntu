@@ -180,6 +180,70 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz
 
 RUN mkdir qt-build && cd qt-build && \
+./configure \
+  -prefix "${INSTALL_PREFIX}" \
+  -static -release \
+  -opensource -confirm-license \
+  -skip qt3d \
+  -skip qtcharts \
+  -skip qtdeclarative \
+  -skip qtmultimedia \
+  -skip qtnetworkauth \
+  -skip qtopcua \
+  -skip qtpositioning \
+  -skip qtquick3d \
+  -skip qtremoteobjects \
+  -skip qtscxml \
+  -skip qtsensors \
+  -skip qtserialbus \
+  -skip qtserialport \
+  -skip qtspeech \
+  -skip qtsvg \
+  -skip qttools \
+  -skip qtwayland \
+  -skip qtwebchannel \
+  -skip qtwebengine \
+  -skip qtwebsockets \
+  -skip qtwebview \
+  -skip qtlocation \
+  -skip qthttpserver \
+  -skip qtcoap \
+  -skip qtgrpc \
+  -skip qtproto \
+  -skip qtquickeffectmaker \
+  -skip qtquicktimeline \
+  -skip qtstatemachine \
+  -skip qtvirtualkeyboard \
+  -skip qtwinextras \
+  -skip qt5compat \
+  -skip qtxmlpatterns \
+  -nomake tests \
+  -nomake examples \
+  -feature-dbus \
+  -feature-opengl \
+  -opengl desktop \
+  -feature-png \
+  -feature-jpeg \
+  -feature-freetype \
+  -feature-harfbuzz \
+  -feature-gui \
+  -feature-widgets \
+  -feature-xlib \
+  -feature-xcb \
+  -feature-xcb-xlib \
+  -feature-xkbcommon \
+  -feature-fontconfig \
+  -feature-sessionmanager \
+  -feature-openssl \
+  -openssl-linked \
+  -no-feature-glib \
+  -no-feature-icu \
+  -no-feature-system-zlib \
+  -no-feature-system-png \
+  -no-feature-system-jpeg \
+  -no-feature-system-freetype \
+  -no-feature-system-harfbuzz
+
     cmake -GNinja ../qt-everywhere-src-${QT_VERSION} \
       -DQT_CMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
       -DQT_PCRE2_LIBRARY=/usr/lib/x86_64-linux-gnu/*.a \
