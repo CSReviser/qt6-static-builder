@@ -2,6 +2,10 @@ FROM ubuntu:22.04 AS builder
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
+ENV INSTALL_PREFIX=/opt/qt6-static
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
+
+
 
 RUN apt-get update && apt-get install -y \
     build-essential \
