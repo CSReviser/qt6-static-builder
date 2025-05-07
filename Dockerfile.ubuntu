@@ -64,6 +64,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libfontconfig1-dev \
     libclang-dev \
+    libgl-dev \
     libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev \
     && rm -rf /var/lib/apt/lists/*
 
