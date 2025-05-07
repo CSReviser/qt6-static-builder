@@ -28,7 +28,38 @@ RUN apt-get update && apt-get install -y \
     x11proto-core-dev \
     x11proto-kb-dev \
     libxkbfile-dev \
-		libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev \
+    libxcb1-dev libxcb-util-dev libx11-dev \
+    libxext-dev libxrender-dev libxkbcommon-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev \
+    libdbus-1-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    libglib2.0-dev \
+    libgtk-3-dev \
+    libssl-dev \
+    libfontconfig1-dev \
+    libclang-dev \
+    libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
