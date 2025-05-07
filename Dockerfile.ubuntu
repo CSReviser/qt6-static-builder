@@ -185,6 +185,7 @@ RUN mkdir qt-build && cd qt-build && \
       -static -release \
       -opensource -confirm-license \
       -skip qtdoc \
+      -skip qtmqtt \
       -skip qt3d \
       -skip qtcharts \
       -skip qtlottie \
