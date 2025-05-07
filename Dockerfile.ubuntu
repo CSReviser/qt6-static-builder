@@ -187,6 +187,7 @@ RUN mkdir qt-build && cd qt-build && \
       -skip qt3d \
       -skip qtcharts \
       -skip qtdeclarative \
+      -skip qtgraphs \
       -skip qtmultimedia \
       -skip qtnetworkauth \
       -skip qtopcua \
