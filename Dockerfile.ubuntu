@@ -255,7 +255,7 @@ RUN mkdir qt-build && cd qt-build && \
       -no-feature-fontconfig \
       -feature-sessionmanager \
       -feature-openssl \
-      -openssl-linked \
+      -feature-openssl-linked \
       -no-feature-glib \
       -no-feature-icu \
       -no-feature-system-zlib \
