@@ -248,9 +248,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libXrandr
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.4.2.tar.gz && \
-    tar -xzf libXrandr-1.4.2.tar.gz && \
-    cd libXrandr-1.4.2 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.2.tar.gz && \
+    tar -xzf libXrandr-1.5.2.tar.gz && \
+    cd libXrandr-1.5.2 && \
     PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
     ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
     make -j$(nproc) && make install
