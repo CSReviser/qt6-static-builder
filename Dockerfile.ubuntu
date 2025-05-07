@@ -312,6 +312,8 @@ RUN mkdir qt-build && cd qt-build && \
       -DFEATURE_dbus=ON \
       -DFEATURE_icu=OFF \
       -DQT_FEATURE_opengl_desktop=OFF \
+      -DQT_FEATURE_opengl=OFF \
+      -DQT_FEATURE_opengles2=OFF \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_openssl=ON \
       -DQT_FEATURE_openssl_linked=ON \
