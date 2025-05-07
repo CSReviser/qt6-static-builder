@@ -247,7 +247,7 @@ RUN mkdir qt-build && cd qt-build && \
 		  -DQT_BUILD_QTSTATEMACHINE=OFF \
 		  -DQT_BUILD_QTVIRTUALKEYBOARD=OFF \
 		  -DQT_BUILD_QTWINEXTRAS=OFF \
-		  -DQT_BUILD_QTX11EXTRAS=OFF \
+		  -DQT_BUILD_QT5COMPAT=OFF \
 		  -DQT_BUILD_QTXMLPATTERNS=OFF && \
     cmake --build . --parallel && \
     cmake --install . 
