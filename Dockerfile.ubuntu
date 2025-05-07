@@ -252,17 +252,17 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-xcb \
       -feature-xcb-xlib \
       -feature-xkbcommon \
-      -feature-fontconfig \
+      -no-feature-fontconfig \
       -feature-sessionmanager \
       -feature-openssl \
       -openssl-linked \
       -no-feature-glib \
       -no-feature-icu \
-      -feature-system-zlib \
-      -feature-system-png \
-      -feature-system-jpeg \
-      -feature-system-freetype \
-      -feature-system-harfbuzz && \
+      -no-feature-system-zlib \
+      -no-feature-system-png \
+      -no-feature-system-jpeg \
+      -no-feature-system-freetype \
+      -no-feature-system-harfbuzz && \
     cmake --build . --parallel && \
     cmake --install . 
 
