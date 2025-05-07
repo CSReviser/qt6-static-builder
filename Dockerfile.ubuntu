@@ -241,7 +241,7 @@ RUN mkdir qt-build && cd qt-build && \
       -nomake examples \
       -feature-dbus \
       -feature-opengl \
-      -feature-opengl-desktop \
+      -no-feature-opengl-desktop \
       -feature-png \
       -feature-jpeg \
       -feature-freetype \
