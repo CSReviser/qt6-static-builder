@@ -192,8 +192,8 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_BUILD_GRAPHICS=OFF \
       -DQT_BUILD_QTGRAPHS=OFF \
       -DQT_BUILD_QTGRAPHICALEFFECTS=OFF \
-      -DFEATURE_dbus=ON \
-      -DFEATURE_icu=OFF \
+      -DQT_FEATURE_dbus=ON \
+      -DQT_FEATURE_icu=OFF \
       -DQT_FEATURE_opengl_desktop=OFF \
       -DQT_FEATURE_opengl=OFF \
       -DQT_FEATURE_opengles2=OFF \
@@ -202,10 +202,10 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_openssl=ON \
       -DQT_FEATURE_openssl_linked=ON \
-      -DFEATURE_png=ON \
-      -DFEATURE_jpeg=ON \
-      -DFEATURE_freetype=ON \
-      -DFEATURE_harfbuzz=ON \
+      -DQT_FEATURE_png=ON \
+      -DQT_FEATURE_jpeg=ON \
+      -DQT_FEATURE_freetype=ON \
+      -DQT_FEATURE_harfbuzz=ON \
       -DQT_FEATURE_gui=ON \
       -DQT_FEATURE_widgets=ON \
       -DQT_FEATURE_xlib=ON \
