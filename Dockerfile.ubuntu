@@ -181,6 +181,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../qt-everywhere-src-${QT_VERSION} \
       -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
+      -DPCRE2_LIBRARY=/usr/lib/x86_64-linux-gnu/*.a \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_EXE_LINKER_FLAGS="-static" \
       -DBUILD_SHARED_LIBS=OFF \
