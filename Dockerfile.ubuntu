@@ -258,11 +258,11 @@ RUN mkdir qt-build && cd qt-build && \
       -openssl-linked \
       -no-feature-glib \
       -no-feature-icu \
-      -no-feature-system-zlib \
-      -no-feature-system-png \
-      -no-feature-system-jpeg \
-      -no-feature-system-freetype \
-      -no-feature-system-harfbuzz && \
+      -feature-system-zlib \
+      -feature-system-png \
+      -feature-system-jpeg \
+      -feature-system-freetype \
+      -feature-system-harfbuzz && \
     cmake --build . --parallel && \
     cmake --install . 
 
