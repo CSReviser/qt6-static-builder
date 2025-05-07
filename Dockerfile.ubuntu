@@ -250,7 +250,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_BUILD_QT5COMPAT=OFF \
       -DQT_BUILD_QTACTIVEQT=OFF \
       -DQT_BUILD_QTDATAVIS3D=OFF \
-      DQT_BUILD_QTXMLPATTERNS=OFF && \
+      -DQT_BUILD_QTXMLPATTERNS=OFF && \
     cmake --build . --parallel && \
     cmake --install . 
 
