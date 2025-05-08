@@ -272,6 +272,18 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir && \
     ninja -C builddir install
 
+ARG LIBXKBCOMMON_VERSION=1.9.0
+RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
+    meson setup builddir --prefix=/usr/local --buildtype=release \
+        -Ddefault_library=static \
+        -Denable-wayland=false \
+        -Denable-x11=true \
+        -Denable-xkbregistry=true && \
+    ninja -C builddir && \
+    ninja -C builddir install
+
 
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
