@@ -33,8 +33,7 @@ RUN apt-get update && apt-get install -y \
     x11proto-core-dev \
     x11proto-kb-dev \
     libxkbfile-dev \
-    libxcb1-dev libxcb-util-dev libx11-dev \
-    libxext-dev libxrender-dev libxkbcommon-dev \
+    libx11-dev \
     libx11-xcb-dev \
     libxcb-cursor-dev \
     libxcb-glx0-dev \
@@ -66,8 +65,12 @@ RUN apt-get update && apt-get install -y \
     libclang-dev \
     libgl-dev \
     libpcre2-dev \
-    libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev \
+    libfreetype-dev \
+    libgl1-mesa-dev \
+    mesa-common-dev \
+    libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
+
 
 WORKDIR /work
 #   ca-certificates \
