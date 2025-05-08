@@ -295,37 +295,39 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
-      -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-      -DCMAKE_BUILD_TYPE=Release \
-      -DBUILD_SHARED_LIBS=OFF \
-      -DQT_BUILD_EXAMPLES=OFF \
-      -DQT_BUILD_TESTS=OFF \
-      -DQT_FEATURE_static=ON \
-      -DQT_FEATURE_gui=ON \
-      -DQT_FEATURE_widgets=ON \
-      -DQT_FEATURE_dbus=ON \
-      -DQT_FEATURE_icu=OFF \
-      -DQT_FEATURE_opengl_desktop=OFF \
-      -DQT_FEATURE_openssl=ON \
-      -DQT_FEATURE_openssl_linked=ON \
-      -DQT_FEATURE_png=ON \
-      -DQT_FEATURE_jpeg=ON \
-      -DQT_FEATURE_freetype=ON \
-      -DQT_FEATURE_harfbuzz=ON \
-      -DQT_FEATURE_xlib=ON \
-      -DQT_FEATURE_xcb=ON \
-      -DQT_FEATURE_xkbcommon=ON \
-      -DQT_FEATURE_fontconfig=ON \
-      -DQT_FEATURE_sessionmanager=ON \
-      -DQT_FEATURE_glib=OFF \
-      -DQT_FEATURE_xrender=ON \
-      -DQT_FEATURE_system_zlib=OFF \
-      -DQT_FEATURE_system_png=OFF \
-      -DQT_FEATURE_system_jpeg=OFF \
-      -DQT_FEATURE_system_freetype=OFF \
-      -DQT_FEATURE_system_harfbuzz=OFF && \
+      -DCMAKE_INSTALL_PREFIX
+    ../qt-everywhere-src-${QT_VERSION}/configure \
+      -prefix "${INSTALL_PREFIX}" \
+      -static -release \
+      -opensource -confirm-license \
+      -nomake tests \
+      -nomake examples \
+      -feature-dbus \
+      -feature-opengl \
+      -no-feature-opengl-desktop \
+      -feature-png \
+      -feature-jpeg \
+      -feature-freetype \
+      -feature-harfbuzz \
+      -feature-gui \
+      -feature-widgets \
+      -feature-xlib \
+      -feature-xcb \
+      -feature-xcb-xlib \
+      -feature-xkbcommon \
+      -no-feature-fontconfig \
+      -feature-sessionmanager \
+      -feature-openssl \
+      -feature-openssl-linked \
+      -no-feature-glib \
+      -no-feature-icu \
+      -no-feature-system-zlib \
+      -no-feature-system-png \
+      -no-feature-system-jpeg \
+      -no-feature-system-freetype \
+      -no-feature-system-harfbuzz && \
     cmake --build . --parallel && \
-    cmake --install .
+    cmake --install . 
 
 # Configure, build, and install Qt statically
 #RUN mkdir qt-build && cd qt-build && \
