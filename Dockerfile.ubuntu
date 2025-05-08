@@ -150,6 +150,8 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-opengl \
       -feature-openssl \
       -feature-openssl-linked \
+      -feature-gui \
+      -feature-widgets \
       -feature-glib \
       -feature-icu \
        && \
