@@ -145,29 +145,7 @@ RUN mkdir qt-build && cd qt-build && \
       -nomake examples \
       -feature-dbus \
       -feature-opengl \
-      -no-feature-opengl-desktop \
-      -feature-png \
-      -feature-jpeg \
-      -feature-freetype \
-      -feature-harfbuzz \
-      -feature-gui \
-      -feature-widgets \
-      -feature-xlib \
-      -feature-xcb \
-      -feature-xcb-xlib \
-      -feature-xkbcommon \
-      -feature-xkbcommon-x11 \
-      -no-feature-fontconfig \
-      -feature-sessionmanager \
-      -feature-openssl \
-      -feature-openssl-linked \
-      -no-feature-glib \
-      -no-feature-icu \
-      -no-feature-system-zlib \
-      -no-feature-system-png \
-      -no-feature-system-jpeg \
-      -no-feature-system-freetype \
-      -no-feature-system-harfbuzz && \
+       && \
     cmake --build . --parallel && \
     cmake --install . 
 
