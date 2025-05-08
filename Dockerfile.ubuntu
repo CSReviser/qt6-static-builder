@@ -252,6 +252,7 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-xcb \
       -feature-xcb-xlib \
       -feature-xkbcommon \
+      -feature-xkbcommon-x11 \
       -no-feature-fontconfig \
       -feature-sessionmanager \
       -feature-openssl \
