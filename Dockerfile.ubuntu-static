@@ -282,9 +282,10 @@ ARG INSTALL_PREFIX=/opt/qt6-static
 ENV DEBIAN_FRONTEND=noninteractive
 ENV QT_VERSION=${QT_VERSION}
 ENV INSTALL_PREFIX=${INSTALL_PREFIX}
-ENV PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig"
-ENV CFLAGS="-I/usr/include"
-ENV LDFLAGS="-L/usr/lib"
+ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
+ENV CFLAGS="-I/usr/local/include -I/usr/include"
+ENV LDFLAGS="-L/usr/local/lib -L/usr/lib"
+
 
 # Qt ソース取得とビルド
 WORKDIR /build
