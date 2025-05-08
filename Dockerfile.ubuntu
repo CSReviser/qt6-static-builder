@@ -145,6 +145,10 @@ RUN mkdir qt-build && cd qt-build && \
       -nomake examples \
       -feature-dbus \
       -feature-opengl \
+      -feature-openssl \
+      -feature-openssl-linked \
+      -feature-glib \
+      -feature-icu \
        && \
     cmake --build . --parallel && \
     cmake --install . 
