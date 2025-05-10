@@ -432,6 +432,8 @@ RUN mkdir qt-build && cd qt-build && \
       -no-feature-system-jpeg \
       -no-feature-system-freetype \
       -no-feature-system-harfbuzz && \
+    make -j$(nproc) && \
+    make install
     cmake --build . --parallel && \
     cmake --install . 
 
