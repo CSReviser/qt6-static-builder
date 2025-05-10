@@ -313,6 +313,14 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# ICU ソース取得 & 展開
+RUN curl -LO https://github.com/unicode-org/icu/releases/download/release-72-1/icu4c-72_1-src.tgz && \
+    tar -xf icu4c-72_1-src.tgz && \
+    cd icu/source && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && \
+    make install
+
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
