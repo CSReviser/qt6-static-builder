@@ -109,14 +109,6 @@ RUN wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
     cd libpng-1.6.37 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
-# libXext
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.gz && \
-    tar -xzf libXext-1.3.5.tar.gz && \
-    cd libXext-1.3.5 && \
-    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
 # FreeType (static)
 RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.gz && \
     tar -xf freetype-2.9.1.tar.gz && cd freetype-2.9.1 && \
@@ -243,7 +235,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-
 # libxcb
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.gz && \
     tar -xzf libxcb-1.17.0.tar.gz && \
@@ -255,6 +246,14 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz
     tar -xzf libX11-1.6.9.tar.gz && \
     cd libX11-1.6.9 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libxcb-xinerama
+ARG XCB_XINERAMA_VER=1.15
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-xinerama-${XCB_XINERAMA_VER}.tar.gz && \
+    tar -xzf xcb-xinerama-${XCB_XINERAMA_VER}.tar.gz && \
+    cd xcb-xinerama-${XCB_XINERAMA_VER} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # libXrandr
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.2.tar.gz && \
