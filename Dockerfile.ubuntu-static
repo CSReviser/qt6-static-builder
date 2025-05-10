@@ -313,20 +313,17 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-# Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
-    LDFLAGS="-lXau -lXdmcp" meson setup builddir --prefix=/usr/local --buildtype=release -Ddefault_library=static -Denable-wayland=false -Denable-x11=true && \
+    meson setup builddir --prefix=/usr/local --buildtype=release \
+        -Ddefault_library=static \
+        -Denable-wayland=false \
+        -Denable-x11=true \
+        -Denable-xkbregistry=true && \
     ninja -C builddir && \
     ninja -C builddir install
-
-RUN git clone https://github.com/xkbcommon/libxkbcommon.git && \
-    cd libxkbcommon && \
-    meson setup build --prefix=/usr/local --buildtype=release -Ddefault_library=static && \
-    meson compile -C build && \
-    meson install -C build
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
