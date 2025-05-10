@@ -263,34 +263,55 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.2.tar
     ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
     make -j$(nproc) && make install
 
-RUN git clone https://gitlab.freedesktop.org/xorg/lib/libxcb-util.git && \
-    cd libxcb-util && \
-    git submodule status && \
-    git submodule update --init && \
-    ./autogen.sh && \
+B_U# xcb-util family
+ARG XCTIL_VERSION=0.4.1
+ARG XCB_UTIL_IMAGE_VERSION=0.4.1
+ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
+ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
+ARG XCB_UTIL_WM_VERSION=0.4.2
+ARG XCB_UTIL_CURSOR_VERSION=0.1.5
+
+# Download and build xcb-util
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    cd xcb-util-${XCB_UTIL_VERSION} && \
+    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-image
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
+    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-keysyms
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
+    tar -xzf xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
+    cd xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xcb/xcb-util-image.git && \
-    cd xcb-util-image && \
-    ./autogen.sh && \
+# xcb-util-renderutil
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    cd xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xcb/xcb-util-icccm.git && \
-    cd xcb-util-icccm && \
-    git submodule update --init && \
-    ./autogen.sh && \
+# xcb-util-wm
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    tar -xzf xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    cd xcb-util-wm-${XCB_UTIL_WM_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-RUN git clone --depth 1 https://gitlab.freedesktop.org/xcb/xcb-util-keysyms.git && \
-    cd xcb-util-keysyms && \
-    git submodule update --init && \
-    ./autogen.sh && \
+# xcb-util-cursor
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
-
 
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
