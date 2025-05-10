@@ -151,9 +151,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2018.1.
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.14.1.tar.xz && \
-    tar -xf xcb-proto-1.14.1.tar.xz && \
-    cd xcb-proto-1.14.1 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.16.0.tar.xz && \
+    tar -xf xcb-proto-1.16.0.tar.xz && \
+    cd xcb-proto-1.16.0 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 # libxml-2.0
