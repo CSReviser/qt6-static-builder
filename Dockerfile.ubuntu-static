@@ -319,6 +319,7 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
     tar -xzf icu4c-74_2-src.tgz && \
     cd icu && cd source && \
     ./configure --prefix=/usr/local --disable-shared --enable-static \
+        --with-library-bits=64 \
         CXXFLAGS="-static -static-libstdc++ -static-libgcc" \
         LDFLAGS="-static -static-libstdc++ -static-libgcc" && \
     make -j$(nproc) && \
