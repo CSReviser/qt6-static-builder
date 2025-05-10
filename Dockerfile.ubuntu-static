@@ -369,6 +369,8 @@ ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
 ENV CFLAGS="-I/usr/local/include -I/usr/include"
 ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
+ENV OPENSSL_ROOT_DIR=/usr/local
+ENV OPENSSL_USE_STATIC_LIBS=TRUE
 
 # Qt ソース取得とビルド
 WORKDIR /build
