@@ -313,16 +313,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
-# ICU static build (version 73.2 を例としています)
+# libicu (ICU 73.2) - Static build
 ENV ICU_VERSION=73_2
-ENV ICU_SRC_VERSION=73.2
+ENV ICU_URL_VERSION=73-2
 
-RUN wget https://github.com/unicode-org/icu/releases/download/release-${ICU_VERSION}/icu4c-${ICU_VERSION}-src.tgz && \
+RUN wget https://github.com/unicode-org/icu/releases/download/release-${ICU_URL_VERSION}/icu4c-${ICU_VERSION}-src.tgz && \
     tar -xzf icu4c-${ICU_VERSION}-src.tgz && \
     cd icu/source && \
     ./configure --prefix=/usr/local --disable-shared --enable-static --with-library-bits=64 && \
     make -j$(nproc) && \
-    make install
+    make install && \
+    cd / && rm -rf icu4c-${ICU_VERSION}-src.tgz icu
+
 
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
