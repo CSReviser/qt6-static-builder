@@ -349,6 +349,7 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
         -Ddefault_library=static \
         -Denable-wayland=false \
         -Denable-x11=true \
+        -Db_lundef=false \
         -Denable-xkbregistry=true && \
     ninja -C builddir && \
     ninja -C builddir install && \
