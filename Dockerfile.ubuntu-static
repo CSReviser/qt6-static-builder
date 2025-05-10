@@ -39,6 +39,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     bison \
     byacc \
     gperf \
+    g++ gcc libstdc++-static \
     ca-certificates \
     ca-certificates \
     libfontconfig1-dev \
