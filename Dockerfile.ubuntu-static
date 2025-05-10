@@ -435,6 +435,28 @@ RUN mkdir qt-build && cd qt-build && \
     cmake --build . --parallel && \
     cmake --install . 
 
+
+../${QT_MODULE}-everywhere-src-${QT_VERSION}/configure \
+  -prefix "${INSTALL_PREFIX}" \
+  -static -release \
+  -opensource -confirm-license \
+  -nomake tests -nomake examples \
+  -feature-dbus \
+  -no-feature-opengl \
+  -feature-opengl-desktop \
+  -feature-png -feature-jpeg \
+  -feature-freetype -feature-harfbuzz \
+  -feature-gui -feature-widgets \
+  -feature-xlib -feature-xcb -feature-xcb-xlib \
+  -feature-xkbcommon -feature-xkbcommon-x11 \
+  -no-feature-fontconfig \
+  -feature-sessionmanager \
+  -feature-openssl -feature-openssl-linked \
+  -no-feature-glib -no-feature-icu \
+  -no-feature-system-zlib -no-feature-system-png \
+  -no-feature-system-jpeg -no-feature-system-freetype \
+  -no-feature-system-harfbuzz
+
 # Configure, build, and install Qt statically
 #RUN mkdir qt-build && cd qt-build && \
 #    cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
