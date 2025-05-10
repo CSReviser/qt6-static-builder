@@ -323,6 +323,15 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
 
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
+
+# Step 1: Create Meson native file with static C++ link flags
+RUN echo "[binaries]" > native.txt && \
+    echo "c = 'gcc'" >> native.txt && \
+    echo "cpp = 'g++'" >> native.txt && \
+    echo "[properties]" >> native.txt && \
+    echo "cpp_link_args = ['-static-libstdc++', '-static-libgcc', '-lstdc++']" >> native.txt
+
+# Step 2: Download and build with Meson
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
@@ -330,13 +339,14 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
         --prefix=/usr/local \
         --libdir=lib \
         --buildtype=release \
+        --native-file=../native.txt \
         -Ddefault_library=static \
         -Denable-wayland=false \
         -Denable-x11=true \
         -Denable-xkbregistry=true && \
     ninja -C builddir && \
     ninja -C builddir install && \
-    cd .. && rm -rf libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz
+    cd .. && rm -rf libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz native.txt
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
