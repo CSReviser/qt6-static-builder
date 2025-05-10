@@ -317,7 +317,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
 RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz && \
     tar -xzf icu4c-74_2-src.tgz && \
     cd icu/source && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static -static-libstdc++ -static-libgcc -lstdc++ -lgcc -lgcc_eh -pthread  && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static CXXFLAGS="-static -static-libstdc++ -static-libgcc" LDFLAGS="-static -static-libstdc++ -static-libgcc" && \
     make -j$(nproc) && \
     make install
 
