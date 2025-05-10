@@ -212,9 +212,9 @@ RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
     ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
 
 # libXfixes
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-5.0.1.tar.gz && \
-    tar -xzf libXfixes-5.0.1.tar.gz && \
-    cd libXfixes-5.0.1 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar.gz && \
+    tar -xzf libXfixes-6.0.1.tar.gz && \
+    cd libXfixes-6.0.1 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libXi
