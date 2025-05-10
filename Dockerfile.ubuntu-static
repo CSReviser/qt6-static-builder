@@ -16,6 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV CMAKE_PREFIX_PATH="/usr/local"
 ENV CPPFLAGS="-I/usr/local/include"
 ENV LDFLAGS="-static -L/usr/local/lib -L/usr/lib -lxcb -lxcb-shm -lxcb-image -lxcb-icccm -lxcb-keysyms -lxcb-xfixes -lxcb-shape -lxcb-sync -lxcb-util -lxkbcommon -lxkbcommon-x11 -lX11 -lXext -lXrender"
+ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
 ENV CMAKE_EXE_LINKER_FLAGS="-static -static-libstdc++ -static-libgcc"
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 ENV CFLAGS="-fPIC"
