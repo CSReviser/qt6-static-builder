@@ -244,9 +244,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.8.ta
 
 
 # libxcb
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.16.1.tar.gz && \
-    tar -xzf libxcb-1.16.1.tar.gz && \
-    cd libxcb-1.16.1 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.gz && \
+    tar -xzf libxcb-1.17.0.tar.gz && \
+    cd libxcb-1.17.0 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
 
 # libX11
@@ -314,7 +314,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     make -j$(nproc) && make install
 
 # Build libxkbcommon
-ARG LIBXKBCOMMON_VERSION=1.8.0
+ARG LIBXKBCOMMON_VERSION=1.9.0
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
