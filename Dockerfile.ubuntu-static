@@ -145,9 +145,9 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
       --enable-libxml2
 
 # xorgproto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2018.1.tar.gz && \
-    tar -xf xorgproto-2018.1.tar.gz && \
-    cd xorgproto-2018.1 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
+    tar -xf xorgproto-2024.1.tar.gz && \
+    cd xorgproto-2024.1 && \
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
