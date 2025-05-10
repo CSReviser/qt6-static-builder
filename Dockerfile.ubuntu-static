@@ -265,6 +265,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.2.tar
 
 RUN git clone https://gitlab.freedesktop.org/xorg/lib/libxcb-util.git && \
     cd libxcb-util && \
+    git submodule update --init && \
     ./autogen.sh && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
