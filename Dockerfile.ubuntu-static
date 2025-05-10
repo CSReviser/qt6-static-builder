@@ -263,7 +263,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.2.tar
     ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
     make -j$(nproc) && make install
 
-B_U# xcb-util family
+# xcb-util family
 ARG XCTIL_VERSION=0.4.1
 ARG XCB_UTIL_IMAGE_VERSION=0.4.1
 ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
