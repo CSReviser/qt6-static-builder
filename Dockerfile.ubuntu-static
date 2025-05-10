@@ -337,7 +337,7 @@ RUN echo "[binaries]" > /tmp/native.txt && \
 # Step 2: Download and build with Meson
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
-    cd libxkbcommon-${LIBXKBCOMMON_VERSION} && \
+    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
     meson setup builddir \
         --prefix=/usr/local \
         --libdir=lib \
