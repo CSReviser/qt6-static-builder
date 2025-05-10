@@ -368,7 +368,7 @@ ENV QT_VERSION=${QT_VERSION}
 ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
 ENV CFLAGS="-I/usr/local/include -I/usr/include"
-ENV LDFLAGS="-static -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
+ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
 
 # Qt ソース取得とビルド
 WORKDIR /build
@@ -406,8 +406,8 @@ RUN mkdir qt-build && cd qt-build && \
       -nomake tests \
       -nomake examples \
       -feature-dbus \
-      -feature-opengl \
-      -no-feature-opengl-desktop \
+      -no-feature-opengl \
+      -feature-opengl-desktop \
       -feature-png \
       -feature-jpeg \
       -feature-freetype \
