@@ -15,7 +15,7 @@ ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV CMAKE_PREFIX_PATH="/usr/local"
 ENV CPPFLAGS="-I/usr/local/include"
-ENV LDFLAGS="-static -L/usr/local/lib"
+ENV LDFLAGS="-static -L/usr/local/lib -lXau -lXdmcp"
 ENV CMAKE_EXE_LINKER_FLAGS="-static -static-libstdc++ -static-libgcc"
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 ENV CFLAGS="-fPIC"
@@ -337,6 +337,7 @@ RUN echo "[binaries]" > /tmp/native.txt && \
     echo "cpp_link_args = ['-static', '-static-libstdc++', '-static-libgcc']" >> /tmp/native.txt
 
 # Step 2: Download and build with Meson
+ENV LDFLAGS="-static -L/usr/local/lib -lXau -lXdmcp"
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
@@ -366,7 +367,7 @@ ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
 ENV CFLAGS="-I/usr/local/include -I/usr/include"
 ENV LDFLAGS="-L/usr/local/lib -L/usr/lib"
-
+ENV LDFLAGS="-static -L/usr/local/lib -lXau -lXdmcp"
 
 # Qt ソース取得とビルド
 WORKDIR /build
