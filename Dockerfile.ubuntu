@@ -91,7 +91,10 @@ RUN set -ex && \
     done && \
     echo "All required .pc files found."
 
-
+# Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
+# Qt6
+ARG QT_VERSION=6.9.0
+ARG INSTALL_PREFIX=/opt/qt6-static
 ENV DEBIAN_FRONTEND=noninteractive
 ENV QT_VERSION=${QT_VERSION}
 ENV INSTALL_PREFIX=${INSTALL_PREFIX}
