@@ -409,8 +409,6 @@ RUN mkdir qt-build && cd qt-build && \
       -nomake tests \
       -nomake examples \
       -feature-dbus \
-      -no-feature-opengl \
-      -feature-opengl-desktop \
       -feature-png \
       -feature-jpeg \
       -feature-freetype \
@@ -427,12 +425,12 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-openssl \
       -feature-openssl-linked \
       -no-feature-glib \
-      -no-feature-icu \
-      -no-feature-system-zlib \
-      -no-feature-system-png \
-      -no-feature-system-jpeg \
-      -no-feature-system-freetype \
-      -no-feature-system-harfbuzz && \
+      -feature-icu \
+      -feature-system-zlib \
+      -feature-system-png \
+      -feature-system-jpeg \
+      -feature-system-freetype \
+      -feature-system-harfbuzz && \
       make -j$(nproc) && \
       make install
 
