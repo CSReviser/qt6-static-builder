@@ -354,9 +354,7 @@ RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     tar xf openssl-3.3.0.tar.gz && \
     cd openssl-3.3.0 && \
     ./Configure linux-x86_64 no-shared --prefix=/usr/local && \
-    make -j$(nproc) && make install_sw && \
-    cp -r /usr/local/include/openssl/*.h /usr/local/include/ && \
-    cp -r /usr/local/include/openssl/*.h /usr/include/ 
+    make -j$(nproc) && make install_sw 
 
 # 対象 .pc ファイルのリスト
 ENV PC_FILES="/usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/openssl.pc"
@@ -438,7 +436,9 @@ RUN set -ex && \
     echo "All required static libraries found."
 
 RUN printf '#include <openssl/ssl.h>\nOPENSSL_VERSION_NUMBER\nOPENSSL_VERSION_MAJOR\nOPENSSL_VERSION_MINOR\n' | gcc -E - 
-RUN printf '#include <openssl/opensslconf.h>\nOPENSSL_VERSION_NUMBER\nOPENSSL_VERSION_MAJOR\nOPENSSL_VERSION_MINOR\n' | gcc -E -
+RUN printf '#include <openssl/opensslconf.h>\nOPENSSL_VERSION_NUMBER\nOPENSSL_VERSION_MAJOR\nOPENSSL_VERSION_MINOR\n' | gcc -E - && \
+    cp -r /usr/local/include/openssl/*.h /usr/local/include/ && \
+    cp -r /usr/local/include/openssl/*.h /usr/include/ 
 
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
