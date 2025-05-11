@@ -440,6 +440,8 @@ RUN printf '#include <openssl/ssl.h>\nOPENSSL_VERSION_NUMBER\nOPENSSL_VERSION_MA
     cp -r /usr/local/include/openssl/*.h /usr/local/include/ && \
     cp -r /usr/local/include/openssl/*.h /usr/include/ 
 
+RUN PKG_CONFIG_LIBDIR=/usr/local/lib64/pkgconfig pkg-config --modversion openssl
+
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
 
