@@ -435,28 +435,28 @@ RUN mkdir qt-build && cd qt-build && \
 #      -prefix "${INSTALL_PREFIX}" \
 #      QMAKE_LFLAGS="$LDFLAGS" \
 #      -static -release \
-      -opensource -confirm-license \
-      -nomake tests \
-      -nomake examples \
-      -feature-dbus \
-      -feature-png \
-      -feature-jpeg \
-      -feature-freetype \
-      -feature-harfbuzz \
-      -feature-gui \
-      -feature-widgets \
-      -feature-xlib \
-      -feature-xcb \
-      -feature-xcb-xlib \
-      -feature-xkbcommon \
-      -feature-xkbcommon-x11 \
-      -no-feature-fontconfig \
-      -feature-sessionmanager \
-      -feature-openssl \
-      -no-feature-openssl-linked \
-      -no-feature-glib \
-      -feature-icu \
-      -feature-system-zlib \
+#      -opensource -confirm-license \
+#      -nomake tests \
+#      -nomake examples \
+#      -feature-dbus \
+#      -feature-png \
+#      -feature-jpeg \
+#      -feature-freetype \
+#      -feature-harfbuzz \
+#      -feature-gui \
+#      -feature-widgets \
+#      -feature-xlib \
+#      -feature-xcb \
+#      -feature-xcb-xlib \
+#      -feature-xkbcommon \
+#      -feature-xkbcommon-x11 \
+#      -no-feature-fontconfig \
+#      -feature-sessionmanager \
+#      -feature-openssl \
+#      -no-feature-openssl-linked \
+#      -no-feature-glib \
+#      -feature-icu \
+#      -feature-system-zlib \
 #      -feature-system-png \
 #      -feature-system-jpeg \
 #      -feature-system-freetype \
