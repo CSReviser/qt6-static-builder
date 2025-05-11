@@ -373,7 +373,8 @@ RUN ln -sf /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/ssl.p
     ln -sf /usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/crypto.pc
 
 RUN openssl version -a
-RUN echo '#include <openssl/opensslv.h>\nOPENSSL_VERSION_NUMBER' | gcc -E - | grep OPENSSL_VERSION_NUMBER
+RUN echo '#include <openssl/opensslv.h>\nOPENSSL_VERSION_NUMBER' \
+    | gcc -E -I/usr/local/include - | grep OPENSSL_VERSION_NUMBER
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
