@@ -374,6 +374,10 @@ ENV CXXFLAGS="-fuse-ld=lld"
 # Qt ソース取得とビルド
 WORKDIR /build
 
+RUN echo "Dumping openssl.pc:" && \
+    cat /usr/local/lib64/pkgconfig/openssl.pc && \
+    echo "Checking for Libs.private:" && \
+    grep -i '^Libs.private:' /usr/local/lib64/pkgconfig/openssl.pc || echo "Libs.private not found"
 
 # 必須ライブラリ一覧
 RUN set -ex && \
