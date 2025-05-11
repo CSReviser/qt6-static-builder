@@ -437,7 +437,6 @@ RUN set -ex && \
     done && \
     echo "All required static libraries found."
 
-RUN echo '#include <openssl/opensslv.h>\nOPENSSL_VERSION_MAJOR OPENSSL_VERSION_MINOR OPENSSL_VERSION_PATCH' | gcc -E - | grep OPENSSL_VERSION_
 RUN echo '#include <openssl/opensslv.h>\nOPENSSL_VERSION_MAJOR' | gcc -E - | grep OPENSSL_VERSION_MAJOR
 RUN printf '#include <openssl/opensslv.h>\nOPENSSL_VERSION_MAJOR\n' | gcc -E - | grep OPENSSL_VERSION_MAJOR
 
