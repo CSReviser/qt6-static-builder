@@ -34,3 +34,10 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME_VERSIONED }}
             ${{ env.IMAGE_NAME_LATEST }}
+
+      - name: Upload CMakeError.log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cmake-error-log
+          path: /path/to/qt_build/CMakeFiles/CMakeError.log
