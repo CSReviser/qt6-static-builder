@@ -369,6 +369,9 @@ RUN for pcfile in $PC_FILES; do \
       fi; \
     done
 
+RUN ln -sf /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/ssl.pc && \
+    ln -sf /usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/crypto.pc
+
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
 ARG QT_VERSION=6.9.0
