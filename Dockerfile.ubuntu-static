@@ -378,7 +378,7 @@ WORKDIR /build
 # 必須ライブラリ一覧
 RUN set -ex && \
     for pc in x11 xext xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
-              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11  ssl crypto; do \
+              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
         echo "Checking $pc via pkg-config..." && \
         PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig" \
         pkg-config --static --exists $pc || (echo "Missing static pkg-config: $pc" && exit 1); \
