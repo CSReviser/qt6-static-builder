@@ -354,7 +354,7 @@ WORKDIR /opt
 RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     tar xf openssl-3.3.0.tar.gz && \
     cd openssl-3.3.0 && \
-    ./Configure linux-x86_64 no-shared --prefix=/opt/openssl-static && \
+    ./Configure linux-x86_64 no-shared --prefix=/usr/local && \
     make -j$(nproc) && make install_sw
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
@@ -368,7 +368,7 @@ ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
 ENV CFLAGS="-I/usr/local/include -I/usr/include"
 ENV LDFLAGS="-static -L/usr/local/lib -L/usr/lib -lxcb -lxcb-shm -lxcb-image -lxcb-icccm -lxcb-keysyms -lxcb-xfixes -lxcb-shape -lxcb-sync -lxcb-util -lxkbcommon -lxkbcommon-x11 -lX11 -lXext -lXrender -lXau -lXdmcp"
-ENV OPENSSL_ROOT_DIR=/opt/openssl-static
+ENV OPENSSL_ROOT_DIR=/usr/local
 ENV OPENSSL_USE_STATIC_LIBS=TRUE
 ENV CXXFLAGS="-fuse-ld=lld"
 
