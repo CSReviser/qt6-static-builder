@@ -437,8 +437,7 @@ RUN set -ex && \
     done && \
     echo "All required static libraries found."
 
-
-RUN printf '#include <openssl/opensslv.h>\nOPENSSL_VERSION_MAJOR\n' | gcc -E - | grep OPENSSL_VERSION_MAJOR
+RUN printf '#include <openssl/opensslv.h>\nOPENSSL_VERSION_MAJOR\nOPENSSL_VERSION_MINOR\nOPENSSL_VERSION_PATCH\n' | gcc -E - | grep OPENSSL_VERSION_
 
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
