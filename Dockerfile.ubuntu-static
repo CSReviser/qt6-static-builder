@@ -40,6 +40,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     byacc \
     gperf \
     g++ gcc \
+    lld \
     ca-certificates \
     ca-certificates \
     libfontconfig1-dev \
