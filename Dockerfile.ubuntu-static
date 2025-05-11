@@ -435,9 +435,7 @@ RUN set -ex && \
     done && \
     echo "All required static libraries found."
 
-RUN printf '#include <openssl/opensslv.h>\nOPENSSL_VERSION_NUMBER\nOPENSSL_VERSION_MAJOR\nOPENSSL_VERSION_MINOR\n' | gcc -E - 
-RUN printf '#include <openssl/ssl.h>\nOPENSSL_VERSION_NUMBER\nOPENSSL_VERSION_MAJOR\nOPENSSL_VERSION_MINOR\n' | gcc -E - && \
-    cp -r /usr/local/include/openssl/*.h /usr/local/include/ && \
+RUN cp -r /usr/local/include/openssl/*.h /usr/local/include/ && \
     cp -r /usr/local/include/openssl/*.h /usr/include/ 
 
 RUN PKG_CONFIG_LIBDIR=/usr/local/lib64/pkgconfig pkg-config --modversion openssl
