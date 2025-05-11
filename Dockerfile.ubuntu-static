@@ -247,14 +247,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz
     cd libX11-1.6.9 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
-# libxcb-xinerama
-ARG XCB_XINERAMA_VER=1.15
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-xinerama-${XCB_XINERAMA_VER}.tar.gz && \
-    tar -xzf xcb-xinerama-${XCB_XINERAMA_VER}.tar.gz && \
-    cd xcb-xinerama-${XCB_XINERAMA_VER} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
 # libXrandr
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.2.tar.gz && \
     tar -xzf libXrandr-1.5.2.tar.gz && \
