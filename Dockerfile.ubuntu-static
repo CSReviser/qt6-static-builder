@@ -394,7 +394,7 @@ RUN echo "---- Installed .pc files ----" && \
 # 静的ライブラリファイルの存在確認
 RUN set -ex && \
     for lib in X11 Xext Xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
-               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl crypto; do \
+               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
         echo "Checking lib$lib.a..." && \
         find /usr/local/lib /usr/lib -name "lib$lib.a" | grep . || \
         (echo "Missing static library: lib$lib.a" && exit 1); \
