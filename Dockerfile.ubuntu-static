@@ -354,7 +354,10 @@ RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     tar xf openssl-3.3.0.tar.gz && \
     cd openssl-3.3.0 && \
     ./Configure linux-x86_64 no-shared --prefix=/usr/local && \
-    make -j$(nproc) && make install_sw 
+    make -j$(nproc) && make install_sw && \
+    cp -r /usr/local/include/openssl/*.h /usr/local/include/ && \
+    cp -r /usr/local/include/openssl/*.h /usr/include/ && \
+    cp -r /usr/local/include/openssl/*.h /usr/include/openssl/ 
 
 # 対象 .pc ファイルのリスト
 ENV PC_FILES="/usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/openssl.pc"
