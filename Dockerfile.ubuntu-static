@@ -74,7 +74,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libdbus-1-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
-    libssl-dev \
     libpthread-stubs0-dev \
     x11proto-core-dev \
     xcb-proto \
