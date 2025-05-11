@@ -392,8 +392,11 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
+    PKG_CONFIG=pkg-config \
+    PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}" \
     ../${QT_MODULE}-everywhere-src-${QT_VERSION}/configure \
       -prefix "${INSTALL_PREFIX}" \
+      QMAKE_CFLAGS="$CFLAGS" \
       QMAKE_LFLAGS="$LDFLAGS" \
       -static -release \
       -opensource -confirm-license \
@@ -422,8 +425,44 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-system-jpeg \
       -feature-system-freetype \
       -feature-system-harfbuzz && \
-      make -j$(nproc) && \
-      make install
+    cat config.summary || true && \
+    make -j$(nproc) && \
+    make install
+
+
+#RUN mkdir qt-build && cd qt-build && \
+#    ../${QT_MODULE}-everywhere-src-${QT_VERSION}/configure \
+#      -prefix "${INSTALL_PREFIX}" \
+#      QMAKE_LFLAGS="$LDFLAGS" \
+#      -static -release \
+      -opensource -confirm-license \
+      -nomake tests \
+      -nomake examples \
+      -feature-dbus \
+      -feature-png \
+      -feature-jpeg \
+      -feature-freetype \
+      -feature-harfbuzz \
+      -feature-gui \
+      -feature-widgets \
+      -feature-xlib \
+      -feature-xcb \
+      -feature-xcb-xlib \
+      -feature-xkbcommon \
+      -feature-xkbcommon-x11 \
+      -no-feature-fontconfig \
+      -feature-sessionmanager \
+      -feature-openssl \
+      -no-feature-openssl-linked \
+      -no-feature-glib \
+      -feature-icu \
+      -feature-system-zlib \
+#      -feature-system-png \
+#      -feature-system-jpeg \
+#      -feature-system-freetype \
+#      -feature-system-harfbuzz && \
+#      make -j$(nproc) && \
+#      make install
 
 # Configure, build, and install Qt statically
 #RUN mkdir qt-build && cd qt-build && \
