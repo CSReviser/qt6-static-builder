@@ -354,7 +354,9 @@ RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     tar xf openssl-3.3.0.tar.gz && \
     cd openssl-3.3.0 && \
     ./Configure linux-x86_64 no-shared --prefix=/usr/local && \
-    make -j$(nproc) && make install_sw
+    make -j$(nproc) && make install_sw && \
+    cp -r /usr/local/lib64/pkgconfig/*.pc /usr/local/lib/pkgconfig/ && \
+    cp -r /usr/local/lib64/libssl.a /usr/local/lib/
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
