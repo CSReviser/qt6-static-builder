@@ -160,6 +160,13 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-opengl \
       -feature-openssl \
       -feature-openssl-linked \
+      -feature-xlib \
+      -feature-xcb \
+      -feature-xcb-xlib \
+      -feature-xkbcommon \
+      -feature-xkbcommon-x11 \
+      -no-feature-fontconfig \
+      -feature-sessionmanager \
       -feature-gui \
       -feature-widgets \
       -feature-glib \
