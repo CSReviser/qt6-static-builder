@@ -349,6 +349,13 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
     ninja -C builddir install && \
     cd .. && rm -rf libxkbcommon-${LIBXKBCOMMON_VERSION} xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz /tmp/native.txt
 
+# OpenSSL ソース取得して static ビルド
+WORKDIR /opt
+RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
+    tar xf openssl-3.3.0.tar.gz && \
+    cd openssl-3.3.0 && \
+    ./Configure linux-x86_64 no-shared --prefix=/opt/openssl-static && \
+    make -j$(nproc) && make install_sw
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
