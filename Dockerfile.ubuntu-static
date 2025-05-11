@@ -382,32 +382,13 @@ ENV QT_VERSION=${QT_VERSION}
 ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
 ENV CFLAGS="-I/usr/local/include"
-ENV LDFLAGS="-static -L/usr/local/lib64 -L/usr/local/lib -L/usr/lib -lxcb -lxcb-shm -lxcb-image -lxcb-icccm -lxcb-keysyms -lxcb-xfixes -lxcb-shape -lxcb-sync -lxcb-util -lxkbcommon -lxkbcommon-x11 -lX11 -lXext -lXrender -lXau -lXdmcp"
+ENV LDFLAGS="-L/usr/local/lib64 -L/usr/local/lib -L/usr/lib -lxcb -lxcb-shm -lxcb-image -lxcb-icccm -lxcb-keysyms -lxcb-xfixes -lxcb-shape -lxcb-sync -lxcb-util -lxkbcommon -lxkbcommon-x11 -lX11 -lXext -lXrender -lXau -lXdmcp"
 ENV OPENSSL_ROOT_DIR=/usr/local
 ENV OPENSSL_USE_STATIC_LIBS=TRUE
 ENV CXXFLAGS="-fuse-ld=lld"
 
 # Qt ソース取得とビルド
 WORKDIR /build
-
-RUN echo "Dumping openssl.pc:" && \
-    cat /usr/local/lib64/pkgconfig/openssl.pc && \
-    echo "Checking for Libs.private:" && \
-    grep -i '^Libs.private:' /usr/local/lib64/pkgconfig/openssl.pc || echo "Libs.private not found" && \
-    PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib64/pkgconfig" \
-    pkg-config --static --exists openssl || (echo "Missing static pkg-config: openssl")
-RUN echo "Dumping libssl.pc:" && \
-    cat /usr/local/lib64/pkgconfig/libssl.pc && \
-    echo "Checking for Libs.private:" && \
-    grep -i '^Libs.private:' /usr/local/lib64/pkgconfig/libssl.pc || echo "Libs.private not found" && \
-    PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib64/pkgconfig" \
-    pkg-config --static --exists ssl || (echo "Missing static pkg-config: $ssl")
-RUN echo "Dumping libcrypto.pc:" && \
-    cat /usr/local/lib64/pkgconfig/libcrypto.pc && \
-    echo "Checking for Libs.private:" && \
-    grep -i '^Libs.private:' /usr/local/lib64/pkgconfig/libcrypto.pc || echo "Libs.private not found" && \
-    PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib64/pkgconfig" \
-    pkg-config --static --exists crypto || (echo "Missing static pkg-config: crypto")
 
 # 必須ライブラリ一覧
 RUN set -ex && \
