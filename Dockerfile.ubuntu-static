@@ -426,7 +426,7 @@ RUN mkdir qt-build && cd qt-build && \
       -no-feature-fontconfig \
       -feature-sessionmanager \
       -feature-openssl \
-      -no-feature-openssl-linked \
+      -feature-openssl-linked \
       -no-feature-glib \
       -feature-icu \
       -feature-system-zlib \
