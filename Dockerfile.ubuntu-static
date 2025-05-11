@@ -364,10 +364,10 @@ ARG INSTALL_PREFIX=/opt/qt6-static
 ENV DEBIAN_FRONTEND=noninteractive
 ENV QT_VERSION=${QT_VERSION}
 ENV INSTALL_PREFIX=${INSTALL_PREFIX}
-ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
+ENV PKG_CONFIG_LIBDIR="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib64/pkgconfig"
 ENV CFLAGS="-I/usr/local/include -I/usr/include"
 ENV LDFLAGS="-static -L/usr/local/lib -L/usr/lib -lxcb -lxcb-shm -lxcb-image -lxcb-icccm -lxcb-keysyms -lxcb-xfixes -lxcb-shape -lxcb-sync -lxcb-util -lxkbcommon -lxkbcommon-x11 -lX11 -lXext -lXrender -lXau -lXdmcp"
-ENV OPENSSL_ROOT_DIR=/usr/local
+ENV OPENSSL_ROOT_DIR=/usr/local/lib64/
 ENV OPENSSL_USE_STATIC_LIBS=TRUE
 ENV CXXFLAGS="-fuse-ld=lld"
 
@@ -378,9 +378,9 @@ WORKDIR /build
 # 必須ライブラリ一覧
 RUN set -ex && \
     for pc in x11 xext xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
-              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
+              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl crypto; do \
         echo "Checking $pc via pkg-config..." && \
-        PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig" \
+        PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib64/pkgconfig" \
         pkg-config --static --exists $pc || (echo "Missing static pkg-config: $pc" && exit 1); \
     done && \
     echo "All required .pc files found."
@@ -394,9 +394,9 @@ RUN echo "---- Installed .pc files ----" && \
 # 静的ライブラリファイルの存在確認
 RUN set -ex && \
     for lib in X11 Xext Xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
-               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
+               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl crypto; do \
         echo "Checking lib$lib.a..." && \
-        find /usr/local/lib /usr/lib -name "lib$lib.a" | grep . || \
+        find /usr/local/lib /usr/lib /usr/local/lib64 -name "lib$lib.a" | grep . || \
         (echo "Missing static library: lib$lib.a" && exit 1); \
     done && \
     echo "All required static libraries found."
