@@ -26,6 +26,8 @@ RUN apt-get update && apt-get install -y \
     libtool \
     bison \
     flex \
+    g++ gcc \
+    lld \
     xutils-dev \
     libpcre2-dev \
     libffi-dev \
