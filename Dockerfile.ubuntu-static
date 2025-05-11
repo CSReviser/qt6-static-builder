@@ -356,6 +356,19 @@ RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
     ./Configure linux-x86_64 no-shared --prefix=/usr/local && \
     make -j$(nproc) && make install_sw 
 
+# 対象 .pc ファイルのリスト
+ENV PC_FILES="/usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/openssl.pc"
+
+# 各 .pc に Libs.private と Requires の修正を適用
+RUN for pcfile in $PC_FILES; do \
+      if [ -f "$pcfile" ]; then \
+        # Libs.private が無ければ追記
+        grep -q '^Libs.private:' "$pcfile" || echo 'Libs.private: -ldl -pthread' >> "$pcfile"; \
+        # Requires 行を削除
+        sed -i '/^Requires:/d' "$pcfile"; \
+      fi; \
+    done
+
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
 ARG QT_VERSION=6.9.0
