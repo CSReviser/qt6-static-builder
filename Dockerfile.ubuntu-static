@@ -350,11 +350,11 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
 
 # OpenSSL ソース取得して static ビルド
 WORKDIR /opt
-RUN wget https://www.openssl.org/source/openssl-3.3.0.tar.gz && \
-    tar xf openssl-3.3.0.tar.gz && \
-    cd openssl-3.3.0 && \
+RUN wget https://www.openssl.org/source/openssl-3.0.13.tar.gz && \
+    tar xf openssl-3.0.13.tar.gz && \
+    cd openssl-3.0.13 && \
     ./Configure linux-x86_64 no-shared --prefix=/usr/local && \
-    make -j$(nproc) && make install_sw 
+    make -j$(nproc) && make install_sw
 
 # 対象 .pc ファイルのリスト
 ENV PC_FILES="/usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/openssl.pc"
