@@ -363,6 +363,7 @@ ENV CFLAGS="-I/usr/local/include -I/usr/include"
 ENV LDFLAGS="-static -L/usr/local/lib -L/usr/lib -lxcb -lxcb-shm -lxcb-image -lxcb-icccm -lxcb-keysyms -lxcb-xfixes -lxcb-shape -lxcb-sync -lxcb-util -lxkbcommon -lxkbcommon-x11 -lX11 -lXext -lXrender -lXau -lXdmcp"
 ENV OPENSSL_ROOT_DIR=/usr/local
 ENV OPENSSL_USE_STATIC_LIBS=TRUE
+ENV CXXFLAGS="-fuse-ld=lld"
 
 # Qt ソース取得とビルド
 WORKDIR /build
