@@ -424,8 +424,10 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-system-png \
       -feature-system-jpeg \
       -feature-system-freetype \
-      -feature-system-harfbuzz && \
-    cat config.summary || true && \
+      -feature-system-harfbuzz || true && \
+    echo "----- config.summary -----" && cat config.summary || true && \
+    echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
+    echo "----- CMakeOutput.log -----" && cat CMakeFiles/CMakeOutput.log || true && \
     make -j$(nproc) && \
     make install
 
