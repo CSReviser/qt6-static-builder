@@ -425,7 +425,6 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     PKG_CONFIG=pkg-config \
-    PKG_CONFIG_LIBDIR="${PKG_CONFIG_LIBDIR}" \
     ../${QT_MODULE}-everywhere-src-${QT_VERSION}/configure \
       -prefix "${INSTALL_PREFIX}" \
       -static -release \
