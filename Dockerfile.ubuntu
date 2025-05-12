@@ -253,7 +253,7 @@ ENV CXXFLAGS="-fuse-ld=lld"
 # 必須ライブラリ一覧
 RUN set -ex && \
     for pc in x11 xext xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
-              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl; do \
+              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
         echo "Checking $pc via pkg-config..." && \
         PKG_CONFIG_PATH="${PKG_CONFIG_PATH}" \
         pkg-config --static --exists $pc || (echo "Missing static pkg-config: $pc" && exit 1); \
