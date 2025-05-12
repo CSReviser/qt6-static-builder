@@ -103,6 +103,7 @@ ENV INSTALL_PREFIX=${INSTALL_PREFIX}
 ENV PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig"
 ENV CFLAGS="-I/usr/include"
 ENV LDFLAGS="-L/usr/lib"
+ENV CXXFLAGS="-fuse-ld=lld"
 
 # Qt6 ソースダウンロードとビルド
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz && \
