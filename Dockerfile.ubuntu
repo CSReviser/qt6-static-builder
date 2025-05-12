@@ -269,6 +269,16 @@ RUN set -ex && \
     done && \
     echo "All required .pc files found."
 
+# 静的ライブラリファイルの存在確認
+RUN set -ex && \
+    for lib in X11 Xext Xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
+               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl crypto; do \
+        echo "Checking lib$lib.a..." && \
+        find /usr/local/lib /usr/lib /usr/local/lib64 -name "lib$lib.a" | grep . || \
+        (echo "Missing static library: lib$lib.a"); \
+    done && \
+    echo "All required static libraries found."
+
 # Qt6 ソースダウンロードとビルド
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz
