@@ -135,15 +135,17 @@ RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15
       --enable-libxml2
 
 # xorgproto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
-    tar -xf xorgproto-2024.1.tar.gz && \
-    cd xorgproto-2024.1 && \
+ARG XORBPRO_VERSION=2024.1
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-${XORBPRO_VERSION}.tar.gz && \
+    tar -xf xorgproto-${XORBPRO_VERSION}.tar.gz && \
+    cd xorgproto-${XORBPRO_VERSION} && \
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.tar.xz && \
-    tar -xf xcb-proto-1.17.0.tar.xz && \
-    cd xcb-proto-1.17.0 && \
+ARG XCBPRO_VERSION=1.15
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-${XCBPRO_VERSION}.tar.xz && \
+    tar -xf xcb-proto-${XCBPRO_VERSION}.tar.xz && \
+    cd xcb-proto-${XCBPRO_VERSION} && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 # libXau
