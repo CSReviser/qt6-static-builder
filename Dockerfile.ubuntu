@@ -184,9 +184,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.2.tar.gz 
 
 # libxcb
 ARG XCB_VERSION=1.13.1
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-${XCB_UTIL_VERSION}.tar.gz && \
-    tar -xzf libxcb-${XCB_UTIL_VERSION}.tar.gz && \
-    cd libxcb-${XCB_UTIL_VERSION} && \
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-${XCB_VERSION}.tar.gz && \
+    tar -xzf libxcb-${XCB_VERSION}.tar.gz && \
+    cd libxcb-${XCB_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
 
 # libX11
