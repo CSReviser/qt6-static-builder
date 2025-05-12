@@ -146,28 +146,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.
     cd xcb-proto-1.17.0 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
-# libxml-2.0
-RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
-    tar -xf v2.14.2.tar.gz && \
-    cd libxml2-2.14.2 && \
-    cmake -B build -GNinja \
-    -D BUILD_SHARED_LIBS=OFF \
-    -D CMAKE_INSTALL_PREFIX=/usr/local \
-    -D LIBXML2_WITH_ICONV=OFF \
-    -D LIBXML2_WITH_PYTHON=OFF \
-    -D LIBXML2_WITH_ZLIB=ON && \
-    cmake --build build -j$(nproc) && cmake --install build
-
 # libXau
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
-    tar -xf libXau-1.0.12.tar.gz && \
-    cd libXau-1.0.12 && \
+ARG XAU_VERSION=1.0.9
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-${XAU_VERSION}.tar.gz && \
+    tar -xf libXau-${XAU_VERSION}.tar.gz && \
+    cd libXau-${XAU_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libXdmcp
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
-    tar -xf libXdmcp-1.1.5.tar.gz && \
-    cd libXdmcp-1.1.5 && \
+ARG XDMCP_VERSION=1.0.9
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-${XDMCP_VERSION}.tar.gz && \
+    tar -xf libXdmcp-${XDMCP_VERSION}.tar.gz && \
+    cd libXdmcp-${XDMCP_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libICE
