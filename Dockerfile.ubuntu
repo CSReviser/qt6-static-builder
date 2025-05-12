@@ -111,6 +111,8 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 
 RUN mkdir qt-build && cd qt-build && \
     ../qt-everywhere-src-${QT_VERSION}/configure \
+    PKG_CONFIG=pkg-config \
+    PKG_CONFIG_PATH="${PKG_CONFIG_PATH}" \
       -prefix "${INSTALL_PREFIX}" \
       -static -release \
       -opensource -confirm-license \
