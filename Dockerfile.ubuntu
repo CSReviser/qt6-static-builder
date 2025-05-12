@@ -195,6 +195,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xtrans-1.2.7.tar.gz
     cd xtrans-1.2.7 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
+# libxcb
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.gz && \
+    tar -xzf libxcb-1.17.0.tar.gz && \
+    cd libxcb-1.17.0 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
+
+# libX11
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz && \
+    tar -xzf libX11-1.6.9.tar.gz && \
+    cd libX11-1.6.9 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
 ARG QT_VERSION=6.9.0
