@@ -182,6 +182,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.2.tar.gz 
     cd libSM-1.2.2 && \
     ./configure --prefix=/usr/local--disable-shared --enable-static && make -j$(nproc) && make install
 
+# libxcb
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.gz && \
+    tar -xzf libxcb-1.17.0.tar.gz && \
+    cd libxcb-1.17.0 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
+
+# libX11
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz && \
+    tar -xzf libX11-1.6.9.tar.gz && \
+    cd libX11-1.6.9 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
 # libpthread-stubs
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libpthread-stubs-0.1.tar.gz && \
     tar -xzf libpthread-stubs-0.1.tar.gz && \
@@ -195,17 +207,36 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xtrans-1.2.7.tar.gz
     cd xtrans-1.2.7 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
-# libxcb
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.gz && \
-    tar -xzf libxcb-1.17.0.tar.gz && \
-    cd libxcb-1.17.0 && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
-
-# libX11
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz && \
-    tar -xzf libX11-1.6.9.tar.gz && \
-    cd libX11-1.6.9 && \
+# libXfixes
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar.gz && \
+    tar -xzf libXfixes-6.0.1.tar.gz && \
+    cd libXfixes-6.0.1 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXi
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXi-1.6.2.tar.gz && \
+    tar -xzf libXi-1.6.2.tar.gz && \
+    cd libXi-1.6.2 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXinerama
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXinerama-1.1.5.tar.gz && \
+    tar -xzf libXinerama-1.1.5.tar.gz && \
+    cd libXinerama-1.1.5 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXext
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.3.tar.gz && \
+    tar -xzf libXext-1.3.3.tar.gz && \
+    cd libXext-1.3.3 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXrender
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.gz && \
+    tar -xzf libXrender-0.9.12.tar.gz && \
+    cd libXrender-0.9.12 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
