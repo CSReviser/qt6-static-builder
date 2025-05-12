@@ -237,6 +237,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
     cd libXrender-0.9.12 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
+
 # xcb-util family
 ARG XCB_UTIL_VERSION=0.4.1
 ARG XCB_UTIL_IMAGE_VERSION=0.4.1
@@ -284,6 +285,14 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-wm-${XCB_U
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
     tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
     cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# libXrandr
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.4.tar.gz && \
+    tar -xzf libXrandr-1.5.4.tar.gz && \
+    cd libXrandr-1.5.4 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
