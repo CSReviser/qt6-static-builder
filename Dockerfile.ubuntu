@@ -183,7 +183,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.2.tar.gz 
     ./configure --prefix=/usr/local--disable-shared --enable-static && make -j$(nproc) && make install
 
 # libxcb
-ARG XCB_VERSION=1.13.1.
+ARG XCB_VERSION=1.13.1
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-${XCB_UTIL_VERSION}.tar.gz && \
     tar -xzf libxcb-${XCB_UTIL_VERSION}.tar.gz && \
     cd libxcb-${XCB_UTIL_VERSION} && \
@@ -240,7 +240,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
     make -j$(nproc) && make install
 
 # xcb-util family
-ARG XCB_UTIL_VERSION=0.4.1
+ARG XCB_UTIL_VERSION=0.3.6
 ARG XCB_UTIL_IMAGE_VERSION=0.4.1
 ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
 ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
@@ -252,41 +252,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL
     tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
     cd xcb-util-${XCB_UTIL_VERSION} && \
     ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util-image
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
-    tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
-    cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
-    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util-keysyms
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
-    tar -xzf xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
-    cd xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util-renderutil
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
-    tar -xzf xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
-    cd xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util-wm
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
-    tar -xzf xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
-    cd xcb-util-wm-${XCB_UTIL_WM_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
-# xcb-util-cursor
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
-    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
-    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
 # libXrandr
