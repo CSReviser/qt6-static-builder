@@ -183,6 +183,19 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.2.tar.gz 
     cd libSM-1.2.2 && \
     ./configure --prefix=/usr/local--disable-shared --enable-static && make -j$(nproc) && make install
 
+# libpthread-stubs
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libpthread-stubs-0.1.tar.gz && \
+    tar -xzf libpthread-stubs-0.1.tar.gz && \
+    cd libpthread-stubs-0.1 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xtrans
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xtrans-1.2.7.tar.gz && \
+    tar -xzf xtrans-1.2.7.tar.gz && \
+    cd xtrans-1.2.7 && \
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
 ARG QT_VERSION=6.9.0
