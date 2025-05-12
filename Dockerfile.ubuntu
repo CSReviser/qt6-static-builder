@@ -83,12 +83,277 @@ WORKDIR /work
 #    libgtk-3-dev \
 #    libxcb-dri2-0-dev \
 
+# zlib (静的ビルド強制)
+RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+    tar -xzf zlib-1.3.1.tar.gz && \
+    cd zlib-1.3.1 && \
+    ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
+
+# libxml2 (static)
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
+    tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
+    cmake -B build -GNinja \
+      -D BUILD_SHARED_LIBS=OFF \
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D LIBXML2_WITH_PYTHON=OFF \
+      -D LIBXML2_WITH_ZLIB=ON \
+      -D LIBXML2_WITH_ICONV=OFF && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build
+
+# libpng
+RUN wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
+    tar -xzf libpng-1.6.37.tar.gz && \
+    cd libpng-1.6.37 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# FreeType (static)
+RUN wget https://download.savannah.gnu.org/releases/freetype/freetype-2.9.1.tar.gz && \
+    tar -xf freetype-2.9.1.tar.gz && cd freetype-2.9.1 && \
+    ./configure \
+      --prefix=/usr/local \
+      --with-harfbuzz=yes \
+      --enable-static \
+      --disable-shared \
+      --with-pic \
+      --with-bdfformat \
+      --without-bzip2 \
+      HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
+      HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
+
+# fontconfig (static)
+RUN wget https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz && \
+    tar -xf fontconfig-2.15.0.tar.gz && cd fontconfig-2.15.0 && \
+    env \
+      PKG_CONFIG_PATH="/usr/local/lib/pkgconfig" \
+      CPPFLAGS="-I/usr/local/include" \
+      LDFLAGS="-L/usr/local/lib -lxml2 -lfreetype -lz -lpng -lXext" \
+      CFLAGS="-fPIC" \
+    ./configure \
+      --prefix=/usr/local \
+      --enable-static \
+      --disable-shared \
+      --enable-libxml2
+
+# xorgproto (プロトコル定義)
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
+    tar -xf xorgproto-2024.1.tar.gz && \
+    cd xorgproto-2024.1 && \
+    ./configure --prefix=/usr && make -j$(nproc) && make install
+
+# xcb-proto (プロトコル定義)
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.tar.xz && \
+    tar -xf xcb-proto-1.17.0.tar.xz && \
+    cd xcb-proto-1.17.0 && \
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+
+# libxml-2.0
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
+    tar -xf v2.14.2.tar.gz && \
+    cd libxml2-2.14.2 && \
+    cmake -B build -GNinja \
+    -D BUILD_SHARED_LIBS=OFF \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D LIBXML2_WITH_ICONV=OFF \
+    -D LIBXML2_WITH_PYTHON=OFF \
+    -D LIBXML2_WITH_ZLIB=ON && \
+    cmake --build build -j$(nproc) && cmake --install build
+
+# libXau
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
+    tar -xf libXau-1.0.12.tar.gz && \
+    cd libXau-1.0.12 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXdmcp
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
+    tar -xf libXdmcp-1.1.5.tar.gz && \
+    cd libXdmcp-1.1.5 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libpthread-stubs
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libpthread-stubs-0.1.tar.gz && \
+    tar -xzf libpthread-stubs-0.1.tar.gz && \
+    cd libpthread-stubs-0.1 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xtrans
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xtrans-1.2.7.tar.gz && \
+    tar -xzf xtrans-1.2.7.tar.gz && \
+    cd xtrans-1.2.7 && \
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
+
+# libICE
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libICE-1.1.2.tar.gz && \
+    tar -xzf libICE-1.1.2.tar.gz && \
+    cd libICE-1.1.2 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libSM
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.2.tar.gz && \
+    tar -xzf libSM-1.2.2.tar.gz && \
+    cd libSM-1.2.2 && \
+    ./configure --prefix=/usr/local--disable-shared --enable-static && make -j$(nproc) && make install
+
+# zlib (静的ビルド強制)
+RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+    tar -xzf zlib-1.3.1.tar.gz && \
+    cd zlib-1.3.1 && \
+    ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
+
+# libXfixes
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXfixes-6.0.1.tar.gz && \
+    tar -xzf libXfixes-6.0.1.tar.gz && \
+    cd libXfixes-6.0.1 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXi
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXi-1.6.2.tar.gz && \
+    tar -xzf libXi-1.6.2.tar.gz && \
+    cd libXi-1.6.2 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXinerama
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXinerama-1.1.5.tar.gz && \
+    tar -xzf libXinerama-1.1.5.tar.gz && \
+    cd libXinerama-1.1.5 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXext
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.3.tar.gz && \
+    tar -xzf libXext-1.3.3.tar.gz && \
+    cd libXext-1.3.3 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXrender
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.tar.gz && \
+    tar -xzf libXrender-0.9.12.tar.gz && \
+    cd libXrender-0.9.12 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# libxcb
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.gz && \
+    tar -xzf libxcb-1.17.0.tar.gz && \
+    cd libxcb-1.17.0 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
+
+# libX11
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz && \
+    tar -xzf libX11-1.6.9.tar.gz && \
+    cd libX11-1.6.9 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXrandr
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrandr-1.5.2.tar.gz && \
+    tar -xzf libXrandr-1.5.2.tar.gz && \
+    cd libXrandr-1.5.2 && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig \
+    ./configure --prefix=/usr/local --disable-shared --enable-static --with-pic && \
+    make -j$(nproc) && make install
+
+# xcb-util family
+ARG XCB_UTIL_VERSION=0.4.1
+ARG XCB_UTIL_IMAGE_VERSION=0.4.1
+ARG XCB_UTIL_KEYSYMS_VERSION=0.4.1
+ARG XCB_UTIL_RENDERUTIL_VERSION=0.3.10
+ARG XCB_UTIL_WM_VERSION=0.4.2
+ARG XCB_UTIL_CURSOR_VERSION=0.1.5
+
+# Download and build xcb-util
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-${XCB_UTIL_VERSION}.tar.gz && \
+    cd xcb-util-${XCB_UTIL_VERSION} && \
+    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-image
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    tar -xzf xcb-util-image-${XCB_UTIL_IMAGE_VERSION}.tar.gz && \
+    cd xcb-util-image-${XCB_UTIL_IMAGE_VERSION} && \
+    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-keysyms
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
+    tar -xzf xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION}.tar.gz && \
+    cd xcb-util-keysyms-${XCB_UTIL_KEYSYMS_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-renderutil
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    tar -xzf xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION}.tar.gz && \
+    cd xcb-util-renderutil-${XCB_UTIL_RENDERUTIL_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-wm
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    tar -xzf xcb-util-wm-${XCB_UTIL_WM_VERSION}.tar.gz && \
+    cd xcb-util-wm-${XCB_UTIL_WM_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# xcb-util-cursor
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
+# ICU (static)
+RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz && \
+    tar -xzf icu4c-74_2-src.tgz && \
+    cd icu && cd source && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static \
+        --with-library-bits=64 \
+        CXXFLAGS="-static -static-libstdc++ -static-libgcc" \
+        LDFLAGS="-static -static-libstdc++ -static-libgcc" && \
+    make -j$(nproc) && \
+    make install && \
+    cd ../.. && rm -rf icu icu4c-74_2-src.tgz
+
+# Build libxkbcommon
+ARG LIBXKBCOMMON_VERSION=1.9.0
+
+# Step 1: Create Meson native file with static C++ link flags
+RUN echo "[binaries]" > /tmp/native.txt && \
+    echo "c = 'gcc'" >> /tmp/native.txt && \
+    echo "cpp = 'g++'" >> /tmp/native.txt && \
+    echo "[properties]" >> /tmp/native.txt && \
+    echo "c_args = ['-static', '-static-libgcc']" >> /tmp/native.txt && \
+    echo "cpp_args = ['-static', '-static-libstdc++', '-static-libgcc']" >> /tmp/native.txt && \
+    echo "cpp_link_args = ['-static', '-static-libstdc++', '-static-libgcc']" >> /tmp/native.txt
+
+# Step 2: Download and build with Meson
+ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
+RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
+    meson setup builddir \
+        --prefix=/usr/local \
+        --libdir=lib \
+        --buildtype=release \
+        --native-file=/tmp/native.txt \
+        -Ddefault_library=static \
+        -Denable-wayland=false \
+        -Denable-x11=true \
+        -Db_lundef=false \
+        -Denable-xkbregistry=true && \
+    ninja -C builddir && \
+    ninja -C builddir install && \
+    cd .. && rm -rf libxkbcommon-${LIBXKBCOMMON_VERSION} xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz /tmp/native.txt
+
+
+
 # 必須ライブラリ一覧
 RUN set -ex && \
     for pc in x11 xext xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
         echo "Checking $pc via pkg-config..." && \
-        PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig" \
+        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}" \
         pkg-config --static --exists $pc || (echo "Missing static pkg-config: $pc" && exit 1); \
     done && \
     echo "All required .pc files found."
