@@ -175,16 +175,17 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-${SM_VERSION}
     ./configure --prefix=/usr/local--disable-shared --enable-static && make -j$(nproc) && make install
 
 # libxcb
-ARG XCB_VERSION=1.13.1
+ARG XCB_VERSION=1.15
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-${XCB_VERSION}.tar.gz && \
     tar -xzf libxcb-${XCB_VERSION}.tar.gz && \
     cd libxcb-${XCB_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static --enable-xevie --enable-xprint && make -j$(nproc) && make install
 
 # libX11
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-1.6.9.tar.gz && \
-    tar -xzf libX11-1.6.9.tar.gz && \
-    cd libX11-1.6.9 && \
+ARG X11_VERSION=1.6.9
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libX11-${X11_VERSION}.tar.gz && \
+    tar -xzf libX11-${X11_VERSION}.tar.gz && \
+    cd libX11-${X11_VERSION} && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libpthread-stubs
