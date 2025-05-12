@@ -109,7 +109,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz
 
 RUN mkdir qt-build && cd qt-build && \
-    PKG_CONFIG=pkg-config \
+    PKG_CONFIG=pkg-config &&\
     ../qt-everywhere-src-${QT_VERSION}/configure \
       -prefix "${INSTALL_PREFIX}" \
       -static -release \
