@@ -172,7 +172,7 @@ RUN mkdir qt-build && cd qt-build && \
       -feature-widgets \
       -feature-glib \
       -feature-icu \
-       && \
+      || true && \
     echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
     cmake --build . --parallel && \
     cmake --install . 
