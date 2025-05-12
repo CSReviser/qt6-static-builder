@@ -171,6 +171,18 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.
     cd libXdmcp-1.1.5 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
+# libICE
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libICE-1.1.2.tar.gz && \
+    tar -xzf libICE-1.1.2.tar.gz && \
+    cd libICE-1.1.2 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libSM
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libSM-1.2.2.tar.gz && \
+    tar -xzf libSM-1.2.2.tar.gz && \
+    cd libSM-1.2.2 && \
+    ./configure --prefix=/usr/local--disable-shared --enable-static && make -j$(nproc) && make install
+
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
 ARG QT_VERSION=6.9.0
