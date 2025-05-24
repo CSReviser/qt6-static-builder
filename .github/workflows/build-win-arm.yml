@@ -1,45 +1,27 @@
-name: Build Qt6.9.0 (Windows ARM static)
+name: Build and Push Qt6 (Windows ARM) Docker Image
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build Docker Image and Export Artifacts
-
+    permissions:
+      contents: read
+      packages: write  # これが必要
+    env:
+      IMAGE_NAME: qt6-win-arm
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
       - name: Build Docker image
         run: |
-          docker build -f Dockerfile.win_arm -t qt6-win-arm .
+          docker build -f Dockerfile.win_arm -t ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest .
 
-      - name: Export Qt, OpenSSL, FFmpeg artifacts
+      - name: Push Docker image to GitHub Packages
         run: |
-          container_id=$(docker create qt6-win-arm)
-          docker cp $container_id:/opt/qt6-arm ./qt6-arm
-          docker cp $container_id:/opt/openssl-arm ./openssl-arm
-          docker cp $container_id:/opt/ffmpeg-arm ./ffmpeg-arm
-          docker rm $container_id
-
-      - name: Upload Qt6 artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: qt6-win-arm
-          path: qt6-arm
-
-      - name: Upload OpenSSL artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: openssl-win-arm
-          path: openssl-arm
-
-      - name: Upload FFmpeg artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ffmpeg-win-arm
-          path: ffmpeg-arm
+          docker push ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
