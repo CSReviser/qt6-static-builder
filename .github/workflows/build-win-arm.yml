@@ -1,0 +1,45 @@
+name: Build Qt6.9.0 (Windows ARM static)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build Docker Image and Export Artifacts
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfile.win_arm -t qt6-win-arm .
+
+      - name: Export Qt, OpenSSL, FFmpeg artifacts
+        run: |
+          container_id=$(docker create qt6-win-arm)
+          docker cp $container_id:/opt/qt6-arm ./qt6-arm
+          docker cp $container_id:/opt/openssl-arm ./openssl-arm
+          docker cp $container_id:/opt/ffmpeg-arm ./ffmpeg-arm
+          docker rm $container_id
+
+      - name: Upload Qt6 artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qt6-win-arm
+          path: qt6-arm
+
+      - name: Upload OpenSSL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openssl-win-arm
+          path: openssl-arm
+
+      - name: Upload FFmpeg artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-win-arm
+          path: ffmpeg-arm
