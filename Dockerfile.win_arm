@@ -1,48 +1,64 @@
 FROM ubuntu:22.04
 
-# 開発ツールと依存パッケージ
-RUN apt-get update && apt-get install -y \
-    git curl unzip tar xz-utils build-essential \
-    cmake ninja-build python3 python3-pip \
-    clang lld llvm \
-    pkg-config mingw-w64 \
-    ca-certificates
-
-# llvm-mingw (aarch64-w64-mingw32 対応クロスコンパイルツールチェイン)
-WORKDIR /opt
-RUN curl -LO https://github.com/mstorsjo/llvm-mingw/releases/download/20240507/llvm-mingw-20240507-msvcrt-ubuntu-20.04-x86_64.tar.xz \
-    && tar -xf llvm-mingw-*.tar.xz \
-    && mv llvm-mingw-* llvm-mingw \
-    && rm llvm-mingw-*.tar.xz
-
+ARG QT_VERSION=6.9.0
 ENV PATH="/opt/llvm-mingw/bin:$PATH"
 
-# OpenSSL (Windows ARM用 static build)
+# 基本依存
+RUN apt-get update && apt-get install -y \
+    git curl wget unzip tar xz-utils build-essential \
+    cmake ninja-build python3 python3-pip \
+    clang lld llvm pkg-config mingw-w64 yasm nasm
+
+# llvm-mingw (クロスビルドツールチェイン)
+WORKDIR /opt
+RUN curl -LO https://github.com/mstorsjo/llvm-mingw/releases/download/20240507/llvm-mingw-20240507-msvcrt-ubuntu-20.04-x86_64.tar.xz \
+    && tar -xf llvm-mingw-*.tar.xz && mv llvm-mingw-* llvm-mingw && rm llvm-mingw-*.tar.xz
+
+# OpenSSL for Windows ARM (static)
 WORKDIR /build/openssl
-RUN git clone https://github.com/openssl/openssl.git . \
-    && git checkout openssl-3.3.0
-RUN ./Configure mingw64-aarch64 no-shared no-dynamic-engine \
-    --prefix=/opt/openssl-arm \
-    && make -j$(nproc) && make install_sw
+RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . && \
+    CC=clang ./Configure mingw64-aarch64 no-shared --prefix=/opt/openssl-arm && \
+    make -j$(nproc) && make install_sw
 
-# Qt 6.9.0 qtbase ソース取得
-WORKDIR /build/qtbase
-RUN git clone --branch v6.9.0 --depth=1 https://github.com/qt/qtbase.git .
+# Qt6 ソース取得と qtbase のみのビルド
+WORKDIR /build
+RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz && \
+    tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz && \
+    mv qt-everywhere-src-${QT_VERSION} qt6
 
-# Qtビルド
-RUN mkdir -p build && cd build && ../configure \
+WORKDIR /build/qt6/qtbase
+RUN mkdir build && cd build && ../configure \
     -prefix /opt/qt6-arm \
     -static \
     -release \
     -opensource -confirm-license \
-    -nomake examples -nomake tests \
+    -nomake tests -nomake examples \
     -platform linux-clang \
     -device-option CROSS_COMPILE=aarch64-w64-mingw32- \
     -xplatform win32-clang-msvc \
     -openssl-linked \
     OPENSSL_PREFIX=/opt/openssl-arm \
-    -network -gui -widgets -no-dbus \
-    && cmake --build . --parallel $(nproc) && cmake --install .
+    -network -gui -widgets -no-dbus && \
+    cmake --build build --parallel $(nproc) && cmake --install build
 
-# パスと成果物
+# FFmpeg ビルド for Windows ARM (static)
+WORKDIR /build/ffmpeg
+RUN git clone https://github.com/FFmpeg/FFmpeg.git . && \
+    ./configure \
+        --target-os=mingw32 \
+        --arch=aarch64 \
+        --cross-prefix=aarch64-w64-mingw32- \
+        --enable-cross-compile \
+        --disable-shared --enable-static \
+        --disable-debug \
+        --disable-doc \
+        --disable-programs \
+        --enable-gpl \
+        --enable-version3 \
+        --prefix=/opt/ffmpeg-arm && \
+    make -j$(nproc) && make install
+
+# 最終成果物配置
 ENV QT6_ARM_PREFIX=/opt/qt6-arm
+ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
+ENV FFMPEG_ARM_PREFIX=/opt/ffmpeg-arm
