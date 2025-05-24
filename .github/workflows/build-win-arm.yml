@@ -1,6 +1,8 @@
 name: Build and Push Qt6 (Windows ARM) Docker Image
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -8,9 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write  # これが必要
+      packages: write  # パッケージ push に必要
     env:
-      IMAGE_NAME: qt6-win-arm
+      QT_VERSION: 6.9.0
+      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-win-arm:6.9.0
+      IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-win-arm:latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,8 +25,14 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -f Dockerfile.win_arm -t ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest .
+          docker build \
+            -f Dockerfile.win_arm \
+            -t $IMAGE_NAME_VERSIONED \
+            -t $IMAGE_NAME_LATEST \
+            --build-arg QT_VERSION=$QT_VERSION .
 
-      - name: Push Docker image to GitHub Packages
-        run: |
-          docker push ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
+      - name: Push Docker image (versioned)
+        run: docker push $IMAGE_NAME_VERSIONED
+
+      - name: Push Docker image (latest)
+        run: docker push $IMAGE_NAME_LATEST
