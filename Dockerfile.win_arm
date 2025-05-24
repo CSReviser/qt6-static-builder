@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 
 # llvm-mingw (クロスビルドツールチェイン)
 WORKDIR /opt
-RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20240507/llvm-mingw-20240507-msvcrt-ubuntu-20.04-x86_64.tar.xz && \
+RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20240507/llvm-mingw-20240507-msvcrt-ubuntu-22.04-x86_64.tar.xz && \
     tar -xf llvm-mingw-*.tar.xz && \
     mv llvm-mingw-* llvm-mingw && \
     rm llvm-mingw-*.tar.xz
