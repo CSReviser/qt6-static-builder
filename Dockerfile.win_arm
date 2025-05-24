@@ -7,14 +7,14 @@ ENV PATH="/opt/llvm-mingw/bin:$PATH"
 RUN apt-get update && apt-get install -y \
     git curl wget unzip tar xz-utils build-essential \
     cmake ninja-build python3 python3-pip \
-    clang lld llvm pkg-config mingw-w64 yasm nasm
+    clang lld llvm pkg-config mingw-w64 yasm nasm wget
 
 # llvm-mingw (クロスビルドツールチェイン)
 WORKDIR /opt
-RUN curl -L -O https://github.com/mstorsjo/llvm-mingw/releases/download/20240507/llvm-mingw-20240507-msvcrt-ubuntu-20.04-x86_64.tar.xz \
-    && tar -xf llvm-mingw-*.tar.xz \
-    && mv llvm-mingw-* llvm-mingw \
-    && rm llvm-mingw-*.tar.xz
+RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20240507/llvm-mingw-20240507-msvcrt-ubuntu-20.04-x86_64.tar.xz && \
+    tar -xf llvm-mingw-*.tar.xz && \
+    mv llvm-mingw-* llvm-mingw && \
+    rm llvm-mingw-*.tar.xz
 
 # OpenSSL for Windows ARM (static)
 WORKDIR /build/openssl
