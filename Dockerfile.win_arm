@@ -1,0 +1,48 @@
+FROM ubuntu:22.04
+
+# 開発ツールと依存パッケージ
+RUN apt-get update && apt-get install -y \
+    git curl unzip tar xz-utils build-essential \
+    cmake ninja-build python3 python3-pip \
+    clang lld llvm \
+    pkg-config mingw-w64 \
+    ca-certificates
+
+# llvm-mingw (aarch64-w64-mingw32 対応クロスコンパイルツールチェイン)
+WORKDIR /opt
+RUN curl -LO https://github.com/mstorsjo/llvm-mingw/releases/download/20240507/llvm-mingw-20240507-msvcrt-ubuntu-20.04-x86_64.tar.xz \
+    && tar -xf llvm-mingw-*.tar.xz \
+    && mv llvm-mingw-* llvm-mingw \
+    && rm llvm-mingw-*.tar.xz
+
+ENV PATH="/opt/llvm-mingw/bin:$PATH"
+
+# OpenSSL (Windows ARM用 static build)
+WORKDIR /build/openssl
+RUN git clone https://github.com/openssl/openssl.git . \
+    && git checkout openssl-3.3.0
+RUN ./Configure mingw64-aarch64 no-shared no-dynamic-engine \
+    --prefix=/opt/openssl-arm \
+    && make -j$(nproc) && make install_sw
+
+# Qt 6.9.0 qtbase ソース取得
+WORKDIR /build/qtbase
+RUN git clone --branch v6.9.0 --depth=1 https://github.com/qt/qtbase.git .
+
+# Qtビルド
+RUN mkdir -p build && cd build && ../configure \
+    -prefix /opt/qt6-arm \
+    -static \
+    -release \
+    -opensource -confirm-license \
+    -nomake examples -nomake tests \
+    -platform linux-clang \
+    -device-option CROSS_COMPILE=aarch64-w64-mingw32- \
+    -xplatform win32-clang-msvc \
+    -openssl-linked \
+    OPENSSL_PREFIX=/opt/openssl-arm \
+    -network -gui -widgets -no-dbus \
+    && cmake --build . --parallel $(nproc) && cmake --install .
+
+# パスと成果物
+ENV QT6_ARM_PREFIX=/opt/qt6-arm
