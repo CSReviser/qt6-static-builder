@@ -102,17 +102,7 @@ RUN mkdir build && cd build && \
         OPENSSL_INCLUDE_DIR=/opt/openssl-arm/include \
         OPENSSL_LIBRARIES="/opt/openssl-arm/lib/libssl.a;/opt/openssl-arm/lib/libcrypto.a" \
         -no-dbus \
-        -gui -widgets  || ( \
-        echo '--- config.log OpenSSL ---' && \
-        grep -i openssl config.log -A 50 || true && \
-        echo '--- config.tests/openssl/config.log ---' && \
-        cat config.tests/openssl/config.log || true && \
-        echo '--- config.tests/openssl/Makefile ---' && \
-        cat config.tests/openssl/Makefile || true && \
-        echo '--- config.tests/openssl/test_openssl.o build log ---' && \
-        cat config.tests/openssl/*.log || true && \
-        false \
-    ) || \
+        -gui -widgets  || \
     { echo "----- config.summary -----"; cat config.summary || true; \
       echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
       echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; exit 1; } && \
