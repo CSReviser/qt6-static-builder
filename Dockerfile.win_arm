@@ -64,15 +64,12 @@ RUN mkdir build && cd build && \
     -L/opt/openssl-arm/lib \
     -opengl dynamic \
     -no-dbus \
-    -gui -widgets && \
-    make -j$(nproc) && \
-    make install
-
-RUN mkdir || true && \
+    -gui -widgets || true && \
     echo "----- config.summary -----" && cat config.summary || true && \
     echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
     echo "----- CMakeOutput.log -----" && cat CMakeFiles/CMakeOutput.log || true && \
-    cmake --build . --parallel $(nproc) && cmake --install .
+    make -j$(nproc) && \
+    make install
 
 # FFmpeg ビルド for Windows ARM (static)
 WORKDIR /build/ffmpeg
