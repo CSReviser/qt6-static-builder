@@ -95,7 +95,7 @@ RUN mkdir build && cd build && \
         -nomake tests -nomake examples \
         -xplatform win32-g++ \
         -feature-openssl \
-        -feature-openssl-linked \
+        -no-feature-openssl-linked \
         -no-dbus \
         -gui -widgets　|| \
     { echo "----- config.summary -----"; cat config.summary || true; \
