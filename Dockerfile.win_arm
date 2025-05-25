@@ -7,7 +7,7 @@ ENV PATH="/opt/llvm-mingw/bin:$PATH"
 RUN apt-get update && apt-get install -y \
     git curl wget unzip tar xz-utils build-essential \
     cmake ninja-build python3 python3-pip \
-    clang lld llvm pkg-config mingw-w64 yasm nasm perl
+    clang lld llvm pkg-config mingw-w64 yasm nasm perl llvm-bin
 
 # llvm-mingw (クロスビルドツールチェイン)
 WORKDIR /opt
@@ -42,6 +42,32 @@ RUN set -ex && \
         (echo "Missing header: $hdr" && exit 1); \
     done && \
     echo "✅ All required OpenSSL static libraries and headers found."
+
+RUN echo "==> Checking OpenSSL static libraries..." && \
+    LIB_DIR="/usr/local/openssl/lib" && \
+    EXPECTED_MACHINE="ARM64" && \
+    for LIB in libssl.a libcrypto.a; do \
+        FULL_PATH="$LIB_DIR/$LIB"; \
+        if [ ! -f "$FULL_PATH" ]; then \
+            echo "❌ $FULL_PATH not found" && exit 1; \
+        fi; \
+        echo "✅ Found $LIB"; \
+        OBJ_FILES=$(ar t "$FULL_PATH"); \
+        if [ -z "$OBJ_FILES" ]; then \
+            echo "❌ $LIB is empty or unreadable" && exit 1; \
+        fi; \
+        FIRST_OBJ=$(echo "$OBJ_FILES" | head -n 1); \
+        ar x "$FULL_PATH" "$FIRST_OBJ"; \
+        MACHINE=$(llvm-readobj -file-headers "$FIRST_OBJ" | grep 'Machine:' | awk '{print $2}'); \
+        echo "🔍 Detected architecture for $FIRST_OBJ: $MACHINE"; \
+        if [ "$MACHINE" != "$EXPECTED_MACHINE" ]; then \
+            echo "❌ Architecture mismatch in $LIB: expected $EXPECTED_MACHINE, found $MACHINE" && \
+            exit 1; \
+        fi; \
+        rm -f "$FIRST_OBJ"; \
+    done && \
+    echo "✅ All OpenSSL libraries are valid and match expected architecture ($EXPECTED_MACHINE)"
+
 # Qt6 ソース取得と qtbase のみのビルド
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz && \
