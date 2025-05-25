@@ -84,7 +84,7 @@ ENV CXXFLAGS="-fuse-ld=lld"
 ENV LDFLAGS="-fuse-ld=lld"
 
 RUN mkdir build && cd build && \
-    ../configure \
+    ../${QT_MODULE}-everywhere-src-${QT_VERSION}/configure \
         -prefix /opt/qt6-arm \
         -static \
         -release \
