@@ -43,6 +43,7 @@ RUN set -ex && \
     done && \
     echo "✅ All required OpenSSL static libraries and headers found."
 
+ENV EXPECTED_MACHINE="IMAGE_FILE_MACHINE_ARMNT"
 RUN echo "==> Checking OpenSSL static libraries..." && \
     LIB_DIR="/opt/openssl-arm/lib" && \
     EXPECTED_MACHINE="ARM64" && \
