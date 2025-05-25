@@ -44,7 +44,7 @@ RUN set -ex && \
     echo "✅ All required OpenSSL static libraries and headers found."
 
 RUN echo "==> Checking OpenSSL static libraries..." && \
-    LIB_DIR="/usr/local/openssl/lib" && \
+    LIB_DIR="/opt/openssl-arm/lib" && \
     EXPECTED_MACHINE="ARM64" && \
     for LIB in libssl.a libcrypto.a; do \
         FULL_PATH="$LIB_DIR/$LIB"; \
@@ -66,7 +66,7 @@ RUN echo "==> Checking OpenSSL static libraries..." && \
         fi; \
         rm -f "$FIRST_OBJ"; \
     done && \
-    echo "✅ All OpenSSL libraries are valid and match expected architecture ($EXPECTED_MACHINE)"
+    echo "✅ All OpenSSL libraries are valid and match expected architecture."
 
 # Qt6 ソース取得と qtbase のみのビルド
 WORKDIR /build
