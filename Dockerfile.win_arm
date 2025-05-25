@@ -21,9 +21,9 @@ RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20250514/llvm-
 WORKDIR /build/openssl
 RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . && \
     ./Configure mingw64-aarch64 no-shared \
-        --cross-compile-prefix=/opt/llvm-mingw/bin/aarch64-w64-mingw32- \
         --prefix=/opt/openssl-arm && \
-    make -j$(nproc) && make install_sw
+    make -j$(nproc) || { echo "Build failed"; cat config.log || true; exit 1; } && \
+    make install_sw
 
 # Qt6 ソース取得と qtbase のみのビルド
 WORKDIR /build
