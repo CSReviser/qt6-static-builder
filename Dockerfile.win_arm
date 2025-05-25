@@ -27,6 +27,21 @@ RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . &&
         --prefix=/opt/openssl-arm && \
     make -j$(nproc) && make install_sw
 
+# Windows ARM 用 OpenSSL の静的ライブラリとヘッダー確認
+RUN set -ex && \
+    echo "---- Checking static OpenSSL libraries for Windows ARM ----" && \
+    for lib in ssl crypto; do \
+        echo "Checking lib$lib.a in /opt/openssl-arm/lib..." && \
+        test -f /opt/openssl-arm/lib/lib$lib.a || \
+        (echo "Missing static library: lib$lib.a" && exit 1); \
+    done && \
+    echo "---- Checking OpenSSL headers for Windows ARM ----" && \
+    for hdr in ssl.h opensslv.h crypto.h; do \
+        echo "Checking $hdr in /opt/openssl-arm/include/openssl..." && \
+        test -f /opt/openssl-arm/include/openssl/$hdr || \
+        (echo "Missing header: $hdr" && exit 1); \
+    done && \
+    echo "✅ All required OpenSSL static libraries and headers found."
 # Qt6 ソース取得と qtbase のみのビルド
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz && \
