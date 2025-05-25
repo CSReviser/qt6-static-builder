@@ -62,7 +62,7 @@ RUN mkdir build && cd build && \
         -release \
         -opensource -confirm-license \
         -nomake tests -nomake examples \
-        -xplatform win32-clang-g++ \
+        -xplatform win32-g++ \
         -feature-openssl \
         -openssl-linked \
         OPENSSL_LIBS="-L/opt/openssl-arm/lib -lssl -lcrypto" \
