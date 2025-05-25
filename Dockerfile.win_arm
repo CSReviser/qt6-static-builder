@@ -68,10 +68,11 @@ RUN mkdir build && cd build && \
         OPENSSL_LIBS="-L/opt/openssl-arm/lib -lssl -lcrypto" \
         OPENSSL_INCDIR="/opt/openssl-arm/include" \
         -no-dbus \
-        -gui -widgets || \
-    { echo "----- config.summary -----"; cat config.summary || true; \
+        -gui -widgets || &&\
+　　　　　grep -i openssl build/config.log -A 30 &&\
+      echo "----- config.summary -----"; cat config.summary || true; \
       echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
-      echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; exit 1; } && \
+      echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; && \
     make -j$(nproc) && \
     make install
 
