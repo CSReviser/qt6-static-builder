@@ -7,7 +7,7 @@ ENV PATH="/opt/llvm-mingw/bin:$PATH"
 RUN apt-get update && apt-get install -y \
     git curl wget unzip tar xz-utils build-essential \
     cmake ninja-build python3 python3-pip \
-    clang lld llvm pkg-config mingw-w64 yasm nasm
+    clang lld llvm pkg-config mingw-w64 yasm nasm perl
 
 # llvm-mingw (クロスビルドツールチェイン)
 WORKDIR /opt
@@ -17,13 +17,19 @@ RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20250514/llvm-
     mv "$DIR_NAME" llvm-mingw && \
     rm llvm-mingw-*.tar.xz
 
+RUN /opt/llvm-mingw/bin/aarch64-w64-mingw32-clang --version
+
 # OpenSSL for Windows ARM (static)
 WORKDIR /build/openssl
 RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . && \
-    ./Configure mingw64-aarch64 no-shared \
+    CC=clang \
+    AR=llvm-ar \
+    RANLIB=llvm-ranlib \
+    NM=llvm-nm \
+    ./Configure mingw64-aarch64 no-shared no-dso no-tests \
+        --cross-compile-prefix=aarch64-w64-mingw32- \
         --prefix=/opt/openssl-arm && \
-    make -j$(nproc) || { echo "Build failed"; cat config.log || true; exit 1; } && \
-    make install_sw
+    make -j$(nproc) && make install_sw
 
 # Qt6 ソース取得と qtbase のみのビルド
 WORKDIR /build
