@@ -46,7 +46,7 @@ RUN mkdir build && cd build && ../configure \
     -openssl-linked \
     -DOPENSSL_ROOT_DIR=/opt/openssl-arm \
     -DCMAKE_PREFIX_PATH=/opt/openssl-arm \
-    -opengl no \
+    -no-feature-opengl \
     -gui -widgets -no-dbus && \
     cmake --build build --parallel $(nproc) && cmake --install build
 
