@@ -22,11 +22,7 @@ RUN /opt/llvm-mingw/bin/aarch64-w64-mingw32-clang --version
 # OpenSSL for Windows ARM (static)
 WORKDIR /build/openssl
 RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . && \
-    CC=/opt/llvm-mingw/bin/aarch64-w64-mingw32-clang \
-    AR=/opt/llvm-mingw/bin/llvm-ar \
-    RANLIB=/opt/llvm-mingw/bin/llvm-ranlib \
-    NM=/opt/llvm-mingw/bin/llvm-nm \
-    ./Configure mingw64-aarch64 no-shared no-dso no-tests \
+    ./Configure mingw no-shared no-dso no-tests \
         --cross-compile-prefix=aarch64-w64-mingw32- \
         --prefix=/opt/openssl-arm && \
     make -j$(nproc) && make install_sw
