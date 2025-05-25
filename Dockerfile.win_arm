@@ -57,16 +57,16 @@ RUN mkdir build && cd build && ../configure \
     -nomake tests -nomake examples \
     -platform linux-clang \
     -device-option CROSS_COMPILE=aarch64-w64-mingw32- \
-    -xplatform win32-clang-msvc \
+    -xplatform win32-clang-g++ \
     -openssl-linked \
-    -DOPENSSL_ROOT_DIR=/opt/openssl-arm \
-    -DCMAKE_PREFIX_PATH=/opt/openssl-arm \
-    -no-feature-opengl \
-    -gui -widgets -no-dbus  || true && \
+    -I/opt/openssl-arm/include \
+    -L/opt/openssl-arm/lib \
+    -opengl dynamic -no-angle -no-dbus \
+    -gui -widgets || true && \
     echo "----- config.summary -----" && cat config.summary || true && \
     echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
     echo "----- CMakeOutput.log -----" && cat CMakeFiles/CMakeOutput.log || true && \
-    cmake --build build --parallel $(nproc) && cmake --install build
+    cmake --build . --parallel $(nproc) && cmake --install .
 
 # FFmpeg ビルド for Windows ARM (static)
 WORKDIR /build/ffmpeg
