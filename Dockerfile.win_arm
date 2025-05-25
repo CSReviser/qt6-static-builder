@@ -88,7 +88,8 @@ ENV CXXFLAGS="-fuse-ld=lld"
 ENV LDFLAGS="-fuse-ld=lld"
 # Qt configure 実行前に OpenSSL 検出部分を強制成功させる
 WORKDIR /build/qt6/qtbase
-RUN sed -i '1s;^;set(OPENSSL_FOUND TRUE)\nset(OPENSSL_INCLUDE_DIR "/opt/openssl-arm/include")\nset(OPENSSL_LIBRARIES "/opt/openssl-arm/lib/libssl.a;/opt/openssl-arm/lib/libcrypto.a")\n;' /build/qt6/qtbase/src/network/configure.cmake
+RUN sed -i '1s|^|set(OPENSSL_FOUND TRUE)\nset(OPENSSL_INCLUDE_DIR "/opt/openssl-arm/include")\nset(OPENSSL_LIBRARIES "/opt/openssl-arm/lib/libssl.a;/opt/openssl-arm/lib/libcrypto.a")\n|' /build/qt6/qtbase/src/network/configure.cmake
+
 RUN mkdir build && cd build && \
     ../configure \
         -prefix /opt/qt6-arm \
