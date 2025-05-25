@@ -63,10 +63,10 @@ RUN mkdir build && cd build && \
         -opensource -confirm-license \
         -nomake tests -nomake examples \
         -xplatform win32-clang-g++ \
+        -feature-openssl \
         -openssl-linked \
-        -I$OPENSSL_INCDIR \
-        -L$OPENSSL_LIBDIR \
-        -opengl dynamic \
+        OPENSSL_LIBS="-L/opt/openssl-arm/lib -lssl -lcrypto" \
+        OPENSSL_INCDIR="/opt/openssl-arm/include"
         -no-dbus \
         -gui -widgets || \
     { echo "----- config.summary -----"; cat config.summary || true; \
