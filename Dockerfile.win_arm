@@ -61,7 +61,7 @@ RUN mkdir build && cd build && ../configure \
     -openssl-linked \
     -I/opt/openssl-arm/include \
     -L/opt/openssl-arm/lib \
-    -opengl dynamic -no-angle -no-dbus \
+    -opengl dynamic -no-dbus \
     -gui -widgets || true && \
     echo "----- config.summary -----" && cat config.summary || true && \
     echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
