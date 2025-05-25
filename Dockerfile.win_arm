@@ -78,14 +78,18 @@ RUN echo "---- Installed .pc files ----" && \
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
+    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} qt6/qtbase
+
+
 
 ENV PKG_CONFIG_PATH="/opt/openssl-arm/lib/pkgconfig"
 ENV CXXFLAGS="-fuse-ld=lld"
 ENV LDFLAGS="-fuse-ld=lld"
 # Qt configure 実行前に OpenSSL 検出部分を強制成功させる
+WORKDIR /build/qt6/qtbase
 RUN sed -i '1s;^;set(OPENSSL_FOUND TRUE)\nset(OPENSSL_INCLUDE_DIR "/opt/openssl-arm/include")\nset(OPENSSL_LIBRARIES "/opt/openssl-arm/lib/libssl.a;/opt/openssl-arm/lib/libcrypto.a")\n;' /build/qt6/qtbase/src/network/configure.cmake
 RUN mkdir build && cd build && \
-    ../${QT_MODULE}-everywhere-src-${QT_VERSION}/configure \
+    ../configure \
         -prefix /opt/qt6-arm \
         -static \
         -release \
