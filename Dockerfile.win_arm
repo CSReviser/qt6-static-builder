@@ -66,7 +66,7 @@ RUN mkdir build && cd build && \
         -feature-openssl \
         -openssl-linked \
         OPENSSL_LIBS="-L/opt/openssl-arm/lib -lssl -lcrypto" \
-        OPENSSL_INCDIR="/opt/openssl-arm/include"
+        OPENSSL_INCDIR="/opt/openssl-arm/include" \
         -no-dbus \
         -gui -widgets || \
     { echo "----- config.summary -----"; cat config.summary || true; \
