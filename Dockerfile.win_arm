@@ -51,6 +51,10 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 ENV OPENSSL_LIBS="-L/opt/openssl-arm/lib -lssl -lcrypto"
 ENV OPENSSL_INCDIR="/opt/openssl-arm/include"
 ENV OPENSSL_LIBDIR="/opt/openssl-arm/lib"
+ENV OPENSSL_ROOT_DIR=/opt/openssl-arm
+ENV OPENSSL_INCLUDE_DIR=/opt/openssl-arm/include
+ENV OPENSSL_LIBRARIES=/opt/openssl-arm/lib
+ENV PKG_CONFIG_PATH=/opt/openssl-arm/lib/pkgconfig
 WORKDIR /build/qt6/qtbase
 RUN mkdir build && cd build && \
     export OPENSSL_LIBS="$OPENSSL_LIBS" && \
@@ -63,10 +67,12 @@ RUN mkdir build && cd build && \
         -opensource -confirm-license \
         -nomake tests -nomake examples \
         -xplatform win32-g++ \
-        -feature-openssl \
         -openssl-linked \
-        OPENSSL_LIBS="-L/opt/openssl-arm/lib -lssl -lcrypto" \
-        OPENSSL_INCDIR="/opt/openssl-arm/include" \
+        -feature-openssl \
+        OPENSSL_ROOT_DIR=/opt/openssl-arm \
+        OPENSSL_USE_STATIC_LIBS=ON \
+        OPENSSL_INCLUDE_DIR=/opt/openssl-arm/include \
+        OPENSSL_LIBRARIES="/opt/openssl-arm/lib/libssl.a;/opt/openssl-arm/lib/libcrypto.a" \
         -no-dbus \
         -gui -widgets  || ( \
         echo '--- config.log OpenSSL ---' && \
