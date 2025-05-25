@@ -68,6 +68,10 @@ RUN echo "==> Checking OpenSSL static libraries..." && \
     done && \
     echo "✅ All OpenSSL libraries are valid and match expected architecture."
 
+# 省略: 各種 xcb-util 系ライブラリのビルド後に入れる確認用ステップ
+RUN echo "---- Installed .pc files ----" && \
+    ls -1 /opt/openssl-arm/lib/pkgconfig/*.pc
+
 # Qt6 ソース取得と qtbase のみのビルド
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz && \
