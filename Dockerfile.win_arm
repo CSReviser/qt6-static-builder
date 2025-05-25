@@ -74,19 +74,11 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz && \
     mv qt-everywhere-src-${QT_VERSION} qt6
 
-
-ENV OPENSSL_LIBS="-L/opt/openssl-arm/lib -lssl -lcrypto -lz -lws2_32 -lbcrypt"
-ENV OPENSSL_INCDIR="/opt/openssl-arm/include"
-ENV OPENSSL_LIBDIR="/opt/openssl-arm/lib"
 ENV PKG_CONFIG_PATH="/opt/openssl-arm/lib/pkgconfig"
 ENV CXXFLAGS="-fuse-ld=lld"
 ENV LDFLAGS="-fuse-ld=lld"
 
-WORKDIR /build/qt6/qtbase
 RUN mkdir build && cd build && \
-    export OPENSSL_LIBS="$OPENSSL_LIBS" && \
-    export OPENSSL_INCDIR="$OPENSSL_INCDIR" && \
-    export OPENSSL_LIBDIR="$OPENSSL_LIBDIR" && \
     ../configure \
         -prefix /opt/qt6-arm \
         -static \
@@ -94,8 +86,8 @@ RUN mkdir build && cd build && \
         -opensource -confirm-license \
         -nomake tests -nomake examples \
         -xplatform win32-g++ \
-        -no-feature-openssl \
-        -no-feature-openssl-linked \
+        -openssl-linked \
+        -feature-openssl \
         -no-dbus \
         -gui -widgets　|| \
     { echo "----- config.summary -----"; cat config.summary || true; \
