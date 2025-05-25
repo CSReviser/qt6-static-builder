@@ -44,7 +44,9 @@ RUN mkdir build && cd build && ../configure \
     -device-option CROSS_COMPILE=aarch64-w64-mingw32- \
     -xplatform win32-clang-msvc \
     -openssl-linked \
-    OPENSSL_PREFIX=/opt/openssl-arm \
+    -DOPENSSL_ROOT_DIR=/opt/openssl-arm \
+    -DCMAKE_PREFIX_PATH=/opt/openssl-arm \
+    -opengl no \
     -gui -widgets -no-dbus && \
     cmake --build build --parallel $(nproc) && cmake --install build
 
