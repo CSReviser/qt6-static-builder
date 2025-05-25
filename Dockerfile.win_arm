@@ -94,7 +94,7 @@ RUN mkdir build && cd build && \
         -opensource -confirm-license \
         -nomake tests -nomake examples \
         -xplatform win32-g++ \
-        -feature-openssl \
+        -no-feature-openssl \
         -no-feature-openssl-linked \
         -no-dbus \
         -gui -widgets　|| \
