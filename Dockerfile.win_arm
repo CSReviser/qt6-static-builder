@@ -47,7 +47,10 @@ RUN mkdir build && cd build && ../configure \
     -DOPENSSL_ROOT_DIR=/opt/openssl-arm \
     -DCMAKE_PREFIX_PATH=/opt/openssl-arm \
     -no-feature-opengl \
-    -gui -widgets -no-dbus && \
+    -gui -widgets -no-dbus  || true && \
+    echo "----- config.summary -----" && cat config.summary || true && \
+    echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
+    echo "----- CMakeOutput.log -----" && cat CMakeFiles/CMakeOutput.log || true && \
     cmake --build build --parallel $(nproc) && cmake --install build
 
 # FFmpeg ビルド for Windows ARM (static)
