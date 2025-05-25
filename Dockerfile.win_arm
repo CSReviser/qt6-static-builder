@@ -58,7 +58,7 @@ RUN echo "==> Checking OpenSSL static libraries..." && \
         fi; \
         FIRST_OBJ=$(echo "$OBJ_FILES" | head -n 1); \
         ar x "$FULL_PATH" "$FIRST_OBJ"; \
-        MACHINE=$(llvm-readobj -file-headers "$FIRST_OBJ" | grep 'Machine:' | awk '{print $2}'); \
+        MACHINE=$(llvm-readobj --file-headers "$FIRST_OBJ" | grep 'Machine:' | awk '{print $2}'); \
         echo "🔍 Detected architecture for $FIRST_OBJ: $MACHINE"; \
         if [ "$MACHINE" != "$EXPECTED_MACHINE" ]; then \
             echo "❌ Architecture mismatch in $LIB: expected $EXPECTED_MACHINE, found $MACHINE" && \
