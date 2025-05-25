@@ -7,7 +7,7 @@ ENV PATH="/opt/llvm-mingw/bin:$PATH"
 RUN apt-get update && apt-get install -y \
     git curl wget unzip tar xz-utils build-essential \
     cmake ninja-build python3 python3-pip \
-    clang lld llvm pkg-config mingw-w64 yasm nasm wget
+    clang lld llvm pkg-config mingw-w64 yasm nasm
 
 # llvm-mingw (クロスビルドツールチェイン)
 WORKDIR /opt
@@ -20,7 +20,9 @@ RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20250514/llvm-
 # OpenSSL for Windows ARM (static)
 WORKDIR /build/openssl
 RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . && \
-    CC=clang ./Configure mingw64-aarch64 no-shared --prefix=/opt/openssl-arm && \
+    ./Configure mingw64-aarch64 no-shared \
+        --cross-compile-prefix=/opt/llvm-mingw/bin/aarch64-w64-mingw32- \
+        --prefix=/opt/openssl-arm && \
     make -j$(nproc) && make install_sw
 
 # Qt6 ソース取得と qtbase のみのビルド
