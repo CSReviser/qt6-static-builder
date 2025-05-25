@@ -69,7 +69,7 @@ RUN mkdir build && cd build && \
         OPENSSL_INCDIR="/opt/openssl-arm/include" \
         -no-dbus \
         -gui -widgets &&\
-　　　　　grep -i openssl build/config.log -A 30 &&\
+　　　　　grep -i openssl build/config.log -A 30 ||true; \
       echo "----- config.summary -----"; cat config.summary || true; \
       echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
       echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; && \
