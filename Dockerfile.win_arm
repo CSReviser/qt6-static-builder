@@ -46,7 +46,6 @@ RUN set -ex && \
 ENV EXPECTED_MACHINE="IMAGE_FILE_MACHINE_ARMNT"
 RUN echo "==> Checking OpenSSL static libraries..." && \
     LIB_DIR="/opt/openssl-arm/lib" && \
-    EXPECTED_MACHINE="ARM64" && \
     for LIB in libssl.a libcrypto.a; do \
         FULL_PATH="$LIB_DIR/$LIB"; \
         if [ ! -f "$FULL_PATH" ]; then \
@@ -82,6 +81,8 @@ ENV OPENSSL_ROOT_DIR=/opt/openssl-arm
 ENV OPENSSL_INCLUDE_DIR=/opt/openssl-arm/include
 ENV OPENSSL_LIBRARIES=/opt/openssl-arm/lib
 ENV PKG_CONFIG_PATH=/opt/openssl-arm/lib/pkgconfig
+ENV CXXFLAGS="-fuse-ld=lld"
+ENV LDFLAGS="-fuse-ld=lld"
 WORKDIR /build/qt6/qtbase
 RUN mkdir build && cd build && \
     export OPENSSL_LIBS="$OPENSSL_LIBS" && \
