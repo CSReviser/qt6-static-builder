@@ -49,7 +49,8 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     mv qt-everywhere-src-${QT_VERSION} qt6
 
 WORKDIR /build/qt6/qtbase
-RUN mkdir build && cd build && ../configure \
+RUN mkdir build && cd build && \
+    ../configure \
     -prefix /opt/qt6-arm \
     -static \
     -release \
@@ -61,8 +62,13 @@ RUN mkdir build && cd build && ../configure \
     -openssl-linked \
     -I/opt/openssl-arm/include \
     -L/opt/openssl-arm/lib \
-    -opengl dynamic -no-dbus \
-    -gui -widgets || true && \
+    -opengl dynamic \
+    -no-dbus \
+    -gui -widgets && \
+    make -j$(nproc) && \
+    make install
+
+RUN mkdir || true && \
     echo "----- config.summary -----" && cat config.summary || true && \
     echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
     echo "----- CMakeOutput.log -----" && cat CMakeFiles/CMakeOutput.log || true && \
