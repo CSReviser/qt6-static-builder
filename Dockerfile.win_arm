@@ -1,6 +1,8 @@
 FROM ubuntu:22.04
 
+# build-args
 ARG QT_VERSION=6.9.0
+ARG QT_MODULE=qtbase
 ENV PATH="/opt/llvm-mingw/bin:$PATH"
 
 # 基本依存
