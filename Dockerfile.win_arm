@@ -45,7 +45,7 @@ RUN mkdir build && cd build && ../configure \
     -xplatform win32-clang-msvc \
     -openssl-linked \
     OPENSSL_PREFIX=/opt/openssl-arm \
-    -network -gui -widgets -no-dbus && \
+    -gui -widgets -no-dbus && \
     cmake --build build --parallel $(nproc) && cmake --install build
 
 # FFmpeg ビルド for Windows ARM (static)
