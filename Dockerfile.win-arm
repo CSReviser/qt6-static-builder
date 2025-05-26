@@ -10,17 +10,13 @@ ARG QT_MODULE=qtbase
 # 環境変数
 # --------------------
 ENV DEBIAN_FRONTEND=noninteractive
-ENV PATH="/opt/llvm-mingw/bin:$PATH"
 ENV QT6_SRC_DIR=/build/qt6
 ENV QT6_DIR=/qt6
 ENV QT6_ARM_PREFIX=/opt/qt6-arm
 ENV QT6_HOST_PREFIX=/opt/qt6-host
 ENV CMAKE_GENERATOR=Ninja
 ENV CXXFLAGS="-fuse-ld=lld"
-# ホスト用 OpenSSL ビルド (x86_64向け)
-ENV OPENSSL_HOST_PREFIX=/opt/openssl-host
-# クロス用 OpenSSL ビルド (aarch64-w64-mingw32向け)
-ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
+
 
 # --------------------
 # 基本依存
@@ -68,6 +64,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # --------------------
 # ホスト向け Qt ツールのビルド
 # --------------------
+# ホスト用 OpenSSL ビルド (x86_64向け)
 ENV OPENSSL_HOST_PREFIX=/opt/openssl-host
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 WORKDIR ${QT6_SRC_DIR}/qtbase
@@ -100,6 +97,9 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
 # --------------------
 # Windows ARM 用 Qt のビルド
 # --------------------
+# クロス用 OpenSSL ビルド (aarch64-w64-mingw32向け)
+ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
+ENV PATH="/opt/llvm-mingw/bin:$PATH"
 ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
 ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
 WORKDIR ${QT6_SRC_DIR}/qtbase
