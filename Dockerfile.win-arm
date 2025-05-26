@@ -67,26 +67,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # --------------------
-# llvm-mingw の導入
-# --------------------
-WORKDIR /opt
-RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20250514/llvm-mingw-20250514-msvcrt-ubuntu-22.04-x86_64.tar.xz && \
-    tar -xf llvm-mingw-20250514-msvcrt-ubuntu-22.04-x86_64.tar.xz && \
-    mv llvm-mingw-*/ llvm-mingw && \
-    rm llvm-mingw-*.tar.xz
-RUN aarch64-w64-mingw32-clang --version
-
-# --------------------
-# OpenSSL (static for Windows ARM)
-# --------------------
-WORKDIR /build/openssl
-RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . && \
-    ./Configure mingw no-shared no-dso no-asm no-tests no-apps \
-        --cross-compile-prefix=aarch64-w64-mingw32- \
-        --prefix=${OPENSSL_ARM_PREFIX} && \
-    make -j$(nproc) && make install_sw
-
-# --------------------
 # Qt ソース取得
 # --------------------
 WORKDIR /build
@@ -122,6 +102,32 @@ RUN ./configure \
     cmake --build . --parallel && \
     cmake --install .
 
+
+# クロス用 OpenSSL ビルド (aarch64-w64-mingw32向け)
+ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
+ENV PATH="/opt/llvm-mingw/bin:$PATH"
+ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
+ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
+# --------------------
+# llvm-mingw の導入
+# --------------------
+WORKDIR /opt
+RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20250514/llvm-mingw-20250514-msvcrt-ubuntu-22.04-x86_64.tar.xz && \
+    tar -xf llvm-mingw-20250514-msvcrt-ubuntu-22.04-x86_64.tar.xz && \
+    mv llvm-mingw-*/ llvm-mingw && \
+    rm llvm-mingw-*.tar.xz
+RUN aarch64-w64-mingw32-clang --version
+
+# --------------------
+# OpenSSL (static for Windows ARM)
+# --------------------
+WORKDIR /build/openssl
+RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . && \
+    ./Configure mingw no-shared no-dso no-asm no-tests no-apps \
+        --cross-compile-prefix=aarch64-w64-mingw32- \
+        --prefix=${OPENSSL_ARM_PREFIX} && \
+    make -j$(nproc) && make install_sw
+
 # --------------------
 # Windows ARM 用 mkspecs を作成
 # --------------------
@@ -136,11 +142,6 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
 # --------------------
 # Windows ARM 用 Qt のビルド
 # --------------------
-# クロス用 OpenSSL ビルド (aarch64-w64-mingw32向け)
-ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
-ENV PATH="/opt/llvm-mingw/bin:$PATH"
-ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
-ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
 WORKDIR ${QT6_SRC_DIR}/qtbase
 RUN ls && \
     ls -r ..
