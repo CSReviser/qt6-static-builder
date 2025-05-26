@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 # Build arguments
 # --------------------
 ARG QT_VERSION=6.9.0
-ARG QT_MODULE=qt
+ARG QT_MODULE=qtbase
 
 # --------------------
 # 環境変数
