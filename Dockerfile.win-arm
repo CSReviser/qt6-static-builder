@@ -55,9 +55,9 @@ WORKDIR /build
 #    tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz && \
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
-    mkdir -p qt6/qtbase && \
-    cp -r ${QT_MODULE}-everywhere-src-${QT_VERSION} qt6/qtbase && \
-    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} qt6
+    mkdir -p qt6 && \
+    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} qt6 && \
+    rn ${QT_MODULE}-everywhere-src-${QT_VERSION} ${QT_MODULE}
 
 # --------------------
 # ホスト向け Qt ツールのビルド
