@@ -86,6 +86,8 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
 # Windows ARM 用 Qt のビルド
 # --------------------
 WORKDIR ${QT6_SRC_DIR}/qtbase
+RUN ls && \
+    ls -r ..
 RUN ../configure \
     -prefix ${QT6_ARM_PREFIX} \
     -release \
