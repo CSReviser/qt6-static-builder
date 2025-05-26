@@ -25,7 +25,51 @@ RUN apt-get update && apt-get install -y \
     git curl wget unzip tar xz-utils build-essential \
     cmake ninja-build python3 python3-pip \
     libssl-dev \
-    clang lld llvm pkg-config mingw-w64 yasm nasm perl autoconf
+    clang lld llvm pkg-config mingw-w64 yasm nasm perl autoconf build-essential \
+    cmake \
+    ninja-build \
+    git \
+    curl \
+    wget \
+    gperf \
+    libtool \
+    automake \
+    ca-certificates \
+    libxcb1-dev libxcb-util-dev libx11-dev \
+    libxext-dev libxrender-dev libxkbcommon-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev \
+    libdbus-1-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    libglib2.0-dev \
+    libgtk-3-dev \
+    libssl-dev \
+    libfontconfig1-dev \
+    meson \
+    python3-pip \
+    pkg-config \
+    libxcb-dri2-0-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # --------------------
 # llvm-mingw の導入
