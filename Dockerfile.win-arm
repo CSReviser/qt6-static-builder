@@ -98,11 +98,9 @@ RUN ./configure \
     -I${OPENSSL_HOST_PREFIX}/include \
     -L${OPENSSL_HOST_PREFIX}/lib　|| \
     { echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
-      echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; \
-      echo "----- CMakeCache.txt -----"; cat CMakeCache.txt || true; \
-      exit 1; } && \
+      echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true;  exit 1; } && \
     cmake --build . --parallel && \
-    cmake --install . --prefix ${QT6_ARM_PREFIX}
+    cmake --install .
 
 
 # クロス用 OpenSSL ビルド (aarch64-w64-mingw32向け)
@@ -159,10 +157,12 @@ RUN ./configure \
     -nomake tests -nomake examples \
     || { \
         echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
-        echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; exit 1; \
+        echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; \
+        echo "----- CMakeCache.txt -----"; cat CMakeCache.txt || true; \
+        exit 1; \
     } && \
     cmake --build . --parallel && \
-    cmake --install .
+    cmake --install . --prefix ${QT6_ARM_PREFIX}
 
 # --------------------
 # 完了
