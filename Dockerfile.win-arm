@@ -70,7 +70,10 @@ RUN ./configure \
     -release \
     -static \
     -nomake tests -nomake examples \
-    -opensource -confirm-license && \
+    -opensource -confirm-license || \
+    { echo "----- config.summary -----"; cat config.summary || true; \
+      echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
+      echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; exit 1; } && \
     cmake --build . --parallel && \
     cmake --install .
 
