@@ -62,7 +62,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # ホスト向け Qt ツールのビルド
 # --------------------
 WORKDIR ${QT6_SRC_DIR}/qtbase
-RUN ./configure \
+RUN ../configure \
     -prefix ${QT6_HOST_PREFIX} \
     -release \
     -static \
@@ -86,7 +86,7 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
 # Windows ARM 用 Qt のビルド
 # --------------------
 WORKDIR ${QT6_SRC_DIR}/qtbase
-RUN ./configure \
+RUN ../configure \
     -prefix ${QT6_ARM_PREFIX} \
     -release \
     -opensource -confirm-license \
