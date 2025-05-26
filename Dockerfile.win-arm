@@ -15,8 +15,6 @@ ENV QT6_SRC_DIR=/build/qt6
 ENV QT6_DIR=/qt6
 ENV QT6_ARM_PREFIX=/opt/qt6-arm
 ENV QT6_HOST_PREFIX=/opt/qt6-host
-ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
-ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
 ENV CMAKE_GENERATOR=Ninja
 ENV CXXFLAGS="-fuse-ld=lld"
 # ホスト用 OpenSSL ビルド (x86_64向け)
@@ -71,6 +69,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # ホスト向け Qt ツールのビルド
 # --------------------
 ENV OPENSSL_HOST_PREFIX=/opt/openssl-host
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 WORKDIR ${QT6_SRC_DIR}/qtbase
 RUN ./configure \
     -prefix ${QT6_HOST_PREFIX} \
@@ -101,6 +100,8 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
 # --------------------
 # Windows ARM 用 Qt のビルド
 # --------------------
+ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
+ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
 WORKDIR ${QT6_SRC_DIR}/qtbase
 RUN ls && \
     ls -r ..
