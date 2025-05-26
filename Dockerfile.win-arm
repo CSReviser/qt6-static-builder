@@ -18,7 +18,10 @@ ENV QT6_HOST_PREFIX=/opt/qt6-host
 ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
 ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
 ENV CMAKE_GENERATOR=Ninja
-
+# ホスト用 OpenSSL ビルド (x86_64向け)
+ENV OPENSSL_HOST_PREFIX=/opt/openssl-host
+# クロス用 OpenSSL ビルド (aarch64-w64-mingw32向け)
+ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
 # --------------------
 # 基本依存
 # --------------------
