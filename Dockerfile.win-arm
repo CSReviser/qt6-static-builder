@@ -78,8 +78,7 @@ RUN ./configure \
     -no-gdb-index \
     -openssl-linked \
     -I${OPENSSL_HOST_PREFIX}/include \
-    -L${OPENSSL_HOST_PREFIX}/lib && \
-    || \
+    -L${OPENSSL_HOST_PREFIX}/lib　|| \
     { echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
       echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; exit 1; } && \
     cmake --build . --parallel && \
