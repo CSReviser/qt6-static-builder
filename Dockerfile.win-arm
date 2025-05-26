@@ -12,6 +12,7 @@ ARG QT_MODULE=qt
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PATH="/opt/llvm-mingw/bin:$PATH"
 ENV QT6_SRC_DIR=/build/qt6
+ENV QT6_DIR=/qt6
 ENV QT6_ARM_PREFIX=/opt/qt6-arm
 ENV QT6_HOST_PREFIX=/opt/qt6-host
 ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
