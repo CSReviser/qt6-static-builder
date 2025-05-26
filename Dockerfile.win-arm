@@ -65,9 +65,6 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # ホスト向け Qt ツールのビルド
 # --------------------
 WORKDIR ${QT6_SRC_DIR}/qtbase
-RUN ls -r && \
-    ls -r .. && \
-    ls -r ../${QT_MODULE}
 RUN ./configure \
     -prefix ${QT6_HOST_PREFIX} \
     -release \
