@@ -1,0 +1,102 @@
+FROM ubuntu:22.04
+
+# --------------------
+# Build arguments
+# --------------------
+ARG QT_VERSION=6.9.0
+ARG QT_MODULE=qtbase
+
+# --------------------
+# 環境変数
+# --------------------
+ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/opt/llvm-mingw/bin:$PATH"
+ENV QT6_SRC_DIR=/build/qt6
+ENV QT6_ARM_PREFIX=/opt/qt6-arm
+ENV QT6_HOST_PREFIX=/opt/qt6-host
+ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
+ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
+ENV CMAKE_GENERATOR=Ninja
+
+# --------------------
+# 基本依存
+# --------------------
+RUN apt-get update && apt-get install -y \
+    git curl wget unzip tar xz-utils build-essential \
+    cmake ninja-build python3 python3-pip \
+    clang lld llvm pkg-config mingw-w64 yasm nasm perl autoconf
+
+# --------------------
+# llvm-mingw の導入
+# --------------------
+WORKDIR /opt
+RUN wget https://github.com/mstorsjo/llvm-mingw/releases/download/20250514/llvm-mingw-20250514-msvcrt-ubuntu-22.04-x86_64.tar.xz && \
+    tar -xf llvm-mingw-20250514-msvcrt-ubuntu-22.04-x86_64.tar.xz && \
+    mv llvm-mingw-*/ llvm-mingw && \
+    rm llvm-mingw-*.tar.xz
+RUN aarch64-w64-mingw32-clang --version
+
+# --------------------
+# OpenSSL (static for Windows ARM)
+# --------------------
+WORKDIR /build/openssl
+RUN git clone --branch openssl-3.3.0 https://github.com/openssl/openssl.git . && \
+    ./Configure mingw no-shared no-dso no-asm no-tests no-apps \
+        --cross-compile-prefix=aarch64-w64-mingw32- \
+        --prefix=${OPENSSL_ARM_PREFIX} && \
+    make -j$(nproc) && make install_sw
+
+# --------------------
+# Qt ソース取得
+# --------------------
+WORKDIR /build
+RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
+    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
+    mkdir -p ${QT6_SRC_DIR}/qtbase && \
+    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} ${QT6_SRC_DIR}/qtbase
+
+# --------------------
+# ホスト向け Qt ツールのビルド
+# --------------------
+WORKDIR ${QT6_SRC_DIR}/qtbase/host-build
+RUN cmake .. \
+    -DCMAKE_INSTALL_PREFIX=${QT6_HOST_PREFIX} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DQT_BUILD_TOOLS_WHEN_CROSSCOMPILING=ON && \
+    cmake --build . --parallel && \
+    cmake --install .
+
+# --------------------
+# Windows ARM 用 mkspecs を作成
+# --------------------
+WORKDIR ${QT6_SRC_DIR}/qtbase/mkspecs
+RUN cp -r win32-clang-msvc win64-arm64-clang && \
+    sed -i 's/x86_64-w64-mingw32/aarch64-w64-mingw32/g' win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_TARGET.arch = arm64' >> win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_CXX = aarch64-w64-mingw32-clang++' >> win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_CC = aarch64-w64-mingw32-clang' >> win64-arm64-clang/qmake.conf
+
+# --------------------
+# Qt for Windows ARM のビルド
+# --------------------
+WORKDIR ${QT6_SRC_DIR}/qtbase/build
+RUN cmake .. \
+    -DCMAKE_INSTALL_PREFIX=${QT6_ARM_PREFIX} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_TOOLCHAIN_FILE=../mkspecs/win64-arm64-clang/qmake.conf \
+    -DQT_BUILD_EXAMPLES=OFF \
+    -DQT_BUILD_TESTS=OFF \
+    -DFEATURE_dbus=OFF \
+    -DFEATURE_openssl=ON \
+    -DOPENSSL_ROOT_DIR=${OPENSSL_ARM_PREFIX} \
+    -DQT_HOST_PATH=${QT6_HOST_PREFIX} \
+    -DCMAKE_C_COMPILER=aarch64-w64-mingw32-clang \
+    -DCMAKE_CXX_COMPILER=aarch64-w64-mingw32-clang++ \
+    -DCMAKE_FIND_ROOT_PATH=/opt/llvm-mingw/aarch64-w64-mingw32 \
+    -GNinja && \
+    ninja && ninja install
+
+# --------------------
+# 完了
+# --------------------
+RUN echo "✅ Qt for Windows ARM built and installed at ${QT6_ARM_PREFIX}"
