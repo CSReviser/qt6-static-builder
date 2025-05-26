@@ -105,7 +105,7 @@ RUN ./configure \
 
 # クロス用 OpenSSL ビルド (aarch64-w64-mingw32向け)
 ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
-ENV PATH="/opt/llvm-mingw/bin:$PATH"
+ENV PATH="/opt/qt6-host/bin:/opt/llvm-mingw/bin:$PATH"
 ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
 ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
 # --------------------
@@ -138,7 +138,6 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
     echo 'QMAKE_CXX = aarch64-w64-mingw32-clang++' >> win64-arm64-clang/qmake.conf && \
     echo 'QMAKE_CC = aarch64-w64-mingw32-clang' >> win64-arm64-clang/qmake.conf
 
-
 # --------------------
 # Windows ARM 用 Qt のビルド
 # --------------------
@@ -146,16 +145,20 @@ WORKDIR ${QT6_SRC_DIR}/qtbase
 RUN ./configure \
     -prefix ${QT6_ARM_PREFIX} \
     -release \
+    -static \
     -opensource -confirm-license \
     -xplatform win64-arm64-clang \
     -device-option CMAKE_C_COMPILER=aarch64-w64-mingw32-clang \
     -device-option CMAKE_CXX_COMPILER=aarch64-w64-mingw32-clang++ \
     -device-option CMAKE_FIND_ROOT_PATH=/opt/llvm-mingw/aarch64-w64-mingw32 \
-    -hostprefix ${QT6_HOST_PREFIX} \
     -openssl-linked \
     -I${OPENSSL_ARM_PREFIX}/include \
     -L${OPENSSL_ARM_PREFIX}/lib \
-    -nomake tests -nomake examples && \
+    -nomake tests -nomake examples \
+    || { \
+        echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
+        echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; exit 1; \
+    } && \
     cmake --build . --parallel && \
     cmake --install .
 
