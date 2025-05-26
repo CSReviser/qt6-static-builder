@@ -24,7 +24,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -f Dockerfile.win_arm \
+            -f Dockerfile.win-arm \
             -t $IMAGE_NAME_VERSIONED \
             -t $IMAGE_NAME_LATEST \
             --build-arg QT_VERSION=$QT_VERSION .
