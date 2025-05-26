@@ -64,15 +64,20 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # --------------------
 # ホスト向け Qt ツールのビルド
 # --------------------
+ENV OPENSSL_HOST_PREFIX=/opt/openssl-host
 WORKDIR ${QT6_SRC_DIR}/qtbase
 RUN ./configure \
     -prefix ${QT6_HOST_PREFIX} \
     -release \
     -static \
+    -opensource -confirm-license \
     -nomake tests -nomake examples \
-    -opensource -confirm-license || \
-    { echo "----- config.summary -----"; cat config.summary || true; \
-      echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
+    -no-gdb-index \
+    -openssl-linked \
+    -I${OPENSSL_HOST_PREFIX}/include \
+    -L${OPENSSL_HOST_PREFIX}/lib && \
+    || \
+    { echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
       echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; exit 1; } && \
     cmake --build . --parallel && \
     cmake --install .
