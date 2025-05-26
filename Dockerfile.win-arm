@@ -59,10 +59,16 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 # ホスト向け Qt ツールのビルド
 # --------------------
 WORKDIR ${QT6_SRC_DIR}/qtbase/host-build
-RUN cmake .. \
-    -DCMAKE_INSTALL_PREFIX=${QT6_HOST_PREFIX} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DQT_BUILD_TOOLS_WHEN_CROSSCOMPILING=ON && \
+# --------------------
+# ホスト向け Qt ツールのビルド
+# --------------------
+WORKDIR ${QT6_SRC_DIR}/qtbase
+RUN ./configure \
+    -prefix ${QT6_HOST_PREFIX} \
+    -release \
+    -static \
+    -nomake tests -nomake examples \
+    -opensource -confirm-license && \
     cmake --build . --parallel && \
     cmake --install .
 
@@ -76,25 +82,26 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
     echo 'QMAKE_CXX = aarch64-w64-mingw32-clang++' >> win64-arm64-clang/qmake.conf && \
     echo 'QMAKE_CC = aarch64-w64-mingw32-clang' >> win64-arm64-clang/qmake.conf
 
+
 # --------------------
-# Qt for Windows ARM のビルド
+# Windows ARM 用 Qt のビルド
 # --------------------
-WORKDIR ${QT6_SRC_DIR}/qtbase/build
-RUN cmake .. \
-    -DCMAKE_INSTALL_PREFIX=${QT6_ARM_PREFIX} \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_TOOLCHAIN_FILE=../mkspecs/win64-arm64-clang/qmake.conf \
-    -DQT_BUILD_EXAMPLES=OFF \
-    -DQT_BUILD_TESTS=OFF \
-    -DFEATURE_dbus=OFF \
-    -DFEATURE_openssl=ON \
-    -DOPENSSL_ROOT_DIR=${OPENSSL_ARM_PREFIX} \
-    -DQT_HOST_PATH=${QT6_HOST_PREFIX} \
-    -DCMAKE_C_COMPILER=aarch64-w64-mingw32-clang \
-    -DCMAKE_CXX_COMPILER=aarch64-w64-mingw32-clang++ \
-    -DCMAKE_FIND_ROOT_PATH=/opt/llvm-mingw/aarch64-w64-mingw32 \
-    -GNinja && \
-    ninja && ninja install
+WORKDIR ${QT6_SRC_DIR}/qtbase
+RUN ./configure \
+    -prefix ${QT6_ARM_PREFIX} \
+    -release \
+    -opensource -confirm-license \
+    -xplatform win64-arm64-clang \
+    -device-option CMAKE_C_COMPILER=aarch64-w64-mingw32-clang \
+    -device-option CMAKE_CXX_COMPILER=aarch64-w64-mingw32-clang++ \
+    -device-option CMAKE_FIND_ROOT_PATH=/opt/llvm-mingw/aarch64-w64-mingw32 \
+    -hostprefix ${QT6_HOST_PREFIX} \
+    -openssl-linked \
+    -I${OPENSSL_ARM_PREFIX}/include \
+    -L${OPENSSL_ARM_PREFIX}/lib \
+    -nomake tests -nomake examples && \
+    cmake --build . --parallel && \
+    cmake --install .
 
 # --------------------
 # 完了
