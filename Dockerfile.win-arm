@@ -25,12 +25,7 @@ RUN apt-get update && apt-get install -y \
     git curl wget unzip tar xz-utils build-essential \
     cmake ninja-build python3 python3-pip \
     libssl-dev \
-    clang lld llvm pkg-config mingw-w64 yasm nasm perl autoconf build-essential \
-    cmake \
-    ninja-build \
-    git \
-    curl \
-    wget \
+    clang lld llvm pkg-config mingw-w64 yasm nasm perl autoconf \
     gperf \
     libtool \
     automake \
