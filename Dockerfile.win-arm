@@ -174,7 +174,6 @@ RUN ./configure \
     -no-feature-fscompleter \
     -no-feature-concurrent \
     -no-feature-animation \
-    -mbranch-protection=none \
     || { \
         echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
         echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; \
