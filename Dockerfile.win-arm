@@ -108,6 +108,8 @@ ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
 ENV PATH="/opt/qt6-host/bin:/opt/llvm-mingw/bin:$PATH"
 ENV OPENSSL_ARM_PREFIX=/opt/openssl-arm
 ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
+ENV CFLAGS="-mbranch-protection=none"
+ENV CXXFLAGS="-mbranch-protection=none"
 # --------------------
 # llvm-mingw の導入
 # --------------------
