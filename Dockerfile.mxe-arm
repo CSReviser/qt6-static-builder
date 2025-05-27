@@ -1,0 +1,82 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV MXE_PATH=/opt/armmxe
+
+# 1. 必要なパッケージをインストール
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    git \
+    unzip \
+    wget \
+    cmake \
+    python3 \
+    python3-pip \
+    ninja-build \
+    ccache \
+    ca-certificates \
+    file \
+    pkg-config \
+    automake \
+    autoconf \
+    libtool \
+    gperf \
+    bison \
+    flex \
+    nasm \
+    yasm \
+    libglib2.0-dev \
+    libssl-dev \
+    libasound2-dev \
+    libx11-dev \
+    libpulse-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# 2. MXE 非公式リポジトリをクローン
+WORKDIR /opt
+RUN git clone --depth=1 https://github.com/armdevvel/mxe-STATIC ${MXE_PATH}
+
+# 3. LLVM MinGW を取得・展開（armv7専用）
+WORKDIR ${MXE_PATH}/usr
+RUN wget https://github.com/armdevvel/llvm-mingw/releases/download/14.0/armv7-only-llvm-mingw-linux-x86_64.tar.xz && \
+    tar -xf armv7-only-llvm-mingw-linux-x86_64.tar.xz && \
+    rm armv7-only-llvm-mingw-linux-x86_64.tar.xz
+
+# 4. PATH を設定
+ENV PATH="${MXE_PATH}/usr/bin:$PATH"
+
+# 5. ライブラリおよびQt/FFmpegのビルド
+WORKDIR ${MXE_PATH}
+RUN make \
+    zlib \
+    libpng \
+    jpeg \
+    tiff \
+    sdl \
+    sdl2 \
+    sdl_image \
+    sdl_mixer \
+    sdl2_mixer \
+    libxml2 \
+    libxslt \
+    libyaml \
+    libwebp \
+    libzip \
+    libusb1 \
+    lame \
+    pcre \
+    dbus \
+    icu4c \
+    boost \
+    ffmpeg \
+    qtbase
+
+# 6. 確認（任意）
+RUN armv7-w64-mingw32-clang --version && \
+    file usr/armv7-w64-mingw32/bin/ffmpeg.exe || true && \
+    file usr/armv7-w64-mingw32/bin/Qt*.dll || true
+
+CMD ["/bin/bash"]
