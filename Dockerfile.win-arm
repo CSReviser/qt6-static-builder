@@ -177,7 +177,7 @@ RUN ./configure \
     -device-option CMAKE_SYSTEM_PROCESSOR=aarch64 \
     -device-option CMAKE_C_COMPILER="/opt/llvm-mingw/bin/aarch64-w64-mingw32-gcc" \
     -device-option CMAKE_CXX_COMPILER="/opt/llvm-mingw/bin/aarch64-w64-mingw32-g++" \
-    -device-option CMAKE_ASM_COMPILER="/opt/llvm-mingw/bin/aarch64-w64-mingw32-gcc" \
+    -device-option CMAKE_ASM_COMPILER=false \
     -device-option CMAKE_FIND_ROOT_PATH=/opt/llvm-mingw/aarch64-w64-mingw32 \
     -openssl-linked \
     -I${OPENSSL_ARM_PREFIX}/include \
