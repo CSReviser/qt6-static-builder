@@ -1,0 +1,41 @@
+name: Build and Push MXE ARM Docker Image
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - Dockerfile.mxe-arm
+      - .github/workflows/build-mxe-arm-image.yml
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set image name
+        id: vars
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/mxe-arm
+          echo "image_name=${IMAGE_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -f Dockerfile.mxe-arm -t ${{ steps.vars.outputs.image_name }} .
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ steps.vars.outputs.image_name }}
