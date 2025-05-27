@@ -161,6 +161,8 @@ RUN ./configure \
     -device-option CMAKE_C_COMPILER=aarch64-w64-mingw32-clang \
     -device-option CMAKE_CXX_COMPILER=aarch64-w64-mingw32-clang++ \
     -device-option CMAKE_FIND_ROOT_PATH=/opt/llvm-mingw/aarch64-w64-mingw32 \
+    -device-option CMAKE_C_FLAGS="-mbranch-protection=none" \
+    -device-option CMAKE_CXX_FLAGS="-mbranch-protection=none" \
     -openssl-linked \
     -I${OPENSSL_ARM_PREFIX}/include \
     -L${OPENSSL_ARM_PREFIX}/lib \
