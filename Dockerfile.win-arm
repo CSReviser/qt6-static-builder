@@ -172,14 +172,6 @@ RUN ./configure \
     -no-feature-fscompleter \
     -no-feature-concurrent \
     -no-feature-animation \
-    -skip qt3d -skip qtcharts -skip qtdatavis3d -skip qtdoc -skip qtimageformats \
-    -skip qtlottie -skip qtmultimedia -skip qtnetworkauth -skip qtpurchasing \
-    -skip qtquick3d -skip qtquicktimeline -skip qtremoteobjects -skip qtscxml \
-    -skip qtsensors -skip qtserialbus -skip qtserialport -skip qtvirtualkeyboard \
-    -skip qtwayland -skip qtwebchannel -skip qtwebengine -skip qtwebsockets \
-    -skip qtwebview -skip qttools -skip qttranslations -skip qtdeclarative \
-    -skip qtlocation -skip qtopcua -skip qtpositioning -skip qtspeech \
-    -skip qtconnectivity -skip qtcoap -skip qthttpserver -skip qtgrpc \
     || { \
         echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
         echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; \
