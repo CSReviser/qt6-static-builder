@@ -189,7 +189,33 @@ RUN ./configure \
     -no-feature-draganddrop \
     -no-feature-fscompleter \
     -no-feature-concurrent \
-    -no-feature-animation \
+    -no-feature-animation
+./configure \
+  -prefix ${QT6_ARM_PREFIX} \
+  -cmake-generator "Ninja" \
+  -release \
+  -static \
+  -opensource -confirm-license \
+  -xplatform win64-arm64-clang \
+  -device-option CMAKE_SYSTEM_NAME=Windows \
+  -device-option CMAKE_SYSTEM_PROCESSOR=aarch64 \
+  -device-option CMAKE_C_COMPILER="/opt/llvm-mingw/bin/clang --target=aarch64-w64-mingw32" \
+  -device-option CMAKE_CXX_COMPILER="/opt/llvm-mingw/bin/clang++ --target=aarch64-w64-mingw32" \
+  -device-option CMAKE_ASM_COMPILER="/opt/llvm-mingw/bin/clang --target=aarch64-w64-mingw32" \
+  -device-option CMAKE_FIND_ROOT_PATH=/opt/llvm-mingw/aarch64-w64-mingw32 \
+  -openssl-linked \
+  -I${OPENSSL_ARM_PREFIX}/include \
+  -L${OPENSSL_ARM_PREFIX}/lib \
+  -nomake tests -nomake examples \
+  -no-feature-shared \
+  -no-dbus \
+  -no-feature-accessibility \
+  -no-feature-draganddrop \
+  -no-feature-fscompleter \
+  -no-feature-concurrent \
+  -no-feature-animation
+
+ \
     || { \
         echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
         echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; \
