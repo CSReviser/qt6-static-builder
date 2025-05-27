@@ -77,8 +77,8 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     mkdir -p qt6 && \
     cp -r ${QT_MODULE}-everywhere-src-${QT_VERSION} qt6 && \
     cd qt6 && \
-    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} ${QT_MODULE}
-
+    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} ${QT_MODULE} && \
+    cd /build && tar -cf qt6-src.tar qt6
 
 # --------------------
 # ホスト向け Qt ツールのビルド
@@ -138,6 +138,9 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
     echo 'QMAKE_CXX = aarch64-w64-mingw32-clang++' >> win64-arm64-clang/qmake.conf && \
     echo 'QMAKE_CC = aarch64-w64-mingw32-clang' >> win64-arm64-clang/qmake.conf
 
+# Qt ソースをクリーンな状態で展開し直す
+RUN rm -rf /build/qt6 && tar -xf /build/qt6-src.tar -C /build
+
 # --------------------
 # Windows ARM 用 Qt のビルド
 # --------------------
@@ -163,7 +166,6 @@ RUN ./configure \
     -no-feature-fscompleter \
     -no-feature-concurrent \
     -no-feature-animation \
-    -skip qttools \
     -skip qt3d -skip qtcharts -skip qtdatavis3d -skip qtdoc -skip qtimageformats \
     -skip qtlottie -skip qtmultimedia -skip qtnetworkauth -skip qtpurchasing \
     -skip qtquick3d -skip qtquicktimeline -skip qtremoteobjects -skip qtscxml \
