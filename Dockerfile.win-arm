@@ -136,7 +136,13 @@ RUN cp -r win32-clang-msvc win64-arm64-clang && \
     sed -i 's/x86_64-w64-mingw32/aarch64-w64-mingw32/g' win64-arm64-clang/qmake.conf && \
     echo 'QMAKE_TARGET.arch = arm64' >> win64-arm64-clang/qmake.conf && \
     echo 'QMAKE_CXX = aarch64-w64-mingw32-clang++' >> win64-arm64-clang/qmake.conf && \
-    echo 'QMAKE_CC = aarch64-w64-mingw32-clang' >> win64-arm64-clang/qmake.conf
+    echo 'QMAKE_CC = aarch64-w64-mingw32-clang' >> win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_AR = aarch64-w64-mingw32-ar' >> win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_OBJCOPY = aarch64-w64-mingw32-objcopy' >> win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_NM = aarch64-w64-mingw32-nm' >> win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_STRIP = aarch64-w64-mingw32-strip' >> win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_LINK = aarch64-w64-mingw32-clang++' >> win64-arm64-clang/qmake.conf && \
+    echo 'QMAKE_LINK_SHLIB = aarch64-w64-mingw32-clang++' >> win64-arm64-clang/qmake.conf
 
 # Qt ソースをクリーンな状態で展開し直す
 RUN rm -rf /build/qt6 && tar -xf /build/qt6-src.tar -C /build
