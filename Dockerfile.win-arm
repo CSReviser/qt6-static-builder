@@ -153,6 +153,17 @@ RUN rm -rf /build/qt6 && tar -xf /build/qt6-src.tar -C /build
 # Windows ARM 用 Qt のビルド
 # --------------------
 WORKDIR ${QT6_SRC_DIR}/qtbase
+
+# 事前チェック（コンパイラとターゲット確認）
+RUN which aarch64-w64-mingw32-clang && aarch64-w64-mingw32-clang --version
+RUN which aarch64-w64-mingw32-clang++ && aarch64-w64-mingw32-clang++ --version
+RUN aarch64-w64-mingw32-clang -v -### -c /dev/null 2>&1 | tee /tmp/clang_target.log
+RUN echo '  .text\n  .globl _start\n_start:\n  nop' > test.s \
+ && aarch64-w64-mingw32-clang -c test.s -o test.o \
+ && file test.o
+
+# Qt configure 実行
+
 RUN ./configure \
     -prefix ${QT6_ARM_PREFIX} \
     -cmake-generator "Ninja" \
