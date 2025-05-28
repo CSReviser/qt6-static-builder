@@ -77,7 +77,8 @@ WORKDIR /opt
 RUN git clone https://github.com/mxe/mxe.git && \
     git clone --depth=1 https://github.com/aarch64devel/mxe-STATIC ${MXE_PATH} && \
     cd armmxe && \
-    mkdir usr 
+    mkdir usr && \
+    cp -r /opt/mxe/src/qt /opt/armmxe/src
 
 # 3. LLVM MinGW を取得・展開（armv7専用）
 WORKDIR ${MXE_PATH}/usr
@@ -91,6 +92,7 @@ ENV PATH="${MXE_PATH}/usr/bin:$PATH"
 # 5. ライブラリおよびQt/FFmpegのビルド
 WORKDIR ${MXE_PATH}
 RUN make \
+    qt6-qtbase \
     zlib \
     ffmpeg \
     openssl \
