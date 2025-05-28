@@ -6,7 +6,13 @@ FROM ubuntu:22.04
 ARG QT_VERSION=6.9.0
 ARG QT_MODULE=qtbase
 ARG INSTALL_PREFIX=/opt/qt6-static
+ARG ENABLE_FEATURE=false
 
+RUN if [ "$ENABLE_FEATURE" = "true" ]; then \
+  echo "このブロックは有効"; \
+else \
+  echo "このブロックはスキップ"; \
+fi
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
 ENV QT_VERSION=${QT_VERSION}
