@@ -74,7 +74,7 @@ RUN apt-get update && \
 WORKDIR /opt
 RUN git clone --depth=1 https://github.com/armdevvel/mxe-STATIC ${MXE_PATH} && \
     cd armmxe
-WORKDIR /opt
+WORKDIR /opt/armmxe
 RUN mkdir usr && \
     cd usr && \ 
     wget https://github.com/armdevvel/llvm-mingw/releases/download/14.0/armv7-only-llvm-mingw-linux-x86_64.tar.xz && \
