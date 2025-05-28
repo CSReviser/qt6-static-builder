@@ -358,7 +358,7 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
 #    make -j$(nproc) && make install_sw
 
 # 対象 .pc ファイルのリスト
-ENV PC_FILES="/usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/openssl.pc"
+#ENV PC_FILES="/usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/openssl.pc"
 
 # 各 .pc に Libs.private と Requires の修正を適用
 RUN for pcfile in $PC_FILES; do \
@@ -370,8 +370,8 @@ RUN for pcfile in $PC_FILES; do \
       fi; \
     done
 
-RUN ln -sf /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/ssl.pc && \
-    ln -sf /usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/crypto.pc
+#RUN ln -sf /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/ssl.pc && \
+#    ln -sf /usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/crypto.pc
 
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
