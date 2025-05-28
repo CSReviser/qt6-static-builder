@@ -80,6 +80,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcb-util0-dev \
     libxcb-xinerama0-dev \
     meson \
+    libssl-dev \
     python3-pip \
     pkg-config && \
     pip3 install mako \
@@ -354,7 +355,7 @@ RUN wget https://www.openssl.org/source/openssl-3.0.13.tar.gz && \
     tar xf openssl-3.0.13.tar.gz && \
     cd openssl-3.0.13 && \
     ./Configure linux-x86_64 no-shared --prefix=/usr/local && \
-    make -j$(nproc) && make install_sw
+#    make -j$(nproc) && make install_sw
 
 # 対象 .pc ファイルのリスト
 ENV PC_FILES="/usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/openssl.pc"
