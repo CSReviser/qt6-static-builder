@@ -115,7 +115,7 @@ RUN make \
 
 # 6. 確認（任意）
 RUN armv7-w64-mingw32-clang --version && \
-    file usr/armv7-w64-mingw32/bin/ffmpeg.exe || true && \
+    file usr/bin/ffmpeg.exe || true && \
     file usr/armv7-w64-mingw32/bin/Qt*.dll || true
 
 CMD ["/bin/bash"]
