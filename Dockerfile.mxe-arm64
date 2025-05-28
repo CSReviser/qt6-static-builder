@@ -132,6 +132,10 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     cd qt6 && \
     mv ${QT_MODULE}-everywhere-src-${QT_VERSION} ${QT_MODULE} 
 
+ENV OPENSSL_ARM_PREFIX=${MXE_PATH}/usr/armv7-w64-mingw32
+ENV PATH="/opt/qt6-host/bin:/opt/llvm-mingw/bin:$PATH"
+ENV OPENSSL_ARM_PREFIX=${MXE_PATH}/usr/armv7-w64-mingw32
+ENV PKG_CONFIG_PATH="${OPENSSL_ARM_PREFIX}/lib/pkgconfig"
 # --------------------
 # Windows ARM 用 Qt のビルド
 # --------------------
