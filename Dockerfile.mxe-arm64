@@ -130,7 +130,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
     mkdir -p qt6 && \
     cp -r ${QT_MODULE}-everywhere-src-${QT_VERSION} qt6 && \
     cd qt6 && \
-    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} ${QT_MODULE} && \
+    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} ${QT_MODULE} 
 
 # --------------------
 # Windows ARM 用 Qt のビルド
