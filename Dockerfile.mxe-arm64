@@ -111,7 +111,8 @@ RUN make \
     icu4c \
     boost \
     ffmpeg \
-    qt6-qtbase
+    qt6-qtbase \
+    -j$(nproc)
 
 # 6. 確認（任意）
 RUN armv7-w64-mingw32-clang --version && \
