@@ -157,9 +157,9 @@ RUN ./configure \
     -xplatform win32-clang-g++ \
     -device-option CMAKE_SYSTEM_NAME=Windows \
     -device-option CMAKE_SYSTEM_PROCESSOR=aarch64 \
-    -device-option CMAKE_C_COMPILER=/opt/llvm-mingw/bin/clang \
-    -device-option CMAKE_CXX_COMPILER=/opt/llvm-mingw/bin/clang++ \
-    -device-option CMAKE_ASM_COMPILER=/opt/llvm-mingw/bin/clang \
+    -device-option CMAKE_C_COMPILER=/opt/armmxe/usr/bin/clang \
+    -device-option CMAKE_CXX_COMPILER=/opt/armmxe/usr/bin/clang++ \
+    -device-option CMAKE_ASM_COMPILER=/opt/armmxe/usr/bin/clang \
     -device-option CMAKE_C_FLAGS="--target=aarch64-w64-mingw32" \
     -device-option CMAKE_CXX_FLAGS="--target=aarch64-w64-mingw32" \
     -device-option CMAKE_ASM_FLAGS="--target=aarch64-w64-mingw32" \
