@@ -21,7 +21,22 @@ ENV CMAKE_EXE_LINKER_FLAGS="-static -static-libstdc++ -static-libgcc"
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 ENV CFLAGS="-fPIC"
 ENV CXXFLAGS="-fPIC"
+# --------------------
+# Build arguments
+# --------------------
+ARG QT_VERSION=6.9.0
+ARG QT_MODULE=qtbase
 
+# --------------------
+# 環境変数
+# --------------------
+ENV DEBIAN_FRONTEND=noninteractive
+ENV QT6_SRC_DIR=/build/qt6
+ENV QT6_DIR=/qt6
+ENV QT6_ARM_PREFIX=/opt/qt6-arm
+ENV QT6_HOST_PREFIX=/opt/qt6-host
+ENV CMAKE_GENERATOR=Ninja
+ENV CXXFLAGS="-fuse-ld=lld"
 # 必要なパッケージインストール
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
