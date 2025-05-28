@@ -111,6 +111,7 @@ RUN make \
     icu4c \
     boost \
     ffmpeg \
+    openssl \
     -j$(nproc)
 
 # 6. 確認（任意）
