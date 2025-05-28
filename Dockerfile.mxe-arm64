@@ -111,7 +111,6 @@ RUN make \
     icu4c \
     boost \
     ffmpeg \
-    qt6-qtbase \
     -j$(nproc)
 
 # 6. 確認（任意）
