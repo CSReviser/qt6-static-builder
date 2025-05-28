@@ -2,6 +2,22 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV MXE_PATH=/opt/armmxe
+# --------------------
+# Build arguments
+# --------------------
+ARG QT_VERSION=6.9.0
+ARG QT_MODULE=qtbase
+
+# --------------------
+# 環境変数
+# --------------------
+ENV DEBIAN_FRONTEND=noninteractive
+ENV QT6_SRC_DIR=/build/qt6
+ENV QT6_DIR=/qt6
+ENV QT6_ARM_PREFIX=/opt/qt6-arm
+ENV QT6_HOST_PREFIX=/opt/qt6-host
+ENV CMAKE_GENERATOR=Ninja
+ENV CXXFLAGS="-fuse-ld=lld"
 
 # 1. 必要なパッケージをインストール
 RUN apt-get update && \
@@ -16,6 +32,10 @@ RUN apt-get update && \
     python3-pip \
     ninja-build \
     ccache \
+    clang lld llvm pkg-config mingw-w64 yasm nasm perl autoconf \
+    gperf \
+    libtool \
+    automake \
     ca-certificates \
     file \
     pkg-config \
@@ -98,6 +118,67 @@ RUN make \
     zlib \
     openssl \
     -j$(nproc)
+
+# --------------------
+# Qt ソース取得
+# --------------------
+WORKDIR /build
+# RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/single/qt-everywhere-src-${QT_VERSION}.tar.xz && \
+#    tar -xf qt-everywhere-src-${QT_VERSION}.tar.xz && \
+RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
+    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
+    mkdir -p qt6 && \
+    cp -r ${QT_MODULE}-everywhere-src-${QT_VERSION} qt6 && \
+    cd qt6 && \
+    mv ${QT_MODULE}-everywhere-src-${QT_VERSION} ${QT_MODULE} && \
+
+# --------------------
+# Windows ARM 用 Qt のビルド
+# --------------------
+WORKDIR ${QT6_SRC_DIR}/qtbase
+
+# クロスコンパイラ確認
+RUN clang --target=aarch64-w64-mingw32 --version
+RUN echo '.globl _start\n_start:\n nop' > test.s \
+ && clang --target=aarch64-w64-mingw32 -c test.s -o test.o \
+ && file test.o
+
+# Qt configure 実行
+RUN ./configure \
+    -prefix ${QT6_ARM_PREFIX} \
+    -cmake-generator "Ninja" \
+    -release \
+    -static \
+    -opensource -confirm-license \
+    -xplatform win32-clang-g++ \
+    -device-option CMAKE_SYSTEM_NAME=Windows \
+    -device-option CMAKE_SYSTEM_PROCESSOR=aarch64 \
+    -device-option CMAKE_C_COMPILER=/opt/llvm-mingw/bin/clang \
+    -device-option CMAKE_CXX_COMPILER=/opt/llvm-mingw/bin/clang++ \
+    -device-option CMAKE_ASM_COMPILER=/opt/llvm-mingw/bin/clang \
+    -device-option CMAKE_C_FLAGS="--target=aarch64-w64-mingw32" \
+    -device-option CMAKE_CXX_FLAGS="--target=aarch64-w64-mingw32" \
+    -device-option CMAKE_ASM_FLAGS="--target=aarch64-w64-mingw32" \
+    -device-option CMAKE_FIND_ROOT_PATH=/opt/llvm-mingw/aarch64-w64-mingw32 \
+    -openssl-linked \
+    -I${OPENSSL_ARM_PREFIX}/include \
+    -L${OPENSSL_ARM_PREFIX}/lib \
+    -nomake tests -nomake examples \
+    -no-feature-shared \
+    -no-dbus \
+    -no-feature-accessibility \
+    -no-feature-draganddrop \
+    -no-feature-fscompleter \
+    -no-feature-concurrent \
+    -no-feature-animation \
+    || { \
+        echo "----- CMakeError.log -----"; cat CMakeFiles/CMakeError.log || true; \
+        echo "----- CMakeOutput.log -----"; cat CMakeFiles/CMakeOutput.log || true; \
+        echo "----- CMakeCache.txt -----"; cat CMakeCache.txt || true; \
+        exit 1; \
+    } && \
+    cmake --build . --parallel && \
+    cmake --install . --prefix ${QT6_ARM_PREFIX}
 
 # 6. 確認（任意）
 RUN armv7-w64-mingw32-clang --version && \
