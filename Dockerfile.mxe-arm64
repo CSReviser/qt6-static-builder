@@ -117,13 +117,14 @@ ENV PATH="${MXE_PATH}/usr/bin:$PATH"
 # 5. ライブラリおよびQt/FFmpegのビルド
 WORKDIR ${MXE_PATH}
 RUN make MXE_TARGETS='aarch64-w64-mingw32' \
+    qtbase \
     zlib \
     openssl \
     -j$(nproc)
 
 # 6. 確認（任意）
 RUN armv7-w64-mingw32-clang --version && \
-    file ${MXE_PATH}/usr/armv7-w64-mingw32/bin/ffmpeg.exe || true && \
+    file ${MXE_PATH}/usr/bin/ffmpeg.exe || true && \
     file ${MXE_PATH}/usr/armv7-w64-mingw32/bin/Qt*.dll || true
 
 CMD ["/bin/bash"]
