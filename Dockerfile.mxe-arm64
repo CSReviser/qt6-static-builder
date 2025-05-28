@@ -94,7 +94,7 @@ RUN apt-get update && \
 
 # 2. MXE 非公式リポジトリをクローン
 WORKDIR /opt
-RUN git clone --depth=1 https://github.com/aarch64devel/mxe-STATIC ${MXE_PATH} && \
+RUN git clone --depth=1 https://github.com/mxe/mxe.git ${MXE_PATH} && \
     cd armmxe && \
     mkdir usr
 #    mkdir usr && \
