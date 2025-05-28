@@ -77,9 +77,10 @@ WORKDIR /opt
 RUN git clone https://github.com/mxe/mxe.git && \
 #    git clone --depth=1 https://github.com/aarch64devel/mxe-STATIC ${MXE_PATH} && \
     git clone --depth=1 https://github.com/mxe/mxe.git ${MXE_PATH} && \
+    git clone --depth=1 https://github.com/aarch64devel/mxe-STATIC /opt/tmp && \
     cd armmxe && \
     mkdir usr && \
-    cp -r /opt/mxe/src/qt /opt/armmxe/src
+    cp -r /opt/tmp /opt/armmxe
 
 # 3. LLVM MinGW を取得・展開（armv7専用）
 WORKDIR ${MXE_PATH}/usr
