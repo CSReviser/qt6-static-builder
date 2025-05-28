@@ -94,15 +94,6 @@ RUN make \
     libpng \
     qtbase \
     tiff \
-    sdl \
-    sdl2 \
-    sdl_image \
-    sdl_mixer \
-    sdl2_mixer \
-    libxml2 \
-    libxslt \
-    libyaml \
-    libwebp \
     libzip \
     libusb1 \
     lame \
