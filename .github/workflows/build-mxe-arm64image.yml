@@ -1,0 +1,34 @@
+name: ARM64 Build and Push MXE ARM Docker Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # GHCR への push に必要
+    env:
+      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/mxe-arm64:qt6-ffmpeg
+      IMAGE_NAME_LATEST: ghcr.io/csreviser/mxe-arm64:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build MXE ARM Docker image
+        run: |
+          docker build \
+            -f Dockerfile.mxe-arm64 \
+            -t $IMAGE_NAME_VERSIONED \
+            -t $IMAGE_NAME_LATEST .
+
+      - name: Push MXE ARM image (versioned)
+        run: docker push $IMAGE_NAME_VERSIONED
+
+      - name: Push MXE ARM image (latest)
+        run: docker push $IMAGE_NAME_LATEST
