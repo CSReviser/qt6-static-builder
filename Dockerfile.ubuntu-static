@@ -92,6 +92,7 @@ RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
     cd zlib-1.3.1 && \
     ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
 
+/*
 # libxml2 (static)
 RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     tar -xf v2.14.2.tar.gz && cd libxml2-2.14.2 && \
@@ -372,7 +373,7 @@ RUN for pcfile in $PC_FILES; do \
 
 #RUN ln -sf /usr/local/lib64/pkgconfig/libssl.pc /usr/local/lib64/pkgconfig/ssl.pc && \
 #    ln -sf /usr/local/lib64/pkgconfig/libcrypto.pc /usr/local/lib64/pkgconfig/crypto.pc
-
+*/
 # Qtビルドに進む (このあと別途Qtソースを取得してstaticビルドする)
 # Qt6
 ARG QT_VERSION=6.9.0
