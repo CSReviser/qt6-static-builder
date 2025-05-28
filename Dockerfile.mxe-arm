@@ -68,7 +68,7 @@ RUN apt-get update && \
     sudo pip3 install meson && \
     apt-get clean && \
     which python3 && \
-    sudo ln -s usr/local//bin/python3 usr/local//bin/python && \
+    sudo ln -s /usr/bin/python3 /usr/bin/python && \
     rm -rf /var/lib/apt/lists/*
 
 
