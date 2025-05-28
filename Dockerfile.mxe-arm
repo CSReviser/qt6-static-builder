@@ -69,6 +69,14 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+WORKDIR /build/zlib
+RUN mkdir usr && \
+    cd usr && \ 
+    wget https://github.com/armdevvel/llvm-mingw/releases/download/14.0/armv7-only-llvm-mingw-linux-x86_64.tar.xz && \
+    tar -xf armv7-only-llvm-mingw-linux-x86_64.tar.xz && \
+    cd ..  && \
+    make libpng cmake sdl2 sdl tiff jpeg ccache lame libxml++ libxml2 libxslt libyaml libzip libwebp libusb1 sdl_image sdl_mixer sdl2_image sdl2_mixer zlib yasm dbus pcre icu4c \
+
 # 2. MXE 非公式リポジトリをクローン
 WORKDIR /opt
 RUN git clone --depth=1 https://github.com/armdevvel/mxe-STATIC ${MXE_PATH}
