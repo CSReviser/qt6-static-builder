@@ -92,7 +92,7 @@ WORKDIR ${MXE_PATH}
 RUN make \
     zlib \
     libpng \
-    jpeg \
+    qtbase \
     tiff \
     sdl \
     sdl2 \
