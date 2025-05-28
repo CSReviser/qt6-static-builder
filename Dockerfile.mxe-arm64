@@ -91,7 +91,6 @@ ENV PATH="${MXE_PATH}/usr/bin:$PATH"
 WORKDIR ${MXE_PATH}
 RUN make \
     zlib \
-    qtbase \
     ffmpeg \
     openssl \
     -j$(nproc)
