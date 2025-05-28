@@ -63,6 +63,7 @@ RUN apt-get update && \
     unzip \
     wget \
     xz-utils \
+    sudo \
     libpulse-dev && \
     sudo pip3 install meson && \
     apt-get clean && \
