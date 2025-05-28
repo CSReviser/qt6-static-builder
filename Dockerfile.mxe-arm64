@@ -91,16 +91,7 @@ ENV PATH="${MXE_PATH}/usr/bin:$PATH"
 WORKDIR ${MXE_PATH}
 RUN make \
     zlib \
-    libpng \
     qtbase \
-    tiff \
-    libzip \
-    libusb1 \
-    lame \
-    pcre \
-    dbus \
-    icu4c \
-    boost \
     ffmpeg \
     openssl \
     -j$(nproc)
