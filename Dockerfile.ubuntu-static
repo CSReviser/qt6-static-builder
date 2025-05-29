@@ -24,40 +24,15 @@ RUN apt-get update && apt-get install -y \
     libtool \
     automake \
     ca-certificates \
-    libxcb1-dev libxcb-util-dev libx11-dev \
-    libxext-dev libxrender-dev libxkbcommon-dev \
-    libx11-xcb-dev \
-    libxcb-cursor-dev \
-    libxcb-glx0-dev \
-    libxcb-icccm4-dev \
-    libxcb-image0-dev \
-    libxcb-keysyms1-dev \
-    libxcb-randr0-dev \
-    libxcb-render-util0-dev \
-    libxcb-shape0-dev \
-    libxcb-shm0-dev \
-    libxcb-sync-dev \
-    libxcb-util-dev \
-    libxcb-xfixes0-dev \
-    libxcb-xkb-dev \
-    libxcb1-dev \
-    libxext-dev \
-    libxfixes-dev \
-    libxi-dev \
-    libxkbcommon-dev \
-    libxkbcommon-x11-dev \
-    libxrender-dev \
     libdbus-1-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libglib2.0-dev \
     libgtk-3-dev \
-    libssl-dev \
     libfontconfig1-dev \
     meson \
     python3-pip \
     pkg-config \
-    libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 ENV CFLAGS="-fPIC"
@@ -175,23 +150,17 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     -D LIBXML2_WITH_ZLIB=ON && \
     cmake --build build -j$(nproc) && cmake --install build
 
-# libXdmcp
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
-    tar -xf libXdmcp-1.1.5.tar.gz && \
-    cd libXdmcp-1.1.5 && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
-
 # libXau
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
     tar -xf libXau-1.0.12.tar.gz && \
     cd libXau-1.0.12 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
-# Qt取得 & ビルド
-# Download and extract Qt module source
-WORKDIR /build
-RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
-    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
+# libXdmcp
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
+    tar -xf libXdmcp-1.1.5.tar.gz && \
+    cd libXdmcp-1.1.5 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libpthread-stubs
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libpthread-stubs-0.1.tar.gz && \
@@ -319,6 +288,11 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# Qt取得 & ビルド
+# Download and extract Qt module source
+WORKDIR /build
+RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
+    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
 
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
