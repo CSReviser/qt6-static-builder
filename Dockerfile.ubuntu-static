@@ -10,6 +10,8 @@ ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
 ENV INSTALL_PREFIX=/opt/qt6-static
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
+ENV CFLAGS="-fPIC"
+ENV CXXFLAGS="-fPIC"
 
 # 依存インストール
 # Install dependencies
