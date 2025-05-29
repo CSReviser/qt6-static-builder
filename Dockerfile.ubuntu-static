@@ -10,7 +10,6 @@ ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
 ENV INSTALL_PREFIX=/opt/qt6-static
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
-ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lxcb　-lXau -lXdmcp"
 
 # 依存インストール
 # Install dependencies
@@ -321,6 +320,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     make -j$(nproc) && make install
 
 
+ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lxcb　-lXau -lXdmcp"
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
