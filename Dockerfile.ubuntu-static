@@ -175,16 +175,16 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     -D LIBXML2_WITH_ZLIB=ON && \
     cmake --build build -j$(nproc) && cmake --install build
 
-# libXau
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
-    tar -xf libXau-1.0.12.tar.gz && \
-    cd libXau-1.0.12 && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
-
 # libXdmcp
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
     tar -xf libXdmcp-1.1.5.tar.gz && \
     cd libXdmcp-1.1.5 && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+
+# libXau
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
+    tar -xf libXau-1.0.12.tar.gz && \
+    cd libXau-1.0.12 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # Qt取得 & ビルド
@@ -320,7 +320,6 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     make -j$(nproc) && make install
 
 
-ENV LDFLAGS="-static -lxcb -lXau -lXdmcp"
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
