@@ -296,6 +296,7 @@ ARG LIBXKBCOMMON_VERSION=1.9.0
 RUN echo "[binaries]" > /tmp/native.txt && \
     echo "c = 'gcc'" >> /tmp/native.txt && \
     echo "cpp = 'g++'" >> /tmp/native.txt && \
+    echo "pkgconfig = '/usr/bin/pkg-config'" >> /tmp/native.txt && \
     echo "[properties]" >> /tmp/native.txt && \
     echo "c_args = ['-static', '-static-libgcc']" >> /tmp/native.txt && \
     echo "cpp_args = ['-static', '-static-libstdc++', '-static-libgcc']" >> /tmp/native.txt && \
@@ -315,8 +316,7 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
         -Denable-wayland=false \
         -Denable-x11=true \
         -Db_lundef=false \
-        -Denable-xkbregistry=true || true && \
-    echo "----- meson-log.txt -----" && cat /libxkbcommon-xkbcommon-1.9.0/builddir/meson-logs/meson-log.txt || true && \
+        -Denable-xkbregistry=true && \
     ninja -C builddir && \
     ninja -C builddir install && \
     cd .. && rm -rf libxkbcommon-${LIBXKBCOMMON_VERSION} xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz /tmp/native.txt
