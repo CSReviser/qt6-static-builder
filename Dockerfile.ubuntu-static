@@ -289,6 +289,63 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
 
+# Build libxkbcommon
+ARG LIBXKBCOMMON_VERSION=1.9.0
+
+# Step 1: Create Meson native file with static C++ link flags
+RUN echo "[binaries]" > /tmp/native.txt && \
+    echo "c = 'gcc'" >> /tmp/native.txt && \
+    echo "cpp = 'g++'" >> /tmp/native.txt && \
+    echo "[properties]" >> /tmp/native.txt && \
+    echo "c_args = ['-static', '-static-libgcc']" >> /tmp/native.txt && \
+    echo "cpp_args = ['-static', '-static-libstdc++', '-static-libgcc']" >> /tmp/native.txt && \
+    echo "cpp_link_args = ['-static', '-static-libstdc++', '-static-libgcc']" >> /tmp/native.txt
+
+# Step 2: Download and build with Meson
+ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
+RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
+    cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
+    meson setup builddir \
+        --prefix=/usr/local \
+        --libdir=lib \
+        --buildtype=release \
+        --native-file=/tmp/native.txt \
+        -Ddefault_library=static \
+        -Denable-wayland=false \
+        -Denable-x11=true \
+        -Db_lundef=false \
+        -Denable-xkbregistry=true && \
+    ninja -C builddir && \
+    ninja -C builddir install && \
+    cd .. && rm -rf libxkbcommon-${LIBXKBCOMMON_VERSION} xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz /tmp/native.txt
+
+# 必須ライブラリ一覧
+RUN set -ex && \
+    for pc in x11 xext xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
+              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
+        echo "Checking $pc via pkg-config..." && \
+        PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib64/pkgconfig" \
+        pkg-config --static --exists $pc || (echo "Missing static pkg-config: $pc"); \
+    done && \
+    echo "All required .pc files found."
+
+# 省略: 各種 xcb-util 系ライブラリのビルド後に入れる確認用ステップ
+RUN echo "---- Installed .pc files ----" && \
+    ls -1 /usr/local/lib/pkgconfig/*.pc && \
+    echo "---- xcb-icccm.pc content ----" && \
+    cat /usr/local/lib/pkgconfig/*.pc || echo "xcb-icccm.pc not found"
+
+# 静的ライブラリファイルの存在確認
+RUN set -ex && \
+    for lib in X11 Xext Xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
+               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
+        echo "Checking lib$lib.a..." && \
+        find /usr/local/lib /usr/lib /usr/local/lib64 -name "lib$lib.a" | grep . || \
+        (echo "Missing static library: lib$lib.a"); \
+    done && \
+    echo "All required static libraries found."
+
 # Qt取得 & ビルド
 # Download and extract Qt module source
 WORKDIR /build
