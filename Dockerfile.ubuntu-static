@@ -10,8 +10,7 @@ ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
 ENV INSTALL_PREFIX=/opt/qt6-static
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
-ENV CFLAGS="-fPIC"
-ENV CXXFLAGS="-fPIC"
+
 
 # 依存インストール
 # Install dependencies
@@ -62,6 +61,8 @@ RUN apt-get update && apt-get install -y \
     libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
 
+ENV CFLAGS="-fPIC"
+ENV CXXFLAGS="-fPIC"
 # zlib (静的ビルド強制)
 RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
     tar -xzf zlib-1.3.1.tar.gz && \
