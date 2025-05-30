@@ -373,7 +373,8 @@ RUN set -ex && \
 RUN nm /usr/local/lib/libXau.a | grep XauGetBestAuthByAddr && \
      nm /usr/local/lib/libxcb.a | grep XauGetBestAuthByAddr && \
      nm /usr/local/lib/libxcb.a | grep XdmcpWrap && \
-     nm /usr/local/lib/libxcb.a | grep XauDisposeAuth
+     nm /usr/local/lib/libxcb.a | grep XauDisposeAuth && \
+     nm /usr/local/lib/libxcb-image.a | grep xcb_aux_create_gc
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
