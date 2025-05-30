@@ -394,8 +394,8 @@ RUN set -eux; \
     \
 
     # 強制的に OpenSSL / OpenGL を無効化する機能フラグを追加
-    echo 'set(QT_FEATURE_openssl OFF CACHE BOOL "Force disable openssl")' >> $QT_SRC_DIR/configure.cmake; \
-    echo 'set(QT_FEATURE_opengl OFF CACHE BOOL "Force disable opengl")' >> $QT_SRC_DIR/configure.cmake
+    echo 'set(QT_FEATURE_openssl OFF CACHE BOOL "Force disable openssl")' >> ${QT_MODULE}-everywhere-src-${QT_VERSION}/configure.cmake; \
+    echo 'set(QT_FEATURE_opengl OFF CACHE BOOL "Force disable opengl")' >> ${QT_MODULE}-everywhere-src-${QT_VERSION}/configure.cmake
 
 #ENV LDFLAGS="-static"
 ENV CXXFLAGS="-fuse-ld=lld"
