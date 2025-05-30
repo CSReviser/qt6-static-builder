@@ -383,7 +383,7 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 
 # Qt の不要な OpenSSL/OpenGL 機能チェックを CMakeLists.txt から除去する簡易パッチ
 RUN set -eux; \
-    QT_SRC_DIR="/build/qt/qtbase"; \
+    QT_SRC_DIR=${QT_MODULE}-everywhere-src-${QT_VERSION}; \
     \
     # OpenSSL チェックを無効化（該当チェックをコメントアウト）
     sed -i 's/find_package(OpenSSL REQUIRED)/#find_package(OpenSSL REQUIRED)/g' $QT_SRC_DIR/cmake/FindWrapOpenSSL.cmake || true; \
