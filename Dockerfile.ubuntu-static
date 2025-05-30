@@ -147,13 +147,6 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
     make -j$(nproc) && \
     make install
 
-# OpenSSL ソース取得して static ビルド
-RUN wget https://www.openssl.org/source/openssl-3.0.13.tar.gz && \
-    tar xf openssl-3.0.13.tar.gz && \
-    cd openssl-3.0.13 && \
-    ./Configure linux-x86_64 no-shared --prefix=/usr/local && \
-    make -j$(nproc) && make install_sw
-
 # xorgproto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
     tar -xf xorgproto-2024.1.tar.gz && \
@@ -380,22 +373,6 @@ RUN set -ex && \
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
-
-# Qt の不要な OpenSSL/OpenGL 機能チェックを CMakeLists.txt から除去する簡易パッチ
-RUN set -eux; \
-    QT_SRC_DIR=${QT_MODULE}-everywhere-src-${QT_VERSION}; \
-    \
-    # OpenSSL チェックを無効化（該当チェックをコメントアウト）
-    sed -i 's/find_package(OpenSSL REQUIRED)/#find_package(OpenSSL REQUIRED)/g' $QT_SRC_DIR/cmake/FindWrapOpenSSL.cmake || true; \
-    sed -i 's/qt_find_package(OpenSSL/#qt_find_package(OpenSSL/g' $QT_SRC_DIR/configure.cmake || true; \
-    \
-    # OpenGL チェックを無効化（opengl なしでビルド）
-    sed -i 's/qt_find_package(OpenGL/#qt_find_package(OpenGL/g' $QT_SRC_DIR/configure.cmake || true; \
-    \
-
-    # 強制的に OpenSSL / OpenGL を無効化する機能フラグを追加
-    echo 'set(QT_FEATURE_openssl OFF CACHE BOOL "Force disable openssl")' >> ${QT_MODULE}-everywhere-src-${QT_VERSION}/configure.cmake; \
-    echo 'set(QT_FEATURE_opengl OFF CACHE BOOL "Force disable opengl")' >> ${QT_MODULE}-everywhere-src-${QT_VERSION}/configure.cmake
 
 #ENV LDFLAGS="-static"
 ENV CXXFLAGS="-fuse-ld=lld"
