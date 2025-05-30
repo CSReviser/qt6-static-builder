@@ -154,7 +154,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2022.1.
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.2.tar.xz.xz && \
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.2.tar.xz && \
     tar -xf xcb-proto-1.15.2.tar.xz && \
     cd xcb-proto-1.15.2 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
