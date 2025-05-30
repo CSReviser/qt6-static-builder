@@ -376,6 +376,7 @@ WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
 
+ENV LDFLAGS="-static -lxcb -lXau -lXdmcp"
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
