@@ -385,13 +385,10 @@ RUN mkdir qt-build && cd qt-build && \
       -DCMAKE_BUILD_TYPE=Release \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
-      -DOpenGL_GL_PREFERENCE=GLVND \
-      -DOPENSSL_INCLUDE_DIR=/usr/local/include/openssl \
-      -DOPENSSL_LIBRARIES="/usr/local/lib64/libssl.a;/usr/local/lib64/libcrypto.a" \
+      -DOPENSSL_LIBRARIES="/usr/lib/x86_64-linux-gnu/libssl.a;/usr/lib/x86_64-linux-gnu/libcrypto.a" \
       -DOPENSSL_USE_STATIC_LIBS=OFF \
       -DCMAKE_CXX_STANDARD=17 \
       -DQT_FEATURE_openssl_linked=ON \
-      -DOPENGL_gl_LIBRARY=/opt/mesa/lib/libGL.a \
       -DQT_BUILD_TESTS=OFF \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_gui=ON \
