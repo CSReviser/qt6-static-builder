@@ -148,15 +148,15 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
     make install
 
 # xorgproto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2024.1.tar.gz && \
-    tar -xf xorgproto-2024.1.tar.gz && \
-    cd xorgproto-2024.1 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2022.1.tar.gz && \
+    tar -xf xorgproto-2022.1.tar.gz && \
+    cd xorgproto-2022.1 && \
     ./configure --prefix=/usr && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
-RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.17.0.tar.xz && \
-    tar -xf xcb-proto-1.17.0.tar.xz && \
-    cd xcb-proto-1.17.0 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.2.tar.xz.xz && \
+    tar -xf xcb-proto-1.15.2.tar.xz && \
+    cd xcb-proto-1.15.2 && \
     ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 # libxml-2.0
@@ -172,15 +172,15 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
     cmake --build build -j$(nproc) && cmake --install build
 
 # libXau
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.12.tar.gz && \
-    tar -xf libXau-1.0.12.tar.gz && \
-    cd libXau-1.0.12 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.10.tar.gz && \
+    tar -xf libXau-1.0.10.tar.gz && \
+    cd libXau-1.0.10 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libXdmcp
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.5.tar.gz && \
-    tar -xf libXdmcp-1.1.5.tar.gz && \
-    cd libXdmcp-1.1.5 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.4.tar.gz && \
+    tar -xf libXdmcp-1.1.4.tar.gz && \
+    cd libXdmcp-1.1.4 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libpthread-stubs
@@ -240,9 +240,9 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
     make -j$(nproc) && make install
 
 # libxcb
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/libxcb-1.17.0.tar.gz && \
-    tar -xzf libxcb-1.17.0.tar.gz && \
-    cd libxcb-1.17.0 && \
+RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz && \
+    tar -xzf libxcb-1.15.0.tar.gz && \
+    cd libxcb-1.15.0 && \
     CPPFLAGS="-I/usr/local/include" \
     LDFLAGS="-L/usr/local/lib -static" \
     ./configure --prefix=/usr/local --disable-shared --enable-static \
