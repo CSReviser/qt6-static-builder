@@ -241,8 +241,8 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
 
 # libxcb
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz && \
-    tar -xzf libxcb-1.15.0.tar.gz && \
-    cd libxcb-1.15.0 && \
+    tar -xzf libxcb-1.15.tar.gz && \
+    cd libxcb-1.15 && \
     CPPFLAGS="-I/usr/local/include" \
     LDFLAGS="-L/usr/local/lib -static" \
     ./configure --prefix=/usr/local --disable-shared --enable-static \
