@@ -370,6 +370,8 @@ RUN set -ex && \
     done && \
     echo "All required static libraries found."
 
+RUN nm /usr/local/lib/libXau.a | grep XauGetBestAuthByAddr
+
 # Qt取得 & ビルド
 # Download and extract Qt module source
 WORKDIR /build
