@@ -320,10 +320,10 @@ RUN echo "[binaries]" > /tmp/native.txt && \
     echo "[properties]" >> /tmp/native.txt && \
     echo "c_args = ['-static', '-static-libgcc']" >> /tmp/native.txt && \
     echo "cpp_args = ['-static', '-static-libstdc++', '-static-libgcc']" >> /tmp/native.txt && \
-    echo "cpp_link_args = ['-static', '-static-libstdc++', '-static-libgcc']" >> /tmp/native.txt
+    echo "c_link_args = ['-static', '-lstdc++', '-lm', '-lpthread', '-ldl', '-static-libgcc', '-L/usr/local/lib', '-L/usr/lib', '-lXau', '-lXdmcp']" >> /tmp/native.txt && \
+    echo "cpp_link_args = ['-static', '-lstdc++', '-lm', '-lpthread', '-ldl', '-static-libstdc++', '-static-libgcc', '-L/usr/local/lib', '-L/usr/lib', '-lXau', '-lXdmcp']" >> /tmp/native.txt
 
 # Step 2: Download and build with Meson
-ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
 RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     tar -xf xkbcommon-${LIBXKBCOMMON_VERSION}.tar.gz && \
     cd libxkbcommon-xkbcommon-${LIBXKBCOMMON_VERSION} && \
