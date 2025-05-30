@@ -33,7 +33,7 @@ RUN apt-get update --fix-missing && apt-get install -y \
     meson \
     bison \
     lld \
-    binutols \
+    binutils \
     python3-pip \
     pkg-config \
     libxcb1-dev libxcb-util-dev libx11-dev \
