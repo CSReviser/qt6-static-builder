@@ -370,7 +370,10 @@ RUN set -ex && \
     done && \
     echo "All required static libraries found."
 
-RUN nm /usr/local/lib/libXau.a | grep XauGetBestAuthByAddr
+RUN nm /usr/local/lib/libXau.a | grep XauGetBestAuthByAddr && \
+     nm /usr/local/lib/libxcb.a | grep XauGetBestAuthByAddr && \
+     nm /usr/local/lib/libxcb.a | grep XdmcpWrap && \
+     nm /usr/local/lib/libxcb.a | grep XauDisposeAuth
 
 # Qt取得 & ビルド
 # Download and extract Qt module source
