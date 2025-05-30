@@ -326,7 +326,7 @@ RUN wget https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$
 # 必須ライブラリ一覧
 RUN set -ex && \
     for pc in x11 xext xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
-              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
+              xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl; do \
         echo "Checking $pc via pkg-config..." && \
         PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib64/pkgconfig" \
         pkg-config --static --exists $pc || (echo "Missing static pkg-config: $pc"); \
@@ -342,7 +342,7 @@ RUN echo "---- Installed .pc files ----" && \
 # 静的ライブラリファイルの存在確認
 RUN set -ex && \
     for lib in X11 Xext Xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
-               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11; do \
+               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl; do \
         echo "Checking lib$lib.a..." && \
         find /usr/local/lib /usr/lib /usr/local/lib64 -name "lib$lib.a" | grep . || \
         (echo "Missing static library: lib$lib.a"); \
@@ -355,6 +355,7 @@ WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
 
+ENV LDFLAGS="-static"
 # Configure, build, and install Qt statically
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
