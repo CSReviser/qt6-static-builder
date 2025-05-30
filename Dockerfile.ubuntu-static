@@ -392,7 +392,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DOpenGL_GL_PREFERENCE=GLVND \
       -DOPENSSL_ROOT_DIR=/usr \
       -DOPENSSL_USE_STATIC_LIBS=OFF \
-      -DCMAKE_CXX_STANDARD=17
+      -DCMAKE_CXX_STANDARD=17 \
       -DQT_BUILD_TESTS=OFF \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_gui=ON \
