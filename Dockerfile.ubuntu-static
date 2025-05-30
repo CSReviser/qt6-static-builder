@@ -381,6 +381,22 @@ WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
     tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
 
+# Qt の不要な OpenSSL/OpenGL 機能チェックを CMakeLists.txt から除去する簡易パッチ
+RUN set -eux; \
+    QT_SRC_DIR="/build/qt/qtbase"; \
+    \
+    # OpenSSL チェックを無効化（該当チェックをコメントアウト）
+    sed -i 's/find_package(OpenSSL REQUIRED)/#find_package(OpenSSL REQUIRED)/g' $QT_SRC_DIR/cmake/FindWrapOpenSSL.cmake || true; \
+    sed -i 's/qt_find_package(OpenSSL/#qt_find_package(OpenSSL/g' $QT_SRC_DIR/configure.cmake || true; \
+    \
+    # OpenGL チェックを無効化（opengl なしでビルド）
+    sed -i 's/qt_find_package(OpenGL/#qt_find_package(OpenGL/g' $QT_SRC_DIR/configure.cmake || true; \
+    \
+
+    # 強制的に OpenSSL / OpenGL を無効化する機能フラグを追加
+    echo 'set(QT_FEATURE_openssl OFF CACHE BOOL "Force disable openssl")' >> $QT_SRC_DIR/configure.cmake; \
+    echo 'set(QT_FEATURE_opengl OFF CACHE BOOL "Force disable opengl")' >> $QT_SRC_DIR/configure.cmake
+
 #ENV LDFLAGS="-static"
 ENV CXXFLAGS="-fuse-ld=lld"
 # Configure, build, and install Qt statically
