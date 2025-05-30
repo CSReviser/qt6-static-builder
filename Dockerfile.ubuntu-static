@@ -32,6 +32,8 @@ RUN apt-get update --fix-missing && apt-get install -y \
     libfontconfig1-dev \
     meson \
     bison \
+    lld \
+    binutols \
     python3-pip \
     pkg-config \
     libxcb1-dev libxcb-util-dev libx11-dev \
