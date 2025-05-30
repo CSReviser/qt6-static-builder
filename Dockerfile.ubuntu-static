@@ -9,7 +9,7 @@ ARG QT_MODULE=qtbase
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
 ENV INSTALL_PREFIX=/opt/qt6-static
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:usr/lib/x86_64-linux-gnu/pkgconfig
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig
 
 # 依存インストール
 # Install dependencies
@@ -356,14 +356,16 @@ RUN set -ex && \
 RUN echo "---- Installed .pc files ----" && \
     ls -1 /usr/local/lib/pkgconfig/*.pc && \
     echo "---- xcb-icccm.pc content ----" && \
-    cat /usr/local/lib/pkgconfig/*.pc || echo "xcb-icccm.pc not found"
+    cat /usr/local/lib/pkgconfig/*.pc || echo "xcb-icccm.pc not found" && \
+    cat /usr/local/lib/x86_64-linux-gnu/pkgconfig/*.pc || echo "xcb-icccm.pc not found" && \
+    cat /usr/local/share/pkgconfig/*.pc || echo "xcb-icccm.pc not found"
 
 # 静的ライブラリファイルの存在確認
 RUN set -ex && \
     for lib in X11 Xext Xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
                xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl; do \
         echo "Checking lib$lib.a..." && \
-        find /usr/local/lib /usr/lib /usr/local/lib64 -name "lib$lib.a" | grep . || \
+        find /usr/local/lib /usr/lib -name "lib$lib.a" | grep . || \
         (echo "Missing static library: lib$lib.a"); \
     done && \
     echo "All required static libraries found."
