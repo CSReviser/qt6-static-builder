@@ -331,11 +331,11 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${X
     make -j$(nproc) && make install
 
 # Download and build xcb-util
-RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-0.3.6.tar.gz && \
-    tar -xzf xcb-util-0.3.6.tar.gz && \
-    cd xcb-util-0.3.6 && \
-    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
-    make -j$(nproc) && make install
+#RUN wget https://xorg.freedesktop.org/archive/individual/xcb/xcb-util-0.3.6.tar.gz && \
+#    tar -xzf xcb-util-0.3.6.tar.gz && \
+#    cd xcb-util-0.3.6 && \
+#    ./configure --prefix=/usr/local --with-xcb=/usr --disable-shared --enable-static && \
+#    make -j$(nproc) && make install
 
 # Build libxkbcommon
 ARG LIBXKBCOMMON_VERSION=1.9.0
@@ -375,7 +375,7 @@ RUN set -ex && \
     for pc in x11 xext xrender xcb xcb-util xcb-image xcb-shm xcb-icccm \
               xcb-sync xcb-xfixes xcb-shape xcb-keysyms xkbcommon xkbcommon-x11 ssl; do \
         echo "Checking $pc via pkg-config..." && \
-        PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:usr/lib/x86_64-linux-gnu/pkgconfig" \
+        PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig" \
         pkg-config --static --exists $pc || (echo "Missing static pkg-config: $pc"); \
     done && \
     echo "All required .pc files found."
