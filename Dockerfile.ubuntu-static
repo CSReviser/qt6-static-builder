@@ -9,7 +9,7 @@ ARG QT_MODULE=qtbase
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
 ENV INSTALL_PREFIX=/opt/qt6-static
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig'
 
 # 依存インストール
 # Install dependencies
