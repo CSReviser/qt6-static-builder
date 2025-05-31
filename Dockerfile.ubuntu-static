@@ -422,6 +422,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DBUILD_SHARED_LIBS=OFF \
       -DQT_BUILD_EXAMPLES=OFF \
       -DQT_BUILD_TESTS=OFF \
+      -DQT_BUILD_TOOLS=ON \
       -DQT_FEATURE_static=ON \
       -DQT_FEATURE_gui=ON \
       -DQT_FEATURE_widgets=ON \
@@ -450,22 +451,6 @@ RUN mkdir qt-build && cd qt-build && \
     echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
     echo "----- CMakeOutput.log -----" && cat CMakeFiles/CMakeOutput.log || true && \
     cmake --build . --parallel && \
-    cmake --install .
-
-# qttools（moc/uic/rcc）をビルドする
-WORKDIR /build
-RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/qttools-everywhere-src-${QT_VERSION}.tar.xz && \
-    tar -xf qttools-everywhere-src-${QT_VERSION}.tar.xz
-
-RUN mkdir qttools-build && cd qttools-build && \
-    cmake -GNinja ../qttools-everywhere-src-${QT_VERSION} \
-      -DCMAKE_PREFIX_PATH=${INSTALL_PREFIX} \
-      -DCMAKE_INSTALL_PREFIX=${INSTALL_PREFIX} \
-      -DBUILD_SHARED_LIBS=OFF \
-      -DQT_BUILD_TOOLS_ONLY=ON \
-      -DQT_BUILD_EXAMPLES=OFF \
-      -DQT_BUILD_TESTS=OFF && \
-    cmake --build . --target moc uic rcc && \
     cmake --install .
 
 # PATH登録
