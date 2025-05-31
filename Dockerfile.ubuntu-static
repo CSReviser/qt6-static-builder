@@ -257,7 +257,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz 
     tar -xzf libxcb-1.15.tar.gz && \
     cd libxcb-1.15 && \
     CPPFLAGS="-I/usr/local/include" \
-    LDFLAGS="-L/usr/local/lib -static" \
+    LDFLAGS="-L/usr/local/lib -static -lXau" \
     ./configure --prefix=/usr/local --disable-shared --enable-static \
         --enable-xevie --enable-xprint \
         --with-pic \
