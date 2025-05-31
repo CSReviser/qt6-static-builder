@@ -175,7 +175,16 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.14.2.tar.gz && \
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.10.tar.gz && \
     tar -xf libXau-1.0.10.tar.gz && \
     cd libXau-1.0.10 && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
+    ./configure --prefix=/usr/local --disable-shared --enable-static || true && \
+    echo "----- config.log begin -----" && \
+    cat config.log || echo "No config.log found" && \
+    echo "----- config.log end -----" \
+&& make -j$(nproc) && make install
+
+# === Xau.pc 出力用 ===
+RUN echo "----- Xau.pc begin -----" && \
+    cat /usr/local/lib/pkgconfig/xau.pc || echo "No xau.pc found" && \
+    echo "----- Xau.pc end -----"
 
 # libXdmcp
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXdmcp-1.1.4.tar.gz && \
@@ -249,7 +258,12 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz 
         --enable-xevie --enable-xprint \
         --with-pic \
         PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig \
-        PKG_CONFIG="pkg-config --static" && \
+        PKG_CONFIG="pkg-config --static" \
+        || true && \
+        echo "----- libxcb config.log begin -----" && \
+        cat config.log || echo "No config.log found" && \
+        echo "----- libxcb config.log end -----" \
+        && \
     make -j$(nproc) && make install
 
 # libX11
