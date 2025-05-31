@@ -61,7 +61,11 @@ RUN apt-get update --fix-missing && apt-get install -y \
     libxrender-dev \
     libssl-dev \
     libxcb-dri2-0-dev \
+    locales \
     && rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen C.UTF-8 && update-locale LANG=C.UTF-8
+ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
 ENV CFLAGS="-fPIC"
 ENV CXXFLAGS="-fPIC"
