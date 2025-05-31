@@ -246,7 +246,10 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz 
     CPPFLAGS="-I/usr/local/include" \
     LDFLAGS="-L/usr/local/lib -static" \
     ./configure --prefix=/usr/local --disable-shared --enable-static \
-        --enable-xevie --enable-xprint && \
+        --enable-xevie --enable-xprint \
+        --with-pic \
+        PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig \
+        PKG_CONFIG="pkg-config --static" && \
     make -j$(nproc) && make install
 
 # libX11
