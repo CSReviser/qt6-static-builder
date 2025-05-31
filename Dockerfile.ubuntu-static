@@ -181,6 +181,15 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXau-1.0.10.tar.g
     echo "----- config.log end -----" \
 && make -j$(nproc) && make install
 
+# sedでRequires: xproto行を削除
+RUN sed -i '/^Requires: xproto/d' /usr/local/lib/pkgconfig/Xau.pc
+
+# 確認用ログ出力（Dockerビルドログに表示されます）
+RUN echo "----- Xau.pc content after patch -----" && \
+    cat /usr/local/lib/pkgconfig/Xau.pc && \
+    echo "----- pkg-config output -----" && \
+    PKG_CONFIG_PATH=/usr/local/lib/pkgconfig pkg-config --static --libs Xau
+
 # === Xau.pc 出力用 ===
 RUN echo "----- Xau.pc begin -----" && \
     cat /usr/local/lib/pkgconfig/xau.pc || echo "No xau.pc found" && \
