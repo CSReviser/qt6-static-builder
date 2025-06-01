@@ -131,7 +131,7 @@ RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xorgproto-2022.1.tar.gz && \
     tar -xf xorgproto-2022.1.tar.gz && \
     cd xorgproto-2022.1 && \
-    ./configure --prefix=/usr && make -j$(nproc) && make install
+    ./configure --prefix=/usr/local && make -j$(nproc) && make install
 
 # xcb-proto (プロトコル定義)
 RUN wget https://xorg.freedesktop.org/archive/individual/proto/xcb-proto-1.15.2.tar.xz && \
@@ -227,17 +227,16 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
     cd libXrender-0.9.12 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
-ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
+
 # libxcb
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz && \
     tar -xzf libxcb-1.15.tar.gz && \
     cd libxcb-1.15 && \
     CPPFLAGS="-I/usr/local/include" \
-    LDFLAGS="-L/usr/local/lib -static -lXau" \
+    LDFLAGS="-L/usr/local/lib -static -lXau -lXdmcp"" \
     ./configure --prefix=/usr/local --disable-shared --enable-static \
         --enable-xevie --enable-xprint \
         --with-pic \
-        PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig \
         PKG_CONFIG="pkg-config --static" \
         || true && \
         echo "----- libxcb config.log begin -----" && \
