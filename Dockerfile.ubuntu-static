@@ -227,7 +227,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXrender-0.9.12.t
     cd libXrender-0.9.12 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && \
     make -j$(nproc) && make install
-
+ENV LDFLAGS="-static -lstdc++ -lm -lpthread -ldl -static-libgcc -L/usr/local/lib -L/usr/lib -lXau -lXdmcp"
 # libxcb
 RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz && \
     tar -xzf libxcb-1.15.tar.gz && \
