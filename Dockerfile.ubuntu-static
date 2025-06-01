@@ -237,6 +237,7 @@ RUN wget https://xorg.freedesktop.org/archive/individual/xcb/libxcb-1.15.tar.gz 
     ./configure --prefix=/usr/local --disable-shared --enable-static \
         --enable-xevie --enable-xprint \
         --with-pic \
+        PKG_CONFIG_LIBDIR=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig \
         PKG_CONFIG="pkg-config --static" \
         || true && \
         echo "----- libxcb config.log begin -----" && \
