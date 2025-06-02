@@ -1,4 +1,4 @@
-FROM i386/ubuntu:20.04
+FROM balenalib/i386-ubuntu:bionic
 
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
@@ -14,6 +14,7 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/loc
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
+    qtbase \
     cmake \
     ninja-build \
     git \
