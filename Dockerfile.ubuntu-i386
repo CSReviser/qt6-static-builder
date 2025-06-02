@@ -63,6 +63,14 @@ RUN dpkg --add-architecture i386 && \
     libfontconfig1-dev:i386 \
     && rm -rf /var/lib/apt/lists/*
 
+
+# xcb-util-cursor
+RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
+    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
+    ./configure --prefix=/usr/local --disable-shared --enable-static && \
+    make -j$(nproc) && make install
+
 # Qt ソースを取得
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
