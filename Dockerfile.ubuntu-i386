@@ -14,7 +14,7 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/loc
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    qtbase \
+    qt5-base-dev \
     cmake \
     ninja-build \
     git \
