@@ -63,7 +63,7 @@ RUN dpkg --add-architecture i386 && \
     libfontconfig1-dev:i386 \
     && rm -rf /var/lib/apt/lists/*
 
-
+ARG XCB_UTIL_CURSOR_VERSION=0.1.5
 # xcb-util-cursor
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
     tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
