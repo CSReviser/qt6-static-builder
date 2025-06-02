@@ -1,4 +1,4 @@
-FROM balenalib/i386-ubuntu:Focal
+FROM i386/ubuntu:20.04
 
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
