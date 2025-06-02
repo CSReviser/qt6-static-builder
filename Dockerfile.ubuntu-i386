@@ -63,6 +63,13 @@ RUN dpkg --add-architecture i386 && \
     libfontconfig1-dev:i386 \
     && rm -rf /var/lib/apt/lists/*
 
+
+# build libxcb-cursor manually
+RUN git clone https://gitlab.freedesktop.org/xorg/lib/libxcb-cursor.git && \
+    cd libxcb-cursor && \
+    ./autogen.sh --host=i386-linux-gnu --prefix=/usr --libdir=/usr/lib/i386-linux-gnu && \
+    make -j$(nproc) && make install
+
 ARG XCB_UTIL_CURSOR_VERSION=0.1.5
 # xcb-util-cursor
 RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
