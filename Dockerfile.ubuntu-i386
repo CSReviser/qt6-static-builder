@@ -119,19 +119,19 @@ RUN wget https://repo.jing.rocks/nongnu/freetype/freetype-2.9.1.tar.gz && \
       HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
 
 # harfbuzz (static, .pc生成確認)
-RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
-    tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
-    meson setup build \
-      --prefix=/usr/local \
-      --buildtype=release \
-      --libdir=lib \
-      -Ddefault_library=static \
-      -Dtests=disabled \
-      -Ddocs=disabled \
-      -Dbenchmark=disabled \
-      -Dintrospection=disabled && \
-    ninja -C build && \
-    ninja -C build install
+#RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
+#    tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
+#    meson setup build \
+#      --prefix=/usr/local \
+#      --buildtype=release \
+#      --libdir=lib \
+#      -Ddefault_library=static \
+#      -Dtests=disabled \
+#      -Ddocs=disabled \
+#      -Dbenchmark=disabled \
+#      -Dintrospection=disabled && \
+#    ninja -C build && \
+#    ninja -C build install
 
 # ICU (static)
 RUN wget https://github.com/unicode-org/icu/releases/download/release-74-2/icu4c-74_2-src.tgz && \
@@ -178,7 +178,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_system_png=ON \
       -DQT_FEATURE_system_jpeg=OFF \
       -DQT_FEATURE_system_freetype=ON \
-      -DQT_FEATURE_system_harfbuzz=ON && \
+      -DQT_FEATURE_system_harfbuzz=OFF && \
     cmake --build . --parallel && \
     cmake --install .
 
