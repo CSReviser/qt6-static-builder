@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM balenalib/i386-ubuntu:jammy
 
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
@@ -13,50 +13,50 @@ ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/loc
 # 依存インストール
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential:i386 \
-    cmake:i386 \
-    ninja-build:i386 \
-    git:i386 \
-    curl:i386 \
-    wget:i386 \
-    gperf:i386 \
-    libtool:i386 \
-    automake:i386 \
-    ca-certificates:i386 \
-    libxcb1-dev:i386 libxcb-util-dev:i386 libx11-dev:i386 \
-    libxext-dev:i386 libxrender-dev:i386 libxkbcommon-dev:i386 \
-    libx11-xcb-dev:i386 \
-    libxcb-cursor-dev:i386 \
-    libxcb-glx0-dev:i386 \
-    libxcb-icccm4-dev:i386 \
-    libxcb-image0-dev:i386 \
-    libxcb-keysyms1-dev:i386 \
-    libxcb-randr0-dev:i386 \
-    libxcb-render-util0-dev:i386 \
-    libxcb-shape0-dev:i386 \
-    libxcb-shm0-dev:i386 \
-    libxcb-sync-dev:i386 \
-    libxcb-util-dev:i386 \
-    libxcb-xfixes0-dev:i386 \
-    libxcb-xkb-dev:i386 \
-    libxcb1-dev:i386 \
-    libxext-dev:i386 \
-    libxfixes-dev:i386 \
-    libxi-dev:i386 \
-    libxkbcommon-dev:i386 \
-    libxkbcommon-x11-dev:i386 \
-    libxrender-dev:i386 \
-    libdbus-1-dev:i386 \
-    libgl1-mesa-dev:i386 \
-    libglu1-mesa-dev:i386 \
-    libglib2.0-dev:i386 \
-    libgtk-3-dev:i386 \
-    libssl-dev:i386 \
-    libfontconfig1-dev:i386 \
-    meson:i386 \
-    python3-pip:i386 \
-    pkg-config:i386 \
-    libxcb-dri2-0-dev:i386 \
+    build-essential \
+    cmake \
+    ninja-build \
+    git \
+    curl \
+    wget \
+    gperf \
+    libtool \
+    automake \
+    ca-certificates \
+    libxcb1-dev libxcb-util-dev libx11-dev \
+    libxext-dev libxrender-dev libxkbcommon-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev \
+    libdbus-1-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    libglib2.0-dev \
+    libgtk-3-dev \
+    libssl-dev \
+    libfontconfig1-dev \
+    meson \
+    python3-pip \
+    pkg-config \
+    libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # zlib (静的ビルド強制)
