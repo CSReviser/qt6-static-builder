@@ -1,20 +1,18 @@
-# Dockerfile.ubuntu-static
-FROM ubuntu:22.04
+FROM balenalib/i386-ubuntu:jammy
 
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
-ARG QT_VERSION=6.9.0
-ARG QT_VERSION1=6.9
+ARG QT_VERSION=6.5.0
+ARG QT_VERSION1=6.5
 ARG QT_MODULE=qtbase
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
 ENV INSTALL_PREFIX=/opt/qt6-static
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig
-ENV CXXFLAGS="-fuse-ld=lld"
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
 
 # 依存インストール
 # Install dependencies
-RUN apt-get update --fix-missing && apt-get install -y \
+RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     ninja-build \
@@ -25,20 +23,40 @@ RUN apt-get update --fix-missing && apt-get install -y \
     libtool \
     automake \
     ca-certificates \
+    libxcb1-dev libxcb-util-dev libx11-dev \
+    libxext-dev libxrender-dev libxkbcommon-dev \
+    libx11-xcb-dev \
+    libxcb-cursor-dev \
+    libxcb-glx0-dev \
+    libxcb-icccm4-dev \
+    libxcb-image0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-shape0-dev \
+    libxcb-shm0-dev \
+    libxcb-sync-dev \
+    libxcb-util-dev \
+    libxcb-xfixes0-dev \
+    libxcb-xkb-dev \
+    libxcb1-dev \
+    libxext-dev \
+    libxfixes-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev \
+    libxrender-dev \
     libdbus-1-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libglib2.0-dev \
     libgtk-3-dev \
+    libssl-dev \
     libfontconfig1-dev \
     meson \
-    bison \
-    lld \
-    binutils \
     python3-pip \
     pkg-config \
-    libssl-dev \
-    locales \
+    libxcb-dri2-0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen C.UTF-8 && update-locale LANG=C.UTF-8
