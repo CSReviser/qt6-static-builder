@@ -1,4 +1,4 @@
-name: Build & Push Qt6 Static Docker Image
+name: Ubuntu Qt6 Static Docker Image (docker)
 
 on:
   workflow_dispatch:
@@ -8,10 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: ghcr.io/csreviser/qt6-static-i386:6.9.0-ubuntu22.04
+      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-ubuntu-static-i386:6.9.0-ubuntu22.04
+      IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-ubuntu-static-i386:latest
+      QT_VERSION: 6.9.0
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Log in to GitHub Container Registry
@@ -21,9 +23,21 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
 
-      - name: Build and push Docker image
+      - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: Dockerfile.ubuntu-i386
+          build-args: |
+            QT_VERSION=${{ env.QT_VERSION }}
           push: true
-          tags: ${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ env.IMAGE_NAME_VERSIONED }}
+            ${{ env.IMAGE_NAME_LATEST }}
+
+      - name: Upload CMakeError.log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cmake-error-log
+          path: /path/to/qt_build/CMakeFiles/CMakeError.log
