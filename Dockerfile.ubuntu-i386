@@ -66,8 +66,8 @@ RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_V
 ENV CFLAGS="-m32"
 ENV CXXFLAGS="-m32"
 ENV LDFLAGS="-m32"
-ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:/usr/local/lib/x86_64-linux-gnu/pkgconfig
-
+ENV PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig
+ENV PKG_CONFIG_PATH=/usr/lib/i386-linux-gnu/pkgconfig:/usr/share/pkgconfig
 # Qt ビルド
 RUN mkdir qt-build && cd qt-build && \
     cmake -GNinja ../${QT_MODULE}-everywhere-src-${QT_VERSION} \
