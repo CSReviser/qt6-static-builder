@@ -63,10 +63,10 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_fontconfig=ON \
       -DQT_FEATURE_glib=OFF \
       -DQT_FEATURE_xrender=ON \
-      -DQT_FEATURE_system_zlib=ON \
-      -DQT_FEATURE_system_png=ON \
-      -DQT_FEATURE_system_jpeg=ON \
-      -DQT_FEATURE_system_freetype=ON \
+      -DQT_FEATURE_system_zlib=OFF \
+      -DQT_FEATURE_system_png=OFF \
+      -DQT_FEATURE_system_jpeg=OFFN \
+      -DQT_FEATURE_system_freetype=OFF \
       -DQT_FEATURE_system_harfbuzz=OFF \
       && \
     cmake --build . --parallel && \
