@@ -1,4 +1,4 @@
-FROM i386/ubuntu:22.04
+FROM ioft/i386-ubuntu
 
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
