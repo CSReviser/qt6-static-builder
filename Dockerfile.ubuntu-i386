@@ -1,4 +1,4 @@
-FROM ioft/i386-ubuntu
+FROM balenalib/i386-ubuntu:bionic
 
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
