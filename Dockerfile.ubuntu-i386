@@ -65,7 +65,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_xrender=ON \
       -DQT_FEATURE_system_zlib=OFF \
       -DQT_FEATURE_system_png=OFF \
-      -DQT_FEATURE_system_jpeg=OFFN \
+      -DQT_FEATURE_system_jpeg=OFF \
       -DQT_FEATURE_system_freetype=OFF \
       -DQT_FEATURE_system_harfbuzz=OFF \
       && \
