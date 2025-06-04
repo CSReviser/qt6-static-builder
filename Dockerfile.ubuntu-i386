@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM i386/ubuntu:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG QT_VERSION=6.9.0
