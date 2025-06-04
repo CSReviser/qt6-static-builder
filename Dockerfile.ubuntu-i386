@@ -59,20 +59,6 @@ RUN dpkg --add-architecture i386 && \
     && rm -rf /var/lib/apt/lists/*
 
 
-# build libxcb-cursor manually
-RUN git clone https://gitlab.freedesktop.org/xorg/lib/libxcb-cursor.git && \
-    cd libxcb-cursor && \
-    ./autogen.sh --host=i386-linux-gnu --prefix=/usr --libdir=/usr/lib/i386-linux-gnu && \
-    make -j$(nproc) && make install
-
-ARG XCB_UTIL_CURSOR_VERSION=0.1.5
-# xcb-util-cursor
-RUN wget https://xorg.freedesktop.org/archive/individual/lib/xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
-    tar -xzf xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION}.tar.gz && \
-    cd xcb-util-cursor-${XCB_UTIL_CURSOR_VERSION} && \
-    ./configure --prefix=/usr/local --disable-shared --enable-static && \
-    make -j$(nproc) && make install
-
 # Qt ソースを取得
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
