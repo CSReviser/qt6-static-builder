@@ -62,8 +62,8 @@ RUN dpkg --add-architecture i386 && \
 # Qt ソースを取得
 WORKDIR /build
 RUN curl -LO https://download.qt.io/official_releases/qt/${QT_VERSION%.*}/${QT_VERSION}/submodules/${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz && \
-    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz
-    cd ${QT_MODULE}-everywhere-src-${QT_VERSION}
+    tar -xf ${QT_MODULE}-everywhere-src-${QT_VERSION}.tar.xz \
+    cd ${QT_MODULE}-everywhere-src-${QT_VERSION} \
     sed 's/cmake_minimum_required(VERSION 3.16)/cmake_minimum_required(VERSION 3.10)/' CMakeLists.txt > CMakeLists.txt
 
 # 環境変数: -m32 で32bitバイナリを生成
