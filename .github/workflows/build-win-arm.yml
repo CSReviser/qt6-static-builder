@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu22.04-arm
     permissions:
       contents: read
       packages: write  # パッケージ push に必要
