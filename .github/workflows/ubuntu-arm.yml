@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: ghcr.io/csreviser/qt6-static:6.9.0-ubuntu22.04
+      IMAGE_NAME: ghcr.io/csreviser/qt6-static-arm:6.9.1-ubuntu22.04
 
     steps:
       - name: Checkout repo
