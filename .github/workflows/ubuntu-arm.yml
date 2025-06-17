@@ -8,7 +8,9 @@ jobs:
     runs-on: ubuntu-22.04-arm
 
     env:
-      IMAGE_NAME: ghcr.io/csreviser/qt6-static-arm:6.9.1-ubuntu22.04
+      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-static-arm:6.9.1-ubuntu22.04
+      IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-static-arm:latest
+      QT_VERSION: 6.9.1
 
     steps:
       - name: Checkout repository
@@ -32,3 +34,10 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME_VERSIONED }}
             ${{ env.IMAGE_NAME_LATEST }}
+
+      - name: Upload CMakeError.log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cmake-error-log
+          path: /path/to/qt_build/CMakeFiles/CMakeError.log
