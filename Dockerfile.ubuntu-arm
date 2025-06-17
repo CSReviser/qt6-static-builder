@@ -1,4 +1,4 @@
-FROM arm:ubuntu:22.04
+FROM ubuntu:22.04
 
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
