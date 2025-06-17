@@ -10,8 +10,8 @@ jobs:
       contents: read
       packages: write  # パッケージ push に必要
     env:
-      QT_VERSION: 6.9.0
-      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-win-arm:6.9.0
+      QT_VERSION: 6.9.1
+      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-win-arm:6.9.1
       IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-win-arm:latest
 
     steps:
