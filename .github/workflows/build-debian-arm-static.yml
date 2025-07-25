@@ -5,12 +5,12 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
 
     env:
       IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-debian-arm-static:6.9.1-debian
       IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-debian-arm-static:latest
-      QT_VERSION: 6.9.0
+      QT_VERSION: 6.9.1
 
     steps:
       - name: Checkout repository
