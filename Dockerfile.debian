@@ -171,7 +171,7 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_freetype=ON \
       -DQT_FEATURE_harfbuzz=ON \
       -DQT_FEATURE_xlib=ON \
-      -DQT_FEATURE_xcb=ON \
+      -DQT_FEATURE_xcb=OFF \
       -DQT_FEATURE_wayland=ON \
       -DQT_FEATURE_xkbcommon=ON \
       -DQT_FEATURE_fontconfig=ON \
