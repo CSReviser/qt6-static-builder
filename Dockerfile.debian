@@ -170,14 +170,11 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_jpeg=ON \
       -DQT_FEATURE_freetype=ON \
       -DQT_FEATURE_harfbuzz=ON \
-      -DQT_FEATURE_xlib=ON \
-      -DQT_FEATURE_xcb=OFF \
       -DQT_FEATURE_wayland=ON \
       -DQT_FEATURE_xkbcommon=ON \
       -DQT_FEATURE_fontconfig=ON \
       -DQT_FEATURE_sessionmanager=ON \
       -DQT_FEATURE_glib=OFF \
-      -DQT_FEATURE_xrender=ON \
       -DQT_FEATURE_system_zlib=ON \
       -DQT_FEATURE_system_png=ON \
       -DQT_FEATURE_system_jpeg=ON \
@@ -185,6 +182,10 @@ RUN mkdir qt-build && cd qt-build && \
       -DQT_FEATURE_system_harfbuzz=ON && \
     cmake --build . --parallel && \
     cmake --install .
+
+ #     -DQT_FEATURE_xlib=ON \
+#      -DQT_FEATURE_xcb=OFF \
+#      -DQT_FEATURE_xrender=ON \
 
 # PATH登録
 ENV PATH="/opt/qt6-static/bin:$PATH"
