@@ -43,6 +43,7 @@ jobs:
             libxcb-sync-dev \
             libxrender-dev \
             libharfbuzz-dev \
+            meson \
             libpng-dev 
 
       - name: zlib
