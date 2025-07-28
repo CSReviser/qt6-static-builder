@@ -83,8 +83,8 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=/usr/local \
            -DENABLE_SHARED=OFF \
            -DENABLE_STATIC=ON && \
-          cmake --build build -j$(nproc) && \
-          cmake --install build
+          sudo cmake --build build -j$(nproc) && \
+          sudo cmake --install build
 
       - name: libXext
         run: |
@@ -97,34 +97,34 @@ jobs:
 
       - name: FreeType (static)
         run: |
-RUN wget https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.gz && \
-    tar -xf freetype-2.13.3.tar.gz && cd freetype-2.13.3 && \
-    ./configure \
-      --prefix=/usr/local \
-      --with-harfbuzz=yes \
-      --enable-static \
-      --disable-shared \
-      --with-pic \
-      --with-bdfformat \
-      --without-bzip2 \
-      HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
-      HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
+          wget https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.gz && \
+          tar -xf freetype-2.13.3.tar.gz && cd freetype-2.13.3 && \
+          ./configure \
+          --prefix=/usr/local \
+           --with-harfbuzz=yes \
+          --enable-static \
+           --disable-shared \
+          --with-pic \
+          --with-bdfformat \
+          --without-bzip2 \
+          HARFBUZZ_CFLAGS="$(pkg-config --cflags harfbuzz)" \
+          HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
 
       - name:  harfbuzz (static, .pc生成確認)
         run: |
           wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
-    tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
-    meson setup build \
-      --prefix=/usr/local \
-      --buildtype=release \
-      --libdir=lib \
-      -Ddefault_library=static \
-      -Dtests=disabled \
-      -Ddocs=disabled \
-      -Dbenchmark=disabled \
-      -Dintrospection=disabled && \
-    ninja -C build && \
-    ninja -C build install
+          tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
+          meson setup build \
+          --prefix=/usr/local \
+          --buildtype=release \
+          --libdir=lib \
+          -Ddefault_library=static \
+           -Dtests=disabled \
+          -Ddocs=disabled \
+          -Dbenchmark=disabled \
+           -Dintrospection=disabled && \
+          sudo ninja -C build && \
+          sudo ninja -C build install
 
       - name:  ICU (static)
         run: |
@@ -132,8 +132,8 @@ RUN wget https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.1
            tar -xzf icu4c-74_2-src.tgz && \
            cd icu/source && \
            ./configure --prefix=/usr/local --disable-shared --enable-static && \
-          make -j$(nproc) && \
-          make install
+          sudo make -j$(nproc) && \
+          sudo make install
          
       - name: Download Qt 6.8 source
         run: |
