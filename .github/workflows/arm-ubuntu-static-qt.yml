@@ -138,7 +138,7 @@ jobs:
          
       - name: Download Qt 6.8 source
         run: |
-          curl -LO https://download.qt.io/official_releases/qt/6.9/6.9.1/single/qtbase-everywhere-src-6.9.1.tar.xz
+          curl -LO https://download.qt.io/official_releases/qt/6.9/6.9.1/submodules/qtbase-everywhere-src-6.9.1.tar.xz
           tar xf qtbase-everywhere-src-6.9.1.tar.xz
 
       - name: Configure and build Qt statically (make version)
