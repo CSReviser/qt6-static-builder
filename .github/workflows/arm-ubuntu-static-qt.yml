@@ -190,7 +190,7 @@ jobs:
         run: |
           cd CaptureStream2
           mkdir build && cd build
-          ../../opt/qt6-static/bin/qt-cmake .. -DQT_DEBUG_FIND_PACKAGE=ON
+          /opt/qt6-static/bin/qt-cmake .. -DQT_DEBUG_FIND_PACKAGE=ON
           cmake --build . --parallel
 
       - name: Download linuxdeploy and plugin
