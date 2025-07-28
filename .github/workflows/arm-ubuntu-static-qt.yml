@@ -145,40 +145,50 @@ jobs:
         run: |
           mkdir qt-build
           cd  qt-build
-          ../qtbase-everywhere-src-6.9.1/configure \
-            -prefix ../qt-build/qt6-static-install \
-            -static -static-runtime \
-            -release \
-            -opensource -confirm-license \
-            -nomake examples -nomake tests \
-            -skip qt3d -skip qtwebengine -skip qtwebchannel -skip qtwebview \
-            -skip qtcharts -skip qtvirtualkeyboard \
-            -skip qtlocation -skip qtsensors -skip qtlottie \
-            -skip qtconnectivity -skip qtdoc -skip qttranslations \
-            -no-pch \
-            -qt-harfbuzz \
-            -qt-freetype \
-            -qt-libpng \
-            -qt-zlib \
-            -qt-libjpeg \
-            -qt-pcre \
-            -qt-doubleconversion \
-            -platform linux-g++ \
-            -c++std c++20 
-
-          cmake --build . --parallel
+          cmake -GNinja ../qtbase-everywhere-src-6.9.1 \
+          -DCMAKE_INSTALL_PREFIX=/opt/qt6-static \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DQT_BUILD_EXAMPLES=OFF \
+          -DQT_BUILD_TESTS=OFF \
+          -DQT_FEATURE_static=ON \
+          -DQT_FEATURE_gui=ON \
+          -DQT_FEATURE_widgets=ON \
+          -DQT_FEATURE_dbus=ON \
+          -DQT_FEATURE_icu=ON \
+          -DQT_FEATURE_opengl_desktop=OFF \
+          -DQT_FEATURE_openssl=ON \
+          -DQT_FEATURE_openssl_linked=ON \
+          -DQT_FEATURE_png=ON \
+          -DQT_FEATURE_jpeg=ON \
+          -DQT_FEATURE_freetype=ON \
+          -DQT_FEATURE_harfbuzz=ON \
+          -DQT_FEATURE_wayland=ON \
+          -DQT_FEATURE_xkbcommon=ON \
+          -DQT_FEATURE_fontconfig=ON \
+          -DQT_FEATURE_sessionmanager=ON \
+          -DQT_FEATURE_glib=OFF \
+          -DQT_FEATURE_system_zlib=ON \
+          -DQT_FEATURE_system_png=ON \
+          -DQT_FEATURE_system_jpeg=ON \
+          -DQT_FEATURE_system_freetype=ON \
+          -DQT_FEATURE_system_harfbuzz=ON || true && \
+          echo "----- config.summary -----" && cat config.summary || true && \
+           echo "----- CMakeError.log -----" && cat CMakeFiles/CMakeError.log || true && \
+           echo "----- CMakeOutput.log -----" && cat CMakeFiles/CMakeOutput.log || true && \
+          cmake --build . --parallel && \
           cmake --install .
 
       - name: Package Qt
         run: |
           cd qt-build
-          tar -czf qt6.8.3-linux-static.tar.gz qt6-static-install
+          tar -czf qt6.9.1-linux-static.tar.gz qt6-static-install
 
       - name: Upload to GitHub Releases
         uses: softprops/action-gh-release@v1
         with:
           tag_name: qt6.9.1-static-linux
           name: Qt 6.9.1 Static Linux
-          files: qt-build/qt6.8.3-linux-static.tar.gz
+          files: qt-build/qt6.9.1-linux-static.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
