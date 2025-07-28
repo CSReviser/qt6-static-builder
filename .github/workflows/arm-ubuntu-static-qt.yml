@@ -45,7 +45,6 @@ jobs:
             libharfbuzz-dev \
             meson \
             libgtk-3-dev \ 
-            libssl-dev \
             libpng-dev 
 
       - name: zlib
