@@ -117,7 +117,6 @@ WORKDIR ${MXE_PATH}
 RUN make MXE_TARGETS='aarch64-w64-mingw32' \
     qtbase \
     zlib \
-    openssl \
     -j$(nproc)
 
 # 6. 確認（任意）
