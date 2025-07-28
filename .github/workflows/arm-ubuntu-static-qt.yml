@@ -1,4 +1,4 @@
-name: Build Static Qt with Dependencies
+name: arm Build Static Qt with Dependencies
 
 on:
   workflow_dispatch:
