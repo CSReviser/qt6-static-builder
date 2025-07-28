@@ -2,6 +2,10 @@ name: arm Build Static Qt with Dependencies
 
 on:
   workflow_dispatch:
+    inputs:
+      yyyymmdd:
+        description: 'Release date (yyyymmdd)'
+        required: true
 
 permissions:
   contents: write
@@ -240,8 +244,7 @@ jobs:
            --desktop-file CaptureStream2.desktop \
            --icon-file icon.png \
            --executable ./build/CaptureStream2 \
-           --output appimage \
-           --plugin qt
+           --output appimage
            cd build
            mkdir -p LinCaptureStream2
            cp ../CaptureStream2-aarch64.AppImage ./LinCaptureStream2/CaptureStream2
