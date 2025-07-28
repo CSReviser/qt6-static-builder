@@ -181,8 +181,7 @@ jobs:
 
       - name: Package Qt
         run: |
-          cd qt-build
-          tar -czf qt6.9.1-linux-static.tar.gz /opt/qt6-static
+          tar -czf qt6.9.1-linux-static.tar.gz ./qt-build
 
       - name: Upload to GitHub Releases
         uses: softprops/action-gh-release@v1
