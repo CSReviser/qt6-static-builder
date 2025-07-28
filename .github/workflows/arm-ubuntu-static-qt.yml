@@ -1,0 +1,92 @@
+name: Build Static Qt with Dependencies
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04-arm
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            libgl1-mesa-dev \
+            libxcb-xinerama0-dev \
+            libxkbcommon-dev \
+            libxcb-cursor-dev \
+            libxcb-icccm4-dev \
+            libxcb-image0-dev \
+            libxcb-keysyms1-dev \
+            libxcb-render-util0-dev \
+            libxcb-xinput-dev \
+            libxcb-xfixes0-dev \
+            ninja-build \
+            python3 \
+            perl \
+            cmake \
+            curl \
+            git \
+            wget \
+            libfontconfig1-dev \
+            libfreetype-dev \
+            libgtk-3-dev \
+            libx11-dev \
+            libx11-xcb-dev \
+            libxcb-randr0-dev \
+            libxcb-shape0-dev \
+            libxcb-shm0-dev \
+            libxcb-sync-dev \
+            libxrender-dev
+          
+      - name: Download Qt 6.8 source
+        run: |
+          curl -LO https://download.qt.io/official_releases/qt/6.9/6.9.1/single/qt-everywhere-src-6.9.1.tar.xz
+          tar xf qt-everywhere-src-6.8.3.tar.xz
+
+      - name: Configure and build Qt statically (make version)
+        run: |
+          mkdir qt-build
+          cd  qt-build
+          ../qt-everywhere-src-6.8.3/configure \
+            -prefix ../qt-build/qt6-static-install \
+            -static -static-runtime \
+            -release \
+            -opensource -confirm-license \
+            -nomake examples -nomake tests \
+            -skip qt3d -skip qtwebengine -skip qtwebchannel -skip qtwebview \
+            -skip qtcharts -skip qtvirtualkeyboard \
+            -skip qtlocation -skip qtsensors -skip qtlottie \
+            -skip qtconnectivity -skip qtdoc -skip qttranslations \
+            -no-pch \
+            -qt-harfbuzz \
+            -qt-freetype \
+            -qt-libpng \
+            -qt-zlib \
+            -qt-libjpeg \
+            -qt-pcre \
+            -qt-doubleconversion \
+            -platform linux-g++ \
+            -c++std c++20 
+
+          cmake --build . --parallel
+          cmake --install .
+
+      - name: Package Qt
+        run: |
+          cd qt-build
+          tar -czf qt6.8.3-linux-static.tar.gz qt6-static-install
+
+      - name: Upload to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: qt6.9.1-static-linux
+          name: Qt 6.9.1 Static Linux
+          files: qt-build/qt6.8.3-linux-static.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
