@@ -192,6 +192,7 @@ jobs:
           mkdir build && cd build
           /opt/qt6-static/bin/qt-cmake .. -DQT_DEBUG_FIND_PACKAGE=ON
           cmake --build . --parallel
+          sudo ln -sf /opt/qt6-static/bin/qmake6 /usr/bin/qmake
 
       - name: Download linuxdeploy and plugin
         run: |
