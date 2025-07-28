@@ -59,12 +59,10 @@ RUN apt-get update && \
     bzip2 \
     flex \
     g++ \
-    g++-multilib \
     gettext \
     git \
     gperf \
     intltool \
-    libc6-dev-i386 \
     libgdk-pixbuf2.0-dev \
     libltdl-dev \
     libncurses5-dev \
