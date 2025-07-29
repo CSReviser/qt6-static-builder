@@ -168,6 +168,9 @@ jobs:
           -DQT_FEATURE_freetype=ON \
           -DQT_FEATURE_harfbuzz=ON \
           -DQT_FEATURE_wayland=ON \
+          -DQT_FEATURE_xlib=ON \
+          -DQT_FEATURE_xcb=ON \
+          -DQT_FEATURE_xrender=ON \
           -DQT_FEATURE_xkbcommon=ON \
           -DQT_FEATURE_fontconfig=ON \
           -DQT_FEATURE_sessionmanager=ON \
