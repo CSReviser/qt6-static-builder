@@ -1,4 +1,4 @@
-name: arm ubuntu Build & Push Qt6 Static Docker Image
+name: arm ubuntu22 Build & Push Qt6 Static Docker Image
 
 on:
   workflow_dispatch:
