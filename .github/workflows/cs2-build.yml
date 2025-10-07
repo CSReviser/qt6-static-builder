@@ -33,13 +33,27 @@ jobs:
               cmake --build . --parallel
             "
 
-      - name: Archive result
+      - name: Build using Docker container with Qt static
+        run: |
+          cd CaptureStream2
+          mkdir -p build && cd build
+          qt-cmake .. -DQT_DEBUG_FIND_PACKAGE=ON
+          cmake --build . --parallel
+          mkdir -p LinCaptureStream2
+          mv CaptureStream2 ./LinCaptureStream2/
+          cp ../qss_files/stylesheet-ubu.qss ./LinCaptureStream2
+          cp -r ../qss_files/License ./LinCaptureStream2
+          wget -qO ffmpeg-static-ubuntu.zip https://github.com/CSReviser/ffmpeg-build/releases/download/7.1.1/ffmpeg-static-ubuntu.zip
+          7z e ffmpeg-static-ubuntu.zip ffmpeg -o./LinCaptureStream2
+          chmod -R 755 ./LinCaptureStream2
+
+      - name: Create ZIP file
         run: |
           cd CaptureStream2/build
-          tar -czf capturestream2-linux-static.tar.gz CaptureStream2
+          zip -r "CaptureStream2-ubuntu-${{ github.event.inputs.yyyymmdd }}.zip" LinCaptureStream2
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: capturestream2-linux-static
-          path: CaptureStream2/build/capturestream2-linux-static.tar.gz
+          path: CaptureStream2/build/LinCaptureStream2
