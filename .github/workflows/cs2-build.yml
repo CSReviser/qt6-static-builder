@@ -5,12 +5,14 @@ on:
 
 env:
   QT_VERSION: 6.10.0
-  IMAGE_NAME: ghcr.io/csreviser/qt6-static:6.10.0-ubuntu22.04
+  IMAGE_NAME: ghcr.io/csreviser/qt6-static:${{ env.QT_VERSION }}-ubuntu22.04
 
 jobs:
   build:
     runs-on: ubuntu-22.04
-
+    container:
+      image: ghcr.io/csreviser/qt6-static:${{ env.QT_VERSION }}-ubuntu22.04
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
