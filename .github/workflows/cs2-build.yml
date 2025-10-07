@@ -5,7 +5,7 @@ on:
 
 env:
   QT_VERSION: 6.10.0
-  IMAGE_NAME: ghcr.io/csreviser/qt6-static:${{ env.QT_VERSION }}-ubuntu22.04
+  IMAGE_NAME: ghcr.io/csreviser/qt6-static:6.10.0-ubuntu22.04
 
 jobs:
   build:
