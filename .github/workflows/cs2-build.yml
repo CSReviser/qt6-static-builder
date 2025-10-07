@@ -5,7 +5,7 @@ on:
 
 env:
   QT_VERSION: 6.10.0
-  IMAGE_NAME: ghcr.io/csreviser/qt6-static:6.10.0-ubuntu22.04
+#  IMAGE_NAME: ghcr.io/csreviser/qt6-static:6.10.0-ubuntu22.04
 
 jobs:
   build:
@@ -23,17 +23,17 @@ jobs:
           cd CaptureStream2
           git submodule update --init --recursive
 
-      - name: Build using Docker container with Qt static
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/work \
-            -w /work/CaptureStream2 \
-            ${{ env.IMAGE_NAME }} \
-            bash -lc "
-              mkdir -p build && cd build && \
-              /opt/qt6-static/bin/qt-cmake .. -DQT_DEBUG_FIND_PACKAGE=ON && \
-              cmake --build . --parallel
-            "
+#      - name: Build using Docker container with Qt static
+#        run: |
+#          docker run --rm \
+#            -v ${{ github.workspace }}:/work \
+#            -w /work/CaptureStream2 \
+#            ${{ env.IMAGE_NAME }} \
+#            bash -lc "
+#              mkdir -p build && cd build && \
+#              /opt/qt6-static/bin/qt-cmake .. -DQT_DEBUG_FIND_PACKAGE=ON && \
+#              cmake --build . --parallel
+#            "
 
       - name: Build using Docker container with Qt static
         run: |
