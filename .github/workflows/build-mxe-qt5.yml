@@ -5,7 +5,7 @@ on:
 
 env:
   IMAGE_NAME: ghcr.io/csreviser/qt5-mxe-static
-  QT_VERSION: 5.15.0
+  QT_VERSION: 5.15.18
 
 jobs:
   build:
