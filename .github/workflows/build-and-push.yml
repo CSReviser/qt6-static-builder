@@ -10,7 +10,7 @@ jobs:
     env:
       IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-static:6.10.0-ubuntu22.04
       IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-static:latest
-      QT_VERSION: 6.10.0
+      QT_VERSION: 6.10.1
 
     steps:
       - name: Checkout repo
