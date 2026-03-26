@@ -2,8 +2,8 @@ FROM ubuntu:22.04
 
 # 環境変数
 ARG DEBIAN_FRONTEND=noninteractive
-ARG QT_VERSION=6.10.1
-ARG QT_VERSION1=6.10
+ARG QT_VERSION=6.11.0
+ARG QT_VERSION1=6.11
 ARG QT_MODULE=qtbase
 ENV QT_VERSION=${QT_VERSION}
 ENV QT_MODULE=${QT_MODULE}
@@ -60,7 +60,12 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # zlib (静的ビルド強制)
-RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+# RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+#     tar -xzf zlib-1.3.1.tar.gz && \
+#     cd zlib-1.3.1 && \
+#     ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
+
+RUN wget https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz && \
     tar -xzf zlib-1.3.1.tar.gz && \
     cd zlib-1.3.1 && \
     ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
