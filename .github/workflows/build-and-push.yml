@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      QT_VERSION: 6.10.2
-      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-static:${QT_VERSION}-ubuntu22.04
+      QT_VERSION: 6.11.0
+      IMAGE_NAME_VERSIONED: ghcr.io/csreviser/qt6-static:6.11.0-ubuntu22.04
       IMAGE_NAME_LATEST: ghcr.io/csreviser/qt6-static:latest
 
     steps:
