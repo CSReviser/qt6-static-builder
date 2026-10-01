@@ -88,7 +88,7 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.9.9.tar.gz && \
     make install
 
 # libpng
-RUN wget -L https://sourceforge.net/projects/libpng/files/libpng16/1.6.37/libpng-1.6.58.tar.gz && \
+RUN wget -L http://libpng.download/src/libpng-1.6.58.tar.gz && \
     tar -xzf libpng-1.6.58.tar.gz && \
     cd libpng-1.6.58 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
