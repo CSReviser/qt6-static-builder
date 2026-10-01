@@ -60,6 +60,9 @@ RUN apt-get update && apt-get install -y \
     fuse p7zip-full zip \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip install --upgrade cmake && \
+    cmake --version
+
 # zlib (静的ビルド強制)
 # RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
 #     tar -xzf zlib-1.3.1.tar.gz && \
