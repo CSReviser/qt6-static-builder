@@ -60,7 +60,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # zlib (静的ビルド強制)
-# RUN wget https://zlib.net/zlib-1.3.1.tar.gz && \
+# RUN wget -L https://zlib.net/zlib-1.3.1.tar.gz && \
 #     tar -xzf zlib-1.3.1.tar.gz && \
 #     cd zlib-1.3.1 && \
 #     ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
@@ -88,13 +88,13 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.9.9.tar.gz && \
     make install
 
 # libpng
-RUN wget https://download.sourceforge.net/libpng/libpng-1.6.58.tar.gz && \
+RUN wget -L https://sourceforge.net/projects/libpng/files/libpng16/1.6.37/libpng-1.6.58.tar.gz && \
     tar -xzf libpng-1.6.58.tar.gz && \
     cd libpng-1.6.58 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libjpeg-turbo (static)
-RUN wget https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-3.0.1.tar.gz && \
+RUN wget -L https://downloads.sourceforge.net/libjpeg-turbo/libjpeg-turbo-3.0.1.tar.gz && \
     tar -xzf libjpeg-turbo-3.0.1.tar.gz && cd libjpeg-turbo-3.0.1 && \
     cmake -B build -G"Unix Makefiles" \
         -DCMAKE_INSTALL_PREFIX=/usr/local \
