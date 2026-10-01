@@ -64,6 +64,8 @@ RUN apt-get update && apt-get install -y \
 #     tar -xzf zlib-1.3.1.tar.gz && \
 #     cd zlib-1.3.1 && \
 #     ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
+RUN pip install --upgrade cmake && \
+    cmake --version
 
 RUN wget https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz && \
     tar -xzf zlib-1.3.1.tar.gz && \
