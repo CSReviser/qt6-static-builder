@@ -67,14 +67,15 @@ RUN apt-get update && apt-get install -y \
 RUN pip install --upgrade cmake && \
     cmake --version
 
-RUN wget https://github.com/madler/zlib/releases/download/v1.3.1/zlib-1.3.1.tar.gz && \
-    tar -xzf zlib-1.3.1.tar.gz && \
-    cd zlib-1.3.1 && \
+# zlib 
+RUN wget https://github.com/madler/zlib/releases/download/v1.3.2/zlib-1.3.2.tar.gz && \
+    tar -xzf zlib-1.3.2.tar.gz && \
+    cd zlib-1.3.2 && \
     ./configure --static --prefix=/usr/local && make -j$(nproc) && make install
 
 # libxml2 (v2.9.9, static build using configure)
-RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.9.9.tar.gz && \
-    tar -xf v2.9.9.tar.gz && cd libxml2-2.9.9 && \
+RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.15.4.tar.gz && \
+    tar -xf v2.15.4.tar.gz && cd libxml2-2.15.4 && \
     ./autogen.sh && \
     env \
       CFLAGS="-fPIC" \
@@ -112,8 +113,8 @@ RUN wget https://xorg.freedesktop.org/archive/individual/lib/libXext-1.3.5.tar.g
     make -j$(nproc) && make install
 
 # FreeType (static)
-RUN wget https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.13.3.tar.gz && \
-    tar -xf freetype-2.13.3.tar.gz && cd freetype-2.13.3 && \
+RUN wget https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.14.3.tar.gz && \
+    tar -xf freetype-2.14.3.tar.gz && cd freetype-2.14.3 && \
     ./configure \
       --prefix=/usr/local \
       --with-harfbuzz=yes \
@@ -126,8 +127,8 @@ RUN wget https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.1
       HARFBUZZ_LIBS="$(pkg-config --libs harfbuzz)"
 
 # harfbuzz (static, .pc生成確認)
-RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8.3.0.tar.xz && \
-    tar -xf harfbuzz-8.3.0.tar.xz && cd harfbuzz-8.3.0 && \
+RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/14.5.0/harfbuzz-14.5.0.tar.xz && \
+    tar -xf harfbuzz-14.5.0.tar.xz && cd harfbuzz-14.5.0 && \
     meson setup build \
       --prefix=/usr/local \
       --buildtype=release \
@@ -136,6 +137,8 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/8.3.0/harfbuzz-8
       -Dtests=disabled \
       -Ddocs=disabled \
       -Dbenchmark=disabled \
+      -Dc_link_args='-Wl,--copy-dt-needed-entries' \
+      -Dcpp_link_args='-Wl,--copy-dt-needed-entries' \
       -Dintrospection=disabled && \
     ninja -C build && \
     ninja -C build install
