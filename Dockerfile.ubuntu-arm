@@ -137,6 +137,8 @@ RUN wget https://github.com/harfbuzz/harfbuzz/releases/download/14.5.0/harfbuzz-
       -Dtests=disabled \
       -Ddocs=disabled \
       -Dbenchmark=disabled \
+      -Dc_link_args='-Wl,--copy-dt-needed-entries' \
+      -Dcpp_link_args='-Wl,--copy-dt-needed-entries' \
       -Dintrospection=disabled && \
     ninja -C build && \
     ninja -C build install
