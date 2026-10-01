@@ -88,9 +88,9 @@ RUN wget https://github.com/GNOME/libxml2/archive/refs/tags/v2.9.9.tar.gz && \
     make install
 
 # libpng
-RUN wget https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz && \
-    tar -xzf libpng-1.6.37.tar.gz && \
-    cd libpng-1.6.37 && \
+RUN wget https://download.sourceforge.net/libpng/libpng-1.6.58.tar.gz && \
+    tar -xzf libpng-1.6.58.tar.gz && \
+    cd libpng-1.6.58 && \
     ./configure --prefix=/usr/local --disable-shared --enable-static && make -j$(nproc) && make install
 
 # libjpeg-turbo (static)
