@@ -1,0 +1,102 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: CaptureStream2 <noreply@example.com>
+Date: Fri, 2 Oct 2026 23:00:00 +0900
+Subject: [PATCH] qtbase: use sRGB for Windows color space on Wine
+
+Wine does not implement WcsCreateIccProfile(), which is called by
+Qt 6.12 Windows QPA while resolving the monitor color space.
+
+This causes Wine to abort during application startup.
+
+CaptureStream2 does not require Windows ICC color management, so use
+sRGB for the Windows platform in the Wine-compatible Qt build.
+
+---
+ src/plugins/platforms/windows/qwindowsscreen.cpp | 31 +------------------------
+ 1 file changed, 1 insertion(+), 30 deletions(-)
+
+diff --git a/src/plugins/platforms/windows/qwindowsscreen.cpp b/src/plugins/platforms/windows/qwindowsscreen.cpp
+--- a/src/plugins/platforms/windows/qwindowsscreen.cpp
++++ b/src/plugins/platforms/windows/qwindowsscreen.cpp
+@@ -...,31 +...,1 @@
+ static QColorSpace resolveColorSpace(HMONITOR hMonitor,
+     const MONITORINFOEX &info,
+     const std::vector<DISPLAYCONFIG_PATH_INFO> &pathGroup)
+ {
+-    qCDebug(lcQpaScreen) << "Resolving color space for" << QString::fromWCharArray(info.szDevice);
+-
+-    LPWSTR profileName = [&]() -> LPWSTR {
+-        if (!pathGroup.empty()) {
+-            const auto &sourceInfo = pathGroup[0].sourceInfo;
+-            WCS_PROFILE_MANAGEMENT_SCOPE scope = WCS_PROFILE_MANAGEMENT_SCOPE_SYSTEM_WIDE;
+-            if (SUCCEEDED(windowsColorSpaceFunctions->getDisplayUserScope(
+-                    sourceInfo.adapterId, sourceInfo.id, &scope))) {
+-                LPWSTR profileName = nullptr;
+-                if (SUCCEEDED(windowsColorSpaceFunctions->getDisplayDefault(
+-                        scope, sourceInfo.adapterId, sourceInfo.id, CPT_ICC,
+-                        CPST_RGB_WORKING_SPACE, &profileName))) {
+-                    return profileName;
+-                } else {
+-                    return nullptr;
+-                }
+-            }
+-        }
+-
+-        if (const HDC hdc = CreateDC(info.szDevice, nullptr, nullptr, nullptr)) {
+-            const auto freeHdc = qScopeGuard([&]{ DeleteDC(hdc); });
+-            DWORD colorProfilePathLength = MAX_PATH;
+-            LPWSTR profileName = reinterpret_cast<LPWSTR>(LocalAlloc(LPTR, MAX_PATH * sizeof(WCHAR)));
+-            if (GetICMProfile(hdc, &colorProfilePathLength, profileName))
+-                return profileName;
+-        }
+-
+-        return nullptr;
+-    }();
+-
+-    if (profileName) {
+-        qCDebug(lcQpaScreen) << "Found color profile" << QString::fromWCharArray(profileName);
+-        const auto freeProfile = qScopeGuard([&]{ LocalFree(profileName); });
+-
+-        PROFILE profile;
+-        profile.dwType = PROFILE_FILENAME;
+-        profile.pProfileData = profileName;
+-        profile.cbDataSize = DWORD(wcslen(profileName) * sizeof(wchar_t));
+-        if (HPROFILE hProfile = OpenColorProfile(&profile, PROFILE_READ, FILE_SHARE_READ, OPEN_EXISTING)) {
+-            const auto closeProfile = qScopeGuard([&]{ CloseColorProfile(hProfile); });
+-
+-            // Qt can only read ICC profiles, so convert from WCS profile if needed
+-            if (HPROFILE wcsProfile = WcsCreateIccProfile(hProfile, WCS_ICCONLY)) {
+-                CloseColorProfile(hProfile);
+-                hProfile = wcsProfile;
+-            }
+-
+-            DWORD iccDataSize = 0;
+-            GetColorProfileFromHandle(hProfile, nullptr, &iccDataSize);
+-            QByteArray iccData(iccDataSize, Qt::Uninitialized);
+-            if (GetColorProfileFromHandle(hProfile,
+-                reinterpret_cast<BYTE*>(iccData.data()), &iccDataSize))
+-                return QColorSpace::fromIccProfile(iccData);
+-        }
+-    } else {
+-        // No profile ... or Advanced Color
+-#ifdef QT_USE_WINRT_DISPLAY_INTEROP
+-        if (windowsColorSpaceFunctions->isColorSpaceChanged(hMonitor)) {
+-            const auto colorSpace = windowsColorSpaceFunctions->getColorSpace(hMonitor);
+-            if (colorSpace.isValid())
+-                return colorSpace;
+-        }
+-#else
+-        Q_UNUSED(hMonitor);
+-#endif
+-        qCDebug(lcQpaScreen) << "No color profile or advanced color preference. Falling back to sRGB";
+-        return QColorSpace::SRgb;
+-    }
+-
+-    return QColorSpace();
++    Q_UNUSED(hMonitor);
++    Q_UNUSED(info);
++    Q_UNUSED(pathGroup);
++    return QColorSpace::SRgb;
+ }
+-- 
+2.34.1
