@@ -1,0 +1,30 @@
+name: patched MXE x86 Qt6 Static Docker Image
+
+on:
+  workflow_dispatch:
+
+env:
+  QT_VERSION: 6.12.0
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build & Push MXE Qt6 Docker image
+        run: |
+          # lowercase GitHubユーザー名を取得
+          USER=$(echo "$GITHUB_ACTOR" | tr '[:upper:]' '[:lower:]')
+          IMAGE="ghcr.io/${USER}/qt6-mxe-static-path:${QT_VERSION}-32"
+
+          # Dockerイメージをビルド
+          docker build -f Dockerfile.mxe.wine-32 -t "$IMAGE" .
+
+          # GHCRへログイン（GITHUB_TOKENでOK）
+          echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+
+          # イメージをプッシュ
+          docker push "$IMAGE"
