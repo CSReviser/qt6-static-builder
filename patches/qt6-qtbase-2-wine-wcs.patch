@@ -1,24 +1,7 @@
-From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: CaptureStream2 <noreply@example.com>
-Date: Fri, 2 Oct 2026 23:00:00 +0900
-Subject: [PATCH] qtbase: use sRGB for Windows color space on Wine
-
-Wine does not implement WcsCreateIccProfile(), which is called by
-Qt 6.12 Windows QPA while resolving the monitor color space.
-
-This causes Wine to abort during application startup.
-
-CaptureStream2 does not require Windows ICC color management, so use
-sRGB for the Windows platform in the Wine-compatible Qt build.
-
----
- src/plugins/platforms/windows/qwindowsscreen.cpp | 31 +------------------------
- 1 file changed, 1 insertion(+), 30 deletions(-)
-
 diff --git a/src/plugins/platforms/windows/qwindowsscreen.cpp b/src/plugins/platforms/windows/qwindowsscreen.cpp
 --- a/src/plugins/platforms/windows/qwindowsscreen.cpp
 +++ b/src/plugins/platforms/windows/qwindowsscreen.cpp
-@@ -...,31 +...,1 @@
+@@ -347,111 +347,8 @@
  static QColorSpace resolveColorSpace(HMONITOR hMonitor,
      const MONITORINFOEX &info,
      const std::vector<DISPLAYCONFIG_PATH_INFO> &pathGroup)
@@ -78,25 +61,59 @@ diff --git a/src/plugins/platforms/windows/qwindowsscreen.cpp b/src/plugins/plat
 -                return QColorSpace::fromIccProfile(iccData);
 -        }
 -    } else {
--        // No profile ... or Advanced Color
+-        // No profile is associated with the screen, or Advanced Color is active,
+-        // in which case any calls to the color profile management APIs to get the
+-        // profile for a display will return "no profile", regardless of what
+-        // profiles are actually installed.
+-
 -#ifdef QT_USE_WINRT_DISPLAY_INTEROP
--        if (windowsColorSpaceFunctions->isColorSpaceChanged(hMonitor)) {
--            const auto colorSpace = windowsColorSpaceFunctions->getColorSpace(hMonitor);
--            if (colorSpace.isValid())
--                return colorSpace;
+-        // Try to to resolve what color space the Windows compositor (DWM) is
+-        // working in, and reflect that as the screen's preferred color space.
+-
+-        // https://learn.microsoft.com/nb-no/windows/win32/api/windows.graphics.display.interop
+-        if (static bool haveInterop = QOperatingSystemVersion::current() >= QOperatingSystemVersion::Windows11_22H2; haveInterop) {
+-            using namespace winrt::Windows::Foundation;
+-            using namespace winrt::Windows::Graphics::Display;
+-
+-            try {
+-                DisplayInformation displayInfo = nullptr;
+-                auto factory = winrt::get_activation_factory<DisplayInformation, IDisplayInformationStaticsInterop>();
+-                if (SUCCEEDED(factory->GetForMonitor(hMonitor, winrt::guid_of<DisplayInformation>(), winrt::put_abi(displayInfo)))) {
+-                    qCDebug(lcQpaScreen) << "Checking Advanced Color preferences";
+-                    AdvancedColorInfo advancedColorInfo = displayInfo.GetAdvancedColorInfo();
+-                    switch (advancedColorInfo.CurrentAdvancedColorKind()) {
+-                    case AdvancedColorKind::StandardDynamicRange:
+-                        // The display only supports standard dynamic range. In this case, it is safe to assume
+-                        // that OS composition is being done using an RGB:8 surface encoded as sRGB gamma.
+-                        return QColorSpace::SRgb;
+-                    case AdvancedColorKind::WideColorGamut:
+-                        // The display supports Wide Color Gamut. In this case, it is safe to assume that OS
+-                        // composition is being done using an RGB:FP16 surface encoded as scRGB gamma.
+-                        return QColorSpace::SRgbLinear;
+-                    case AdvancedColorKind::HighDynamicRange:
+-                        // The display supports high dynamic range. In this case, it is safe to assume that OS
+-                        // composition is being done using an RGB:FP16 surface encoded as scRGB gamma.
+-                        return QColorSpace::SRgbLinear;
+-                    }
+-                }
+-            } catch (const std::exception &ex) {
+-                qCWarning(lcQpaScreen) << "Failed to query for advanced color info" << ex.what();
+-            }
 -        }
 -#else
 -        Q_UNUSED(hMonitor);
 -#endif
+-
+-        // If we can't figure out the Advanced Color color-space above, we fall back to sRGB
 -        qCDebug(lcQpaScreen) << "No color profile or advanced color preference. Falling back to sRGB";
 -        return QColorSpace::SRgb;
 -    }
 -
+-    // We hit an error condition that didn't result in falling back to sRGB,
+-    // so we conservatively report that we don't know the color space.
 -    return QColorSpace();
 +    Q_UNUSED(hMonitor);
 +    Q_UNUSED(info);
 +    Q_UNUSED(pathGroup);
 +    return QColorSpace::SRgb;
  }
--- 
-2.34.1
