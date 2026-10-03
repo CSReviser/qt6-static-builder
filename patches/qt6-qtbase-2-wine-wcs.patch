@@ -117,3 +117,4 @@ diff --git a/src/plugins/platforms/windows/qwindowsscreen.cpp b/src/plugins/plat
 +    Q_UNUSED(pathGroup);
 +    return QColorSpace::SRgb;
  }
+
