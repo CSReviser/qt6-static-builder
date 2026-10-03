@@ -1,8 +1,7 @@
 diff --git a/src/plugins/platforms/windows/qwindowsscreen.cpp b/src/plugins/platforms/windows/qwindowsscreen.cpp
 --- a/src/plugins/platforms/windows/qwindowsscreen.cpp
 +++ b/src/plugins/platforms/windows/qwindowsscreen.cpp
-@@ -347,111 +347,8 @@
- static QColorSpace resolveColorSpace(HMONITOR hMonitor,
+@@ -347,111 +347,9 @@ static QColorSpace resolveColorSpace(HMONITOR hMonitor,
      const MONITORINFOEX &info,
      const std::vector<DISPLAYCONFIG_PATH_INFO> &pathGroup)
  {
@@ -117,4 +116,3 @@ diff --git a/src/plugins/platforms/windows/qwindowsscreen.cpp b/src/plugins/plat
 +    Q_UNUSED(pathGroup);
 +    return QColorSpace::SRgb;
  }
-
