@@ -46,6 +46,7 @@ RUN apt-get update && apt-get install -y \
 		python3-pip \
 		python3-pkg-resources \
 		python3-setuptools \
+		python3-yaml \
 		ruby \
 		sed \
 		sqlite3 \
@@ -61,6 +62,6 @@ RUN pip3 install mako
 WORKDIR /opt
 RUN git clone https://github.com/mxe/mxe.git && \
     cd mxe && \
-    make MXE_TARGETS='x86_64-w64-mingw32.static' qtbase qtxmlpatterns qtscript gcc cmake ffmpeg -j$(nproc)
+    make MXE_TARGETS='x86_64-w64-mingw32.static' qtbase qtxmlpatterns qtscript gcc cmake  -j$(nproc)
 
 ENV PATH="/opt/mxe/usr/bin:$PATH"
