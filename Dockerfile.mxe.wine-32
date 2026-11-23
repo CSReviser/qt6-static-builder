@@ -72,7 +72,6 @@ RUN cd /opt/mxe && \
          qt6-qtbase \
          gcc \
          cmake \
-         ffmpeg \
          -j$(nproc)
 
 ENV PATH="/opt/mxe/usr/bin:$PATH"
